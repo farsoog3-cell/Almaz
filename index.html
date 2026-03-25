@@ -117,21 +117,6 @@ button:active { transform: scale(0.95); }
     transform: scale(1.1);
     transition: transform 0.2s;
 }
-
-.product-card {
-    display: none; /* سيتم عرضها عند التصفية */
-    width: 100%;
-    background-color: #111;
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 16px;
-}
-
-.product-card img {
-    border: 3px solid var(--orange);
-    border-radius: 12px;
-    margin-bottom: 8px;
-}
 </style>
 </head>
 
@@ -155,21 +140,21 @@ button:active { transform: scale(0.95); }
 
 <main class="text-center max-w-lg w-full">
 
-<!-- شريط الأقسام -->
+<!-- شريط الأقسام مع أيقونات مناسبة -->
 <div id="categories">
-    <div class="category-item" data-category="رجالي">
+    <div class="category-item">
         <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h2v6h-2v7H9v-7H7v-6h2V7a5 5 0 0 1 5-5z"/></svg>
         <span>رجالي</span>
     </div>
-    <div class="category-item" data-category="نسائي">
+    <div class="category-item">
         <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M12 12v10"/></svg>
         <span>نسائي</span>
     </div>
-    <div class="category-item" data-category="أطفال">
+    <div class="category-item">
         <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/></svg>
         <span>أطفال</span>
     </div>
-    <div class="category-item" data-category="إكسسوارات">
+    <div class="category-item">
         <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 2h12l2 4-2 4H6L4 6z"/><path d="M4 10h16v10H4z"/></svg>
         <span>إكسسوارات</span>
     </div>
@@ -179,55 +164,24 @@ button:active { transform: scale(0.95); }
     اهلا بكم في متجرنا - <span class="logo-text">Almaz</span>
 </h1>
 
-<!-- قائمة المنتجات -->
-<div id="products">
+<div class="w-full bg-black p-4 rounded-2xl shadow-lg">
 
-    <!-- منتج رجالي -->
-    <div class="product-card" data-category="رجالي">
-        <div class="product-image-frame">
-            <img src="shop-front.jpg" alt="رجالي">
-        </div>
-        <p class="text-sm text-orange-400 glow">Almaz - قميص رجالي فاخر</p>
-        <div class="flex gap-2 justify-center">
-            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
-            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
-        </div>
+    <div class="product-image-frame">
+        <img src="shop-front.jpg" class="w-full rounded-lg">
     </div>
 
-    <!-- منتج نسائي -->
-    <div class="product-card" data-category="نسائي">
-        <div class="product-image-frame">
-            <img src="shop-front.jpg" alt="نسائي">
-        </div>
-        <p class="text-sm text-orange-400 glow">Almaz - فستان نسائي فاخر</p>
-        <div class="flex gap-2 justify-center">
-            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
-            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
-        </div>
-    </div>
+    <p class="text-sm text-orange-400 mb-3 glow">
+        Almaz - منصة متكاملة للبيع والشراء بأسهل الطرق وأكثر أمانًا
+    </p>
 
-    <!-- منتج أطفال -->
-    <div class="product-card" data-category="أطفال">
-        <div class="product-image-frame">
-            <img src="shop-front.jpg" alt="أطفال">
-        </div>
-        <p class="text-sm text-orange-400 glow">Almaz - ملابس أطفال مميزة</p>
-        <div class="flex gap-2 justify-center">
-            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
-            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
-        </div>
-    </div>
+    <div class="flex gap-2 justify-center">
+        <button id="buy-now" class="flex-1 bg-orange-500 text-black py-3 rounded-full font-bold">
+            اطلب الآن
+        </button>
 
-    <!-- منتج إكسسوارات -->
-    <div class="product-card" data-category="إكسسوارات">
-        <div class="product-image-frame">
-            <img src="shop-front.jpg" alt="إكسسوارات">
-        </div>
-        <p class="text-sm text-orange-400 glow">Almaz - إكسسوارات متنوعة</p>
-        <div class="flex gap-2 justify-center">
-            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
-            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
-        </div>
+        <button id="add-cart" class="flex-1 border border-orange-500 py-3 rounded-full">
+            أضف للسلة
+        </button>
     </div>
 
 </div>
@@ -249,44 +203,24 @@ button:active { transform: scale(0.95); }
 </footer>
 
 <script>
-// فتح وإغلاق السلة
 const sidebar = document.getElementById("sidebar");
 const toggleSidebarBtn = document.getElementById("toggle-sidebar");
+const addCartBtn = document.getElementById("add-cart");
 const cartItems = document.getElementById("cart-items");
+
 let sidebarOpen = false;
+
 toggleSidebarBtn.onclick = () => {
     sidebarOpen = !sidebarOpen;
     sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(100%)';
 };
 
-// التصفية حسب القسم
-const categoryItems = document.querySelectorAll(".category-item");
-const productCards = document.querySelectorAll(".product-card");
-
-categoryItems.forEach(item => {
-    item.addEventListener("click", () => {
-        const cat = item.dataset.category;
-        productCards.forEach(card => {
-            if(card.dataset.category === cat) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
-        });
-    });
-});
-
-// إضافة منتجات للسلة
-const addButtons = document.querySelectorAll(".add-btn");
-addButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-        const productName = e.target.closest(".product-card").querySelector("p").textContent;
-        cartItems.innerHTML = `<p class="glow">${productName}</p>`;
-        sidebar.style.transform = 'translateX(0)';
-        sidebarOpen = true;
-    });
-});
+addCartBtn.onclick = () => {
+    cartItems.innerHTML = '<p class="glow">Almaz - قميص كلاسيك فاخر</p>';
+    sidebar.style.transform = 'translateX(0)';
+    sidebarOpen = true;
+};
 </script>
 
 </body>
-    </html>
+</html>
