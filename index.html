@@ -1,226 +1,261 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Almaz - منصة البيع والشراء</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Almaz | الفخامة في التسوق</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root {
+            --primary: #FF7F00;
+            --primary-glow: rgba(255, 127, 0, 0.4);
+            --bg-dark: #080808;
+            --card-bg: #121212;
+        }
 
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            scroll-behavior: smooth;
+        }
 
-<style>
-:root {
-    --black: #000000;
-    --black-dark: #050505;
-    --orange: #FF7F00;
-}
+        /* تأثير التوهج للنصوص */
+        .text-glow {
+            text-shadow: 0 0 15px var(--primary-glow);
+        }
 
-body {
-    font-family: 'Tajawal', sans-serif;
-    background-color: var(--black);
-    color: var(--orange);
-    margin: 0;
-    min-height: 100vh;
-}
+        /* تصميم الـ Glassmorphism للسلة */
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(255, 127, 0, 0.2);
+        }
 
-.logo-text {
-    font-family: Arial, sans-serif;
-    font-weight: 900;
-    letter-spacing: -1.5px;
-    color: var(--orange);
-    text-shadow: 
-        0 0 10px rgba(255,127,0,0.8),
-        0 0 20px rgba(255,127,0,0.6),
-        0 0 40px rgba(255,127,0,0.4);
-}
+        /* شريط الإعلانات المتحرك */
+        .marquee-container {
+            background: linear-gradient(90deg, #FF7F00, #ff9d3f);
+            height: 35px;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
 
-.glow {
-    text-shadow:
-        0 0 8px rgba(255,127,0,0.8),
-        0 0 20px rgba(255,127,0,0.5);
-}
+        .marquee-content {
+            white-space: nowrap;
+            animation: marquee 25s linear infinite;
+            color: black;
+            font-weight: bold;
+        }
 
-.product-image-frame {
-    border: 3px solid var(--orange);
-    padding: 4px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-bottom: 12px;
-}
+        @keyframes marquee {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
 
-#sidebar {
-    transition: transform 0.5s ease;
-    background: linear-gradient(180deg, var(--black), var(--black-dark));
-    width: 300px;
-    padding: 16px;
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100%;
-    transform: translateX(100%);
-    z-index: 50;
-}
+        /* بطاقات المنتجات */
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-#top-bar {
-    width: 100%;
-    background-color: var(--orange);
-    overflow: hidden;
-    white-space: nowrap;
-    padding: 8px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-}
+        .product-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-#top-bar p {
-    display: inline-block;
-    color: black;
-    font-weight: bold;
-    font-size: 1rem;
-    padding-left: 100%;
-    animation: scrollText 20s linear infinite;
-    text-shadow: 0 0 5px #000, 0 0 10px #000;
-}
+        .category-pill {
+            transition: all 0.3s;
+            border: 1px solid #333;
+        }
 
-@keyframes scrollText {
-    0% { transform: translateX(0%); }
-    100% { transform: translateX(-100%); }
-}
+        .category-pill:hover, .category-pill.active {
+            background: var(--primary);
+            color: black;
+            border-color: var(--primary);
+        }
 
-body > main {
-    margin-top: 40px;
-}
-
-button { transition: transform 0.2s; }
-button:active { transform: scale(0.95); }
-
-#categories {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-}
-.category-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--orange);
-    font-weight: bold;
-    cursor: pointer;
-}
-.category-item svg {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 4px;
-}
-.category-item:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s;
-}
-</style>
+        /* زر مخصص */
+        .btn-primary {
+            background: linear-gradient(45deg, #FF7F00, #ffaa00);
+            box-shadow: 0 4px 15px var(--primary-glow);
+            transition: 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+    </style>
 </head>
+<body class="pt-16">
 
-<body class="flex flex-col items-center px-6 py-8">
-
-<div id="top-bar">
-    <p>اهلا بكم في موقع Almaz، اطلب الان إلى أنحاء العالم كما تشاء. اهلا بكم جميعا. مقر الموقع: تركيا</p>
-</div>
-
-<aside id="sidebar">
-    <h2 class="text-xl font-bold mb-4 glow">سلة التسوق</h2>
-    <div id="cart-items" class="flex flex-col gap-3">
-        <p class="text-sm">السلة فارغة</p>
-    </div>
-</aside>
-
-<nav class="w-full flex justify-between items-center mb-12 mt-12">
-    <div class="logo-text text-3xl">Almaz</div>
-    <button id="toggle-sidebar">🛒 السلة</button>
-</nav>
-
-<main class="text-center max-w-lg w-full">
-
-<!-- شريط الأقسام مع أيقونات مناسبة -->
-<div id="categories">
-    <div class="category-item">
-        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h2v6h-2v7H9v-7H7v-6h2V7a5 5 0 0 1 5-5z"/></svg>
-        <span>رجالي</span>
-    </div>
-    <div class="category-item">
-        <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M12 12v10"/></svg>
-        <span>نسائي</span>
-    </div>
-    <div class="category-item">
-        <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/></svg>
-        <span>أطفال</span>
-    </div>
-    <div class="category-item">
-        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 2h12l2 4-2 4H6L4 6z"/><path d="M4 10h16v10H4z"/></svg>
-        <span>إكسسوارات</span>
-    </div>
-</div>
-
-<h1 class="text-4xl font-bold glow mb-8">
-    اهلا بكم في متجرنا - <span class="logo-text">Almaz</span>
-</h1>
-
-<div class="w-full bg-black p-4 rounded-2xl shadow-lg">
-
-    <div class="product-image-frame">
-        <img src="shop-front.jpg" class="w-full rounded-lg">
+    <div class="marquee-container">
+        <div class="marquee-content">
+             ✨ شحن مجاني للطلبات فوق 500 ليرة • Almaz - خيارك الأول للأناقة في تركيا والعالم • خصومات تصل إلى 30% بمناسبة الافتتاح ✨
+        </div>
     </div>
 
-    <p class="text-sm text-orange-400 mb-3 glow">
-        Almaz - منصة متكاملة للبيع والشراء بأسهل الطرق وأكثر أمانًا
-    </p>
+    <header class="container mx-auto px-6 py-4 flex justify-between items-center sticky top-8 z-40 bg-black/50 backdrop-blur-md rounded-2xl mt-4">
+        <div class="text-3xl font-black tracking-tighter text-primary flex items-center gap-2">
+            <span class="bg-orange-500 text-black px-2 py-1 rounded">AL</span>
+            <span class="text-orange-500">MAZ</span>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button id="toggle-cart" class="relative p-2 hover:bg-white/10 rounded-full transition">
+                <i data-lucide="shopping-bag" class="text-orange-500"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+            </button>
+            <button class="p-2 hover:bg-white/10 rounded-full">
+                <i data-lucide="menu" class="text-orange-500"></i>
+            </button>
+        </div>
+    </header>
 
-    <div class="flex gap-2 justify-center">
-        <button id="buy-now" class="flex-1 bg-orange-500 text-black py-3 rounded-full font-bold">
-            اطلب الآن
-        </button>
+    <main class="container mx-auto px-6 mt-12">
+        <section class="text-center mb-16">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                اكتشف <span class="text-orange-500 text-glow">أناقتك</span> <br>مع Almaz
+            </h1>
+            <p class="text-gray-400 max-w-xl mx-auto text-lg">
+                وجهتكم الأولى للأزياء العصرية والمنتجات المختارة بعناية من قلب تركيا إلى باب منزلكم.
+            </p>
+        </section>
 
-        <button id="add-cart" class="flex-1 border border-orange-500 py-3 rounded-full">
-            أضف للسلة
-        </button>
+        <section class="flex flex-wrap justify-center gap-4 mb-12">
+            <button class="category-pill active px-8 py-3 rounded-full font-bold">الكل</button>
+            <button class="category-pill px-8 py-3 rounded-full font-bold">رجالي</button>
+            <button class="category-pill px-8 py-3 rounded-full font-bold">نسائي</button>
+            <button class="category-pill px-8 py-3 rounded-full font-bold">أطفال</button>
+            <button class="category-pill px-8 py-3 rounded-full font-bold">إكسسوارات</button>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="product-card rounded-3xl overflow-hidden p-4">
+                <div class="relative group">
+                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
+                    <div class="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded-lg text-sm font-bold">جديد</div>
+                </div>
+                <div class="mt-6 space-y-2">
+                    <h3 class="text-xl font-bold">قميص قطني بريميوم</h3>
+                    <p class="text-gray-500 text-sm italic">خامات تركية عالية الجودة</p>
+                    <div class="flex justify-between items-center pt-4">
+                        <span class="text-2xl font-black text-orange-500">₺450</span>
+                        <button onclick="addToCart('قميص قطني')" class="btn-primary p-3 rounded-xl">
+                            <i data-lucide="plus" class="text-black"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card rounded-3xl overflow-hidden p-4">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
+                </div>
+                <div class="mt-6 space-y-2">
+                    <h3 class="text-xl font-bold">حذاء رياضي Almaz Edition</h3>
+                    <p class="text-gray-500 text-sm italic">مريح جداً للمشي الطويل</p>
+                    <div class="flex justify-between items-center pt-4">
+                        <span class="text-2xl font-black text-orange-500">₺890</span>
+                        <button onclick="addToCart('حذاء رياضي')" class="btn-primary p-3 rounded-xl">
+                            <i data-lucide="plus" class="text-black"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card rounded-3xl overflow-hidden p-4">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
+                </div>
+                <div class="mt-6 space-y-2">
+                    <h3 class="text-xl font-bold">ساعة ذكية فاخرة</h3>
+                    <p class="text-gray-500 text-sm italic">إكسسوارات Almaz المتميزة</p>
+                    <div class="flex justify-between items-center pt-4">
+                        <span class="text-2xl font-black text-orange-500">₺1,200</span>
+                        <button onclick="addToCart('ساعة ذكية')" class="btn-primary p-3 rounded-xl">
+                            <i data-lucide="plus" class="text-black"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-24 mb-12 bg-gradient-to-br from-orange-500/10 to-transparent p-12 rounded-[3rem] border border-orange-500/20 text-center">
+            <h2 class="text-3xl font-bold mb-4">هل تحتاج مساعدة؟</h2>
+            <p class="text-gray-400 mb-8">تواصل معنا مباشرة عبر واتساب لطلب خاص أو استفسار</p>
+            <a href="https://wa.me/905394753724" target="_blank" class="inline-flex items-center gap-3 bg-[#25D366] text-black px-10 py-4 rounded-full font-black hover:scale-105 transition shadow-xl shadow-green-500/20">
+                <i data-lucide="phone"></i>
+                تحدث معنا الآن
+            </a>
+        </section>
+    </main>
+
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-[350px] glass-panel z-50 translate-x-full transition-transform duration-500 p-8">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-black text-orange-500">سلتك</h2>
+            <button id="close-cart" class="p-2 hover:bg-white/10 rounded-full"><i data-lucide="x"></i></button>
+        </div>
+        <div id="cart-content" class="space-y-4">
+            <p class="text-gray-500 text-center py-10">السلة فارغة حالياً..</p>
+        </div>
+        <div class="absolute bottom-8 left-8 right-8">
+            <button class="w-full btn-primary py-4 rounded-2xl font-bold text-black flex items-center justify-center gap-2">
+                إتمام الطلب <i data-lucide="arrow-left-circle" class="w-5"></i>
+            </button>
+        </div>
     </div>
 
-</div>
+    <footer class="border-t border-white/5 py-12 text-center text-gray-500 text-sm">
+        <p>© 2026 Almaz. تم التصميم بكل ❤️ لخدمتكم</p>
+    </footer>
 
-<!-- الباركود/QR Code -->
-<div class="mt-8">
-    <p class="text-orange-400 mb-2 glow">تواصل معنا على الواتس آب</p>
-    <a href="https://wa.me/905394753724" target="_blank">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/905394753724" alt="QR WhatsApp">
-    </a>
-</div>
+    <script>
+        // تفعيل الأيقونات
+        lucide.createIcons();
 
-</main>
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const toggleCart = document.getElementById('toggle-cart');
+        const closeCart = document.getElementById('close-cart');
+        const cartContent = document.getElementById('cart-content');
+        const cartCount = document.getElementById('cart-count');
+        
+        let items = 0;
 
-<footer class="mt-auto w-full max-w-md text-center mt-12">
-    <p class="text-xs text-orange-400">
-        جميع الحقوق محفوظة © 2026 - Almaz
-    </p>
-</footer>
+        toggleCart.onclick = () => cartSidebar.classList.remove('translate-x-full');
+        closeCart.onclick = () => cartSidebar.classList.add('translate-x-full');
 
-<script>
-const sidebar = document.getElementById("sidebar");
-const toggleSidebarBtn = document.getElementById("toggle-sidebar");
-const addCartBtn = document.getElementById("add-cart");
-const cartItems = document.getElementById("cart-items");
-
-let sidebarOpen = false;
-
-toggleSidebarBtn.onclick = () => {
-    sidebarOpen = !sidebarOpen;
-    sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(100%)';
-};
-
-addCartBtn.onclick = () => {
-    cartItems.innerHTML = '<p class="glow">Almaz - قميص كلاسيك فاخر</p>';
-    sidebar.style.transform = 'translateX(0)';
-    sidebarOpen = true;
-};
-</script>
-
+        function addToCart(name) {
+            items++;
+            cartCount.innerText = items;
+            
+            if(items === 1) cartContent.innerHTML = '';
+            
+            const div = document.createElement('div');
+            div.className = "flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10";
+            div.innerHTML = `
+                <div>
+                    <p class="font-bold">${name}</p>
+                    <p class="text-xs text-orange-500">جاري التجهيز...</p>
+                </div>
+                <i data-lucide="trash-2" class="w-4 text-red-500 cursor-pointer"></i>
+            `;
+            cartContent.appendChild(div);
+            lucide.createIcons();
+            
+            // فتح السلة تلقائياً عند الإضافة
+            cartSidebar.classList.remove('translate-x-full');
+        }
+    </script>
 </body>
 </html>
