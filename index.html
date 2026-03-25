@@ -109,18 +109,17 @@ button:active { transform: scale(0.95); }
     cursor: pointer;
 }
 .category-item svg {
-    width: 48px; 
-    height: 48px;
+    width: 40px;
+    height: 40px;
     margin-bottom: 4px;
-    stroke: var(--orange);
-    fill: none;
-    stroke-width: 2;
 }
-.category-item span { margin-top: 2px; font-size: 0.9rem; }
-.category-item:hover { transform: scale(1.2); transition: transform 0.2s; }
+.category-item:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s;
+}
 
 .product-card {
-    display: none;
+    display: none; /* سيتم عرضها عند التصفية */
     width: 100%;
     background-color: #111;
     padding: 12px;
@@ -132,20 +131,6 @@ button:active { transform: scale(0.95); }
     border: 3px solid var(--orange);
     border-radius: 12px;
     margin-bottom: 8px;
-}
-
-/* QR صغير ووضعه بجانب النص */
-#qr-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 16px;
-}
-
-#qr-wrapper img {
-    width: 80px;
-    height: 80px;
 }
 </style>
 </head>
@@ -170,22 +155,22 @@ button:active { transform: scale(0.95); }
 
 <main class="text-center max-w-lg w-full">
 
-<!-- شريط الأقسام مع أيقونات جديدة -->
+<!-- شريط الأقسام -->
 <div id="categories">
     <div class="category-item" data-category="رجالي">
-        <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h2v6h-2v7H9v-7H7v-6h2V7a5 5 0 0 1 5-5z"/></svg>
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h2v6h-2v7H9v-7H7v-6h2V7a5 5 0 0 1 5-5z"/></svg>
         <span>رجالي</span>
     </div>
     <div class="category-item" data-category="نسائي">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M12 12v10"/></svg>
+        <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M12 12v10"/></svg>
         <span>نسائي</span>
     </div>
     <div class="category-item" data-category="أطفال">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/></svg>
+        <svg fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/></svg>
         <span>أطفال</span>
     </div>
     <div class="category-item" data-category="إكسسوارات">
-        <svg viewBox="0 0 24 24"><path d="M6 2h12l2 4-2 4H6L4 6z"/><path d="M4 10h16v10H4z"/></svg>
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 2h12l2 4-2 4H6L4 6z"/><path d="M4 10h16v10H4z"/></svg>
         <span>إكسسوارات</span>
     </div>
 </div>
@@ -197,6 +182,7 @@ button:active { transform: scale(0.95); }
 <!-- قائمة المنتجات -->
 <div id="products">
 
+    <!-- منتج رجالي -->
     <div class="product-card" data-category="رجالي">
         <div class="product-image-frame">
             <img src="shop-front.jpg" alt="رجالي">
@@ -208,6 +194,7 @@ button:active { transform: scale(0.95); }
         </div>
     </div>
 
+    <!-- منتج نسائي -->
     <div class="product-card" data-category="نسائي">
         <div class="product-image-frame">
             <img src="shop-front.jpg" alt="نسائي">
@@ -219,6 +206,7 @@ button:active { transform: scale(0.95); }
         </div>
     </div>
 
+    <!-- منتج أطفال -->
     <div class="product-card" data-category="أطفال">
         <div class="product-image-frame">
             <img src="shop-front.jpg" alt="أطفال">
@@ -230,6 +218,7 @@ button:active { transform: scale(0.95); }
         </div>
     </div>
 
+    <!-- منتج إكسسوارات -->
     <div class="product-card" data-category="إكسسوارات">
         <div class="product-image-frame">
             <img src="shop-front.jpg" alt="إكسسوارات">
@@ -243,10 +232,12 @@ button:active { transform: scale(0.95); }
 
 </div>
 
-<!-- QR صغير -->
-<div id="qr-wrapper">
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wa.me/905394753724" alt="QR WhatsApp">
-    <p class="text-orange-400 glow text-sm">تواصل معنا على الواتس آب</p>
+<!-- الباركود/QR Code -->
+<div class="mt-8">
+    <p class="text-orange-400 mb-2 glow">تواصل معنا على الواتس آب</p>
+    <a href="https://wa.me/905394753724" target="_blank">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://wa.me/905394753724" alt="QR WhatsApp">
+    </a>
 </div>
 
 </main>
@@ -258,7 +249,7 @@ button:active { transform: scale(0.95); }
 </footer>
 
 <script>
-// السلة
+// فتح وإغلاق السلة
 const sidebar = document.getElementById("sidebar");
 const toggleSidebarBtn = document.getElementById("toggle-sidebar");
 const cartItems = document.getElementById("cart-items");
@@ -268,7 +259,7 @@ toggleSidebarBtn.onclick = () => {
     sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(100%)';
 };
 
-// التصفية
+// التصفية حسب القسم
 const categoryItems = document.querySelectorAll(".category-item");
 const productCards = document.querySelectorAll(".product-card");
 
@@ -276,12 +267,16 @@ categoryItems.forEach(item => {
     item.addEventListener("click", () => {
         const cat = item.dataset.category;
         productCards.forEach(card => {
-            card.style.display = card.dataset.category === cat ? "block" : "none";
+            if(card.dataset.category === cat) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
         });
     });
 });
 
-// إضافة للسلة
+// إضافة منتجات للسلة
 const addButtons = document.querySelectorAll(".add-btn");
 addButtons.forEach(btn => {
     btn.addEventListener("click", (e) => {
@@ -294,4 +289,4 @@ addButtons.forEach(btn => {
 </script>
 
 </body>
-</html>
+    </html>
