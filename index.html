@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Almaz - متجر الملابس</title>
+<title>Almaz - منصة البيع والشراء</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
@@ -12,13 +12,13 @@
 :root {
     --black: #000000;
     --black-dark: #050505;
-    --gold: #FFD700;
+    --orange: #FF7F00; /* البرتقالي الجديد */
 }
 
 body {
     font-family: 'Tajawal', sans-serif;
     background-color: var(--black);
-    color: var(--gold);
+    color: var(--orange);
     margin: 0;
     min-height: 100vh;
 }
@@ -28,22 +28,22 @@ body {
     font-family: Arial, sans-serif;
     font-weight: 900;
     letter-spacing: -1.5px;
-    color: var(--gold);
+    color: var(--orange);
     text-shadow: 
-        0 0 10px rgba(255,215,0,0.8),
-        0 0 20px rgba(255,215,0,0.6),
-        0 0 40px rgba(255,215,0,0.4);
+        0 0 10px rgba(255,127,0,0.8),
+        0 0 20px rgba(255,127,0,0.6),
+        0 0 40px rgba(255,127,0,0.4);
 }
 
 .glow {
     text-shadow:
-        0 0 8px rgba(255,215,0,0.8),
-        0 0 20px rgba(255,215,0,0.5);
+        0 0 8px rgba(255,127,0,0.8),
+        0 0 20px rgba(255,127,0,0.5);
 }
 
 /* إطار الصورة فقط */
 .product-image-frame {
-    border: 3px solid var(--gold);
+    border: 3px solid var(--orange);
     padding: 4px;
     border-radius: 12px;
     display: inline-block;
@@ -67,7 +67,7 @@ body {
 /* شريط أعلى الصفحة */
 #top-bar {
     width: 100%;
-    background-color: var(--gold);
+    background-color: var(--orange);
     overflow: hidden;
     white-space: nowrap;
     padding: 8px 0;
@@ -97,6 +97,12 @@ body > main {
     margin-top: 40px; /* مسافة للشريط العلوي */
 }
 
+button {
+    transition: transform 0.2s;
+}
+button:active {
+    transform: scale(0.95);
+}
 </style>
 </head>
 
@@ -125,7 +131,7 @@ body > main {
 <main class="text-center max-w-lg w-full">
 
 <h1 class="text-4xl font-bold glow mb-8">
-    متجر الملابس الفاخرة
+    Almaz
 </h1>
 
 <!-- المنتج -->
@@ -136,28 +142,18 @@ body > main {
         <img src="shop-front.jpg" class="w-full rounded-lg">
     </div>
 
-    <!-- اسم المنتج -->
-    <h2 class="text-xl font-bold glow mb-2">
-        قميص كلاسيك فاخر
-    </h2>
-
-    <!-- الوصف -->
-    <p class="text-sm text-yellow-300 mb-3 glow">
-        قميص أنيق مصنوع من قطن عالي الجودة، مناسب لجميع المناسبات اليومية والرسمية.
+    <!-- نص احترافي تحت الصورة -->
+    <p class="text-sm text-orange-400 mb-3 glow">
+        Almaz - منصة متكاملة للبيع والشراء بأسهل الطرق وأكثر أمانًا
     </p>
-
-    <!-- السعر -->
-    <div class="text-2xl font-bold mb-4 glow">
-        $49.99
-    </div>
 
     <!-- الأزرار -->
     <div class="flex gap-2 justify-center">
-        <button id="buy-now" class="flex-1 bg-yellow-400 text-black py-3 rounded-full font-bold">
+        <button id="buy-now" class="flex-1 bg-orange-500 text-black py-3 rounded-full font-bold">
             اطلب الآن
         </button>
 
-        <button id="add-cart" class="flex-1 border border-yellow-400 py-3 rounded-full">
+        <button id="add-cart" class="flex-1 border border-orange-500 py-3 rounded-full">
             أضف للسلة
         </button>
     </div>
@@ -168,7 +164,7 @@ body > main {
 
 <!-- الفوتر -->
 <footer class="mt-auto w-full max-w-md text-center mt-12">
-    <p class="text-xs text-yellow-500">
+    <p class="text-xs text-orange-400">
         جميع الحقوق محفوظة © 2026 - Almaz
     </p>
 </footer>
@@ -189,11 +185,11 @@ toggleSidebarBtn.onclick = () => {
 
 // إضافة المنتج للسلة
 addCartBtn.onclick = () => {
-    cartItems.innerHTML = '<p class="glow">قميص كلاسيك فاخر - $49.99</p>';
+    cartItems.innerHTML = '<p class="glow">Almaz - قميص كلاسيك فاخر</p>';
     sidebar.style.transform = 'translateX(0)';
     sidebarOpen = true;
 };
 </script>
 
 </body>
-</html>ح
+</html>
