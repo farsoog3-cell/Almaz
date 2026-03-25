@@ -12,7 +12,7 @@
 :root {
     --black: #000000;
     --black-dark: #050505;
-    --orange: #FF7F00; /* البرتقالي */
+    --orange: #FF7F00;
 }
 
 body {
@@ -23,7 +23,6 @@ body {
     min-height: 100vh;
 }
 
-/* الشعار والتوهج */
 .logo-text {
     font-family: Arial, sans-serif;
     font-weight: 900;
@@ -41,7 +40,6 @@ body {
         0 0 20px rgba(255,127,0,0.5);
 }
 
-/* إطار الصورة فقط */
 .product-image-frame {
     border: 3px solid var(--orange);
     padding: 4px;
@@ -50,7 +48,6 @@ body {
     margin-bottom: 12px;
 }
 
-/* الشريط الجانبي كسلة فقط */
 #sidebar {
     transition: transform 0.5s ease;
     background: linear-gradient(180deg, var(--black), var(--black-dark));
@@ -64,7 +61,6 @@ body {
     z-index: 50;
 }
 
-/* شريط أعلى الصفحة */
 #top-bar {
     width: 100%;
     background-color: var(--orange);
@@ -92,28 +88,74 @@ body {
     100% { transform: translateX(-100%); }
 }
 
-/* تعديل محتوى الصفحة لتحت الشريط */
 body > main {
-    margin-top: 40px; /* مسافة للشريط العلوي */
+    margin-top: 40px;
 }
 
-button {
-    transition: transform 0.2s;
+button { transition: transform 0.2s; }
+button:active { transform: scale(0.95); }
+
+#categories {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
 }
-button:active {
-    transform: scale(0.95);
+.category-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--orange);
+    font-weight: bold;
+    cursor: pointer;
+}
+.category-item svg {
+    width: 48px; 
+    height: 48px;
+    margin-bottom: 4px;
+    stroke: var(--orange);
+    fill: none;
+    stroke-width: 2;
+}
+.category-item span { margin-top: 2px; font-size: 0.9rem; }
+.category-item:hover { transform: scale(1.2); transition: transform 0.2s; }
+
+.product-card {
+    display: none;
+    width: 100%;
+    background-color: #111;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.product-card img {
+    border: 3px solid var(--orange);
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+/* QR صغير ووضعه بجانب النص */
+#qr-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+#qr-wrapper img {
+    width: 80px;
+    height: 80px;
 }
 </style>
 </head>
 
 <body class="flex flex-col items-center px-6 py-8">
 
-<!-- الشريط العلوي -->
 <div id="top-bar">
     <p>اهلا بكم في موقع Almaz، اطلب الان إلى أنحاء العالم كما تشاء. اهلا بكم جميعا. مقر الموقع: تركيا</p>
 </div>
 
-<!-- الشريط الجانبي كسلة -->
 <aside id="sidebar">
     <h2 class="text-xl font-bold mb-4 glow">سلة التسوق</h2>
     <div id="cart-items" class="flex flex-col gap-3">
@@ -121,49 +163,94 @@ button:active {
     </div>
 </aside>
 
-<!-- الهيدر -->
 <nav class="w-full flex justify-between items-center mb-12 mt-12">
     <div class="logo-text text-3xl">Almaz</div>
     <button id="toggle-sidebar">🛒 السلة</button>
 </nav>
 
-<!-- المحتوى -->
 <main class="text-center max-w-lg w-full">
 
-<!-- العنوان الجديد فوق الصورة -->
+<!-- شريط الأقسام مع أيقونات جديدة -->
+<div id="categories">
+    <div class="category-item" data-category="رجالي">
+        <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v3h2v6h-2v7H9v-7H7v-6h2V7a5 5 0 0 1 5-5z"/></svg>
+        <span>رجالي</span>
+    </div>
+    <div class="category-item" data-category="نسائي">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="5"/><path d="M12 12v10"/></svg>
+        <span>نسائي</span>
+    </div>
+    <div class="category-item" data-category="أطفال">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 12v8"/></svg>
+        <span>أطفال</span>
+    </div>
+    <div class="category-item" data-category="إكسسوارات">
+        <svg viewBox="0 0 24 24"><path d="M6 2h12l2 4-2 4H6L4 6z"/><path d="M4 10h16v10H4z"/></svg>
+        <span>إكسسوارات</span>
+    </div>
+</div>
+
 <h1 class="text-4xl font-bold glow mb-8">
     اهلا بكم في متجرنا - <span class="logo-text">Almaz</span>
 </h1>
 
-<!-- المنتج -->
-<div class="w-full bg-black p-4 rounded-2xl shadow-lg">
+<!-- قائمة المنتجات -->
+<div id="products">
 
-    <!-- الصورة بإطار فقط -->
-    <div class="product-image-frame">
-        <img src="shop-front.jpg" class="w-full rounded-lg">
+    <div class="product-card" data-category="رجالي">
+        <div class="product-image-frame">
+            <img src="shop-front.jpg" alt="رجالي">
+        </div>
+        <p class="text-sm text-orange-400 glow">Almaz - قميص رجالي فاخر</p>
+        <div class="flex gap-2 justify-center">
+            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
+            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
+        </div>
     </div>
 
-    <!-- نص احترافي تحت الصورة -->
-    <p class="text-sm text-orange-400 mb-3 glow">
-        Almaz - منصة متكاملة للبيع والشراء بأسهل الطرق وأكثر أمانًا
-    </p>
+    <div class="product-card" data-category="نسائي">
+        <div class="product-image-frame">
+            <img src="shop-front.jpg" alt="نسائي">
+        </div>
+        <p class="text-sm text-orange-400 glow">Almaz - فستان نسائي فاخر</p>
+        <div class="flex gap-2 justify-center">
+            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
+            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
+        </div>
+    </div>
 
-    <!-- الأزرار -->
-    <div class="flex gap-2 justify-center">
-        <button id="buy-now" class="flex-1 bg-orange-500 text-black py-3 rounded-full font-bold">
-            اطلب الآن
-        </button>
+    <div class="product-card" data-category="أطفال">
+        <div class="product-image-frame">
+            <img src="shop-front.jpg" alt="أطفال">
+        </div>
+        <p class="text-sm text-orange-400 glow">Almaz - ملابس أطفال مميزة</p>
+        <div class="flex gap-2 justify-center">
+            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
+            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
+        </div>
+    </div>
 
-        <button id="add-cart" class="flex-1 border border-orange-500 py-3 rounded-full">
-            أضف للسلة
-        </button>
+    <div class="product-card" data-category="إكسسوارات">
+        <div class="product-image-frame">
+            <img src="shop-front.jpg" alt="إكسسوارات">
+        </div>
+        <p class="text-sm text-orange-400 glow">Almaz - إكسسوارات متنوعة</p>
+        <div class="flex gap-2 justify-center">
+            <button class="bg-orange-500 text-black py-2 px-4 rounded-full font-bold buy-btn">اطلب الآن</button>
+            <button class="border border-orange-500 py-2 px-4 rounded-full add-btn">أضف للسلة</button>
+        </div>
     </div>
 
 </div>
 
+<!-- QR صغير -->
+<div id="qr-wrapper">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://wa.me/905394753724" alt="QR WhatsApp">
+    <p class="text-orange-400 glow text-sm">تواصل معنا على الواتس آب</p>
+</div>
+
 </main>
 
-<!-- الفوتر -->
 <footer class="mt-auto w-full max-w-md text-center mt-12">
     <p class="text-xs text-orange-400">
         جميع الحقوق محفوظة © 2026 - Almaz
@@ -171,25 +258,39 @@ button:active {
 </footer>
 
 <script>
+// السلة
 const sidebar = document.getElementById("sidebar");
 const toggleSidebarBtn = document.getElementById("toggle-sidebar");
-const addCartBtn = document.getElementById("add-cart");
 const cartItems = document.getElementById("cart-items");
-
 let sidebarOpen = false;
-
-// فتح وإغلاق السلة
 toggleSidebarBtn.onclick = () => {
     sidebarOpen = !sidebarOpen;
     sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(100%)';
 };
 
-// إضافة المنتج للسلة
-addCartBtn.onclick = () => {
-    cartItems.innerHTML = '<p class="glow">Almaz - قميص كلاسيك فاخر</p>';
-    sidebar.style.transform = 'translateX(0)';
-    sidebarOpen = true;
-};
+// التصفية
+const categoryItems = document.querySelectorAll(".category-item");
+const productCards = document.querySelectorAll(".product-card");
+
+categoryItems.forEach(item => {
+    item.addEventListener("click", () => {
+        const cat = item.dataset.category;
+        productCards.forEach(card => {
+            card.style.display = card.dataset.category === cat ? "block" : "none";
+        });
+    });
+});
+
+// إضافة للسلة
+const addButtons = document.querySelectorAll(".add-btn");
+addButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+        const productName = e.target.closest(".product-card").querySelector("p").textContent;
+        cartItems.innerHTML = `<p class="glow">${productName}</p>`;
+        sidebar.style.transform = 'translateX(0)';
+        sidebarOpen = true;
+    });
+});
 </script>
 
 </body>
