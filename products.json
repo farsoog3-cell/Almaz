@@ -14,19 +14,6 @@
     ]
   },
   {
-    "id": 1774503970136,
-    "name": "لبس نسيت اسمو",
-    "price": 500,
-    "category": "men_clothing",
-    "image": "https://i.ibb.co/FLS7Ccg2/shop-front.png",
-    "colors": [
-      "#9c9c9c"
-    ],
-    "sizes": [
-      "XL"
-    ]
-  },
-  {
     "id": 1774506031833,
     "name": "غير معروف",
     "price": 1500,
