@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1774501029096,
+    "name": "تيشورت",
+    "price": 250,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/FLS7Ccg2/shop-front.png",
+    "colors": [
+      "#000"
+    ],
+    "sizes": [
+      "M",
+      "L",
+      "XL"
+    ]
+  }
+]
