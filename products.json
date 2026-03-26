@@ -145,5 +145,18 @@
     "sizes": [
       "XL"
     ]
+  },
+  {
+    "id": 1774512693591,
+    "name": "حذاء",
+    "price": 3000,
+    "category": "women_shoes",
+    "image": "https://i.ibb.co/MytqxnZ5/images-12.jpg",
+    "colors": [
+      "#4b6e94"
+    ],
+    "sizes": [
+      "S"
+    ]
   }
 ]
