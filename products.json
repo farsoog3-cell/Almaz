@@ -12,5 +12,19 @@
       "XL",
       "XXL"
     ]
+  },
+  {
+    "id": 1774503393856,
+    "name": "سبور",
+    "price": 7000,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/DP0BCD6t/IMG-20260322-WA0014.jpg",
+    "colors": [
+      "#cccccc"
+    ],
+    "sizes": [
+      "XL",
+      "XXL"
+    ]
   }
 ]
