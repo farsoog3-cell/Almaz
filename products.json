@@ -1,19 +1,5 @@
 [
   {
-    "id": 1774503207904,
-    "name": "تيشورت",
-    "price": 950,
-    "category": "men_clothing",
-    "image": "https://i.ibb.co/FLS7Ccg2/shop-front.png",
-    "colors": [
-      "#c4c4c4"
-    ],
-    "sizes": [
-      "XL",
-      "XXL"
-    ]
-  },
-  {
     "id": 1774503393856,
     "name": "سبور",
     "price": 7000,
