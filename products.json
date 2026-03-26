@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "id": 1774501916733,
+    "name": "تيشرت رجالي",
+    "price": 499,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/FLS7Ccg2/shop-front.png",
+    "colors": [
+      "#000"
+    ],
+    "sizes": [
+      "M",
+      "L"
+    ]
+  }
+]
