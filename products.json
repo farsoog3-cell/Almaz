@@ -91,5 +91,20 @@
     "sizes": [
       "S"
     ]
+  },
+  {
+    "id": 1774512021963,
+    "name": "طقم رسمي",
+    "price": 2000,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/V0Sg2d2n/images-16.jpg",
+    "colors": [
+      "#516d91",
+      "#000000"
+    ],
+    "sizes": [
+      "XL",
+      "XXL"
+    ]
   }
 ]
