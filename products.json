@@ -157,5 +157,18 @@
     "sizes": [
       "S"
     ]
+  },
+  {
+    "id": 1774547032310,
+    "name": "رجال اعمال",
+    "price": 100000,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/DP0BCD6t/IMG-20260322-WA0014.jpg",
+    "colors": [
+      "#fff9d4"
+    ],
+    "sizes": [
+      "XXL"
+    ]
   }
 ]
