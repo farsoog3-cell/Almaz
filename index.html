@@ -90,38 +90,26 @@
 
     <footer class="mt-20 py-16 border-t border-white/5 bg-black text-center px-4">
         <h3 class="text-orange-500 font-bold text-xs uppercase tracking-[0.3em] mb-12">مسح الرمز للتواصل المباشر</h3>
-        
         <div class="flex flex-wrap justify-center gap-6 md:gap-12 max-w-5xl mx-auto">
-            
             <div class="flex flex-col items-center">
                 <div class="qr-box border-b-4 border-blue-500">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://t.me/hehehevve" alt="Telegram QR">
                 </div>
-                <div class="mt-4 flex items-center gap-2 text-blue-400 font-bold text-[11px] uppercase">
-                    <i data-lucide="send" class="w-4 h-4"></i> تلغرام
-                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-400 font-bold text-[11px] uppercase"><i data-lucide="send" class="w-4 h-4"></i> تلغرام</div>
             </div>
-
             <div class="flex flex-col items-center">
                 <div class="qr-box border-b-4 border-blue-700">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/18coFiPjCh/" alt="FB Page QR">
                 </div>
-                <div class="mt-4 flex items-center gap-2 text-blue-600 font-bold text-[11px] uppercase">
-                    <i data-lucide="facebook" class="w-4 h-4"></i> الصفحة الرئيسية
-                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-600 font-bold text-[11px] uppercase"><i data-lucide="facebook" class="w-4 h-4"></i> الصفحة الرئيسية</div>
             </div>
-
             <div class="flex flex-col items-center">
                 <div class="qr-box border-b-4 border-blue-900">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/1CDeh3LeQ5/" alt="FB Profile QR">
                 </div>
-                <div class="mt-4 flex items-center gap-2 text-blue-800 font-bold text-[11px] uppercase">
-                    <i data-lucide="user" class="w-4 h-4"></i> الحساب الشخصي
-                </div>
+                <div class="mt-4 flex items-center gap-2 text-blue-800 font-bold text-[11px] uppercase"><i data-lucide="user" class="w-4 h-4"></i> الحساب الشخصي</div>
             </div>
-
         </div>
-        
         <p class="mt-20 opacity-20 text-[10px] tracking-[0.5em]">© 2026 ALMAZ STORE - PREMIUM QUALITY</p>
     </footer>
 
@@ -140,8 +128,24 @@
     <div id="image-viewer" onclick="this.classList.remove('active')"><img id="viewer-img" class="max-w-[90%] max-h-[80vh] rounded-xl shadow-2xl border border-white/10"></div>
 
     <script>
-        // اخفاء شاشة الترحيب
+        // مصفوفة المنتجات (ستصبح ديناميكية)
+        let productsData = [];
+
+        // وظيفة جلب البيانات من GitHub
+        async function fetchProducts() {
+            try {
+                // سيقرأ من ملف products.json الذي يتم إنشاؤه بواسطة لوحة التحكم
+                const response = await fetch('products.json');
+                if (!response.ok) throw new Error();
+                productsData = await response.json();
+                renderProducts('all');
+            } catch (e) {
+                console.log("المتجر فارغ أو الملف غير موجود بعد.");
+            }
+        }
+
         window.addEventListener('load', () => {
+            fetchProducts(); // جلب المنتجات عند التحميل
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');
                 splash.style.opacity = '0';
@@ -149,15 +153,6 @@
                 document.body.style.overflow = 'auto';
             }, 2500);
         });
-
-        const productsData = [
-            { id: 1, name: "تيشيرت رجالي فخم", price: 450, category: "men_clothing", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600", colors: ['#FFF', '#000'], sizes: ['M', 'L', 'XL'] },
-            { id: 2, name: "فستان سهرة أسود", price: 1200, category: "women_clothing", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600", colors: ['#000', '#FF0000'], sizes: ['S', 'M', 'L'] },
-            { id: 3, name: "حذاء رياضي نيون", price: 980, category: "men_shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600", colors: ['#FF0000', '#000'], sizes: ['41', '42', '43'] },
-            { id: 4, name: "كعب نسائي أنيق", price: 850, category: "women_shoes", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600", colors: ['#FFF', '#FFD700'], sizes: ['37', '38', '39'] },
-            { id: 5, name: "هودي نسائي تركي", price: 750, category: "women_clothing", image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600", colors: ['#E0C3FC', '#000'], sizes: ['M', 'L'] },
-            { id: 6, name: "بنطال جينز رجالي", price: 600, category: "men_clothing", image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600", colors: ['#0000FF', '#000'], sizes: ['32', '34', '36'] }
-        ];
 
         let cart = [];
         window.selectedOptions = {};
@@ -172,7 +167,12 @@
             const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
 
             filtered.forEach(p => {
-                if (!window.selectedOptions[p.id]) window.selectedOptions[p.id] = { color: p.colors[0], size: p.sizes[0] };
+                // إعدادات افتراضية للألوان والمقاسات إذا لم تكن موجودة
+                const colors = p.colors || ['#FFF'];
+                const sizes = p.sizes || ['M', 'L'];
+                
+                if (!window.selectedOptions[p.id]) window.selectedOptions[p.id] = { color: colors[0], size: sizes[0] };
+                
                 grid.innerHTML += `
                     <div class="product-card p-3 flex flex-col">
                         <img src="${p.image}" class="w-full h-40 md:h-52 object-cover rounded-xl mb-3 cursor-pointer" onclick="viewImage('${p.image}')">
@@ -180,11 +180,11 @@
                         <span class="text-orange-500 font-black text-xs md:text-lg mb-2">₺${p.price}</span>
                         
                         <div class="flex gap-2 mb-3">
-                            ${p.colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-white/20 cursor-pointer transition ${window.selectedOptions[p.id].color===c?'scale-125 border-white ring-2 ring-orange-500':''}" style="background:${c}"></div>`).join('')}
+                            ${colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="w-3.5 h-3.5 md:w-5 md:h-5 rounded-full border border-white/20 cursor-pointer transition ${window.selectedOptions[p.id].color===c?'scale-125 border-white ring-2 ring-orange-500':''}" style="background:${c}"></div>`).join('')}
                         </div>
                         
                         <div class="flex flex-wrap gap-1 mb-4">
-                            ${p.sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="text-[9px] md:text-[10px] px-2 py-0.5 border border-white/10 rounded transition ${window.selectedOptions[p.id].size===s?'bg-white text-black font-bold':''}">${s}</button>`).join('')}
+                            ${sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="text-[9px] md:text-[10px] px-2 py-0.5 border border-white/10 rounded transition ${window.selectedOptions[p.id].size===s?'bg-white text-black font-bold':''}">${s}</button>`).join('')}
                         </div>
                         
                         <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-orange-500 text-black py-2 md:py-3 rounded-lg font-black text-[10px] md:text-xs active:scale-90 transition shadow-lg shadow-orange-500/10">إضافة</button>
@@ -194,14 +194,14 @@
         }
 
         window.viewImage = (src) => {
-            const viewer = document.getElementById('image-viewer');
             document.getElementById('viewer-img').src = src;
-            viewer.classList.add('active');
+            document.getElementById('image-viewer').classList.add('active');
         };
 
         window.selectOpt = (id, type, val, el) => {
             window.selectedOptions[id][type] = val;
-            renderProducts(document.querySelector('.category-btn.active').innerText === 'الكل' ? 'all' : 'all'); // تحديث سريع
+            const currentFilter = document.querySelector('.category-btn.active').getAttribute('onclick').match(/'([^']+)'/)[1];
+            renderProducts(currentFilter);
         };
 
         window.addToCart = (id) => {
@@ -241,8 +241,6 @@
             msg += `\n💰 *الإجمالي: ₺${cart.reduce((a, b) => a + b.price, 0)}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`, '_blank');
         };
-
-        renderProducts('all');
     </script>
 </body>
 </html>
