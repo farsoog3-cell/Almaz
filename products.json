@@ -52,5 +52,18 @@
     "sizes": [
       "XL"
     ]
+  },
+  {
+    "id": 1774506161078,
+    "name": "غير معروف",
+    "price": 6000,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/bjXzRxZz/images-5.jpg",
+    "colors": [
+      "#5ce685"
+    ],
+    "sizes": [
+      "XL"
+    ]
   }
 ]
