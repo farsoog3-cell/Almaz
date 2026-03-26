@@ -132,5 +132,18 @@
     "sizes": [
       "S"
     ]
+  },
+  {
+    "id": 1774512192405,
+    "name": "طقم",
+    "price": 3500,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/hxzy7bmQ/images-17.jpg",
+    "colors": [
+      "#000000"
+    ],
+    "sizes": [
+      "XL"
+    ]
   }
 ]
