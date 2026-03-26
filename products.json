@@ -106,5 +106,18 @@
       "XL",
       "XXL"
     ]
+  },
+  {
+    "id": 1774512087634,
+    "name": "طقم",
+    "price": 2500,
+    "category": "women_clothing",
+    "image": "https://i.ibb.co/YTkkhDYh/images-6.jpg",
+    "colors": [
+      "#a32a9d"
+    ],
+    "sizes": [
+      "XL"
+    ]
   }
 ]
