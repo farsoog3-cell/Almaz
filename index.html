@@ -3,259 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Almaz | الفخامة في التسوق</title>
+    <title>Almaz | متجر الألماس</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root {
-            --primary: #FF7F00;
-            --primary-glow: rgba(255, 127, 0, 0.4);
-            --bg-dark: #080808;
-            --card-bg: #121212;
-        }
-
-        body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-dark);
-            color: white;
-            scroll-behavior: smooth;
-        }
-
-        /* تأثير التوهج للنصوص */
-        .text-glow {
-            text-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* تصميم الـ Glassmorphism للسلة */
-        .glass-panel {
-            background: rgba(18, 18, 18, 0.8);
-            backdrop-filter: blur(12px);
-            border-left: 1px solid rgba(255, 127, 0, 0.2);
-        }
-
-        /* شريط الإعلانات المتحرك */
-        .marquee-container {
-            background: linear-gradient(90deg, #FF7F00, #ff9d3f);
-            height: 35px;
-            display: flex;
-            align-items: center;
-            overflow: hidden;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-
-        .marquee-content {
-            white-space: nowrap;
-            animation: marquee 25s linear infinite;
-            color: black;
-            font-weight: bold;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        /* بطاقات المنتجات */
-        .product-card {
-            background: var(--card-bg);
-            border: 1px solid #222;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .product-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .category-pill {
-            transition: all 0.3s;
-            border: 1px solid #333;
-        }
-
-        .category-pill:hover, .category-pill.active {
-            background: var(--primary);
-            color: black;
-            border-color: var(--primary);
-        }
-
-        /* زر مخصص */
-        .btn-primary {
-            background: linear-gradient(45deg, #FF7F00, #ffaa00);
-            box-shadow: 0 4px 15px var(--primary-glow);
-            transition: 0.3s;
-        }
+        :root { --primary: #FF7F00; --bg-dark: #080808; --card-bg: #121212; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; }
         
-        .btn-primary:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
-        }
+        /* تأثير بوب أب للصورة */
+        #image-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; padding: 20px; cursor: zoom-out; }
+        #image-modal img { max-width: 100%; max-height: 80vh; border-radius: 15px; transform: scale(0.9); transition: 0.3s ease; }
+        #image-modal.active { display: flex; }
+        #image-modal.active img { transform: scale(1); }
+
+        /* تخصيص الألوان */
+        .color-dot { width: 18px; height: 18px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; }
+        .color-dot.active { border-color: white; transform: scale(1.2); box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid #222; overflow: hidden; }
+        .category-btn { white-space: nowrap; transition: 0.3s; border: 1px solid #333; padding: 0.5rem 1rem; border-radius: 99px; font-size: 0.8rem; }
+        .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 700; }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .marquee-container { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; }
+        .marquee-content { white-space: nowrap; animation: marquee 15s linear infinite; color: black; font-weight: bold; font-size: 0.7rem; }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
     </style>
 </head>
-<body class="pt-16">
+<body class="pt-10">
 
     <div class="marquee-container">
-        <div class="marquee-content">
-             ✨ شحن مجاني للطلبات فوق 500 ليرة • Almaz - خيارك الأول للأناقة في تركيا والعالم • خصومات تصل إلى 30% بمناسبة الافتتاح ✨
-        </div>
+        <div class="marquee-content uppercase">✨ Almaz Store: تميز بأناقتك • شحن سريع لجميع الولايات • جودة مضمونة ✨</div>
     </div>
 
-    <header class="container mx-auto px-6 py-4 flex justify-between items-center sticky top-8 z-40 bg-black/50 backdrop-blur-md rounded-2xl mt-4">
-        <div class="text-3xl font-black tracking-tighter text-primary flex items-center gap-2">
-            <span class="bg-orange-500 text-black px-2 py-1 rounded">AL</span>
-            <span class="text-orange-500">MAZ</span>
+    <header class="container mx-auto px-4 py-3 sticky top-8 z-40 bg-black/60 backdrop-blur-md rounded-xl border border-white/10 flex justify-between items-center mt-2 mx-4">
+        <div class="text-xl font-black flex items-center gap-1 uppercase">
+            <span class="bg-orange-500 text-black px-1.5 py-0.5 rounded">AL</span>maz
         </div>
-        
-        <div class="flex items-center gap-4">
-            <button id="toggle-cart" class="relative p-2 hover:bg-white/10 rounded-full transition">
-                <i data-lucide="shopping-bag" class="text-orange-500"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
-            </button>
-            <button class="p-2 hover:bg-white/10 rounded-full">
-                <i data-lucide="menu" class="text-orange-500"></i>
-            </button>
-        </div>
+        <button id="toggle-cart" class="relative p-2 bg-white/5 rounded-full border border-white/10">
+            <i data-lucide="shopping-bag" class="text-orange-500 w-5 h-5"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-black">0</span>
+        </button>
     </header>
 
-    <main class="container mx-auto px-6 mt-12">
-        <section class="text-center mb-16">
-            <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight">
-                اكتشف <span class="text-orange-500 text-glow">أناقتك</span> <br>مع Almaz
-            </h1>
-            <p class="text-gray-400 max-w-xl mx-auto text-lg">
-                وجهتكم الأولى للأزياء العصرية والمنتجات المختارة بعناية من قلب تركيا إلى باب منزلكم.
-            </p>
+    <main class="container mx-auto px-4 mt-6">
+        <section class="text-center mb-6">
+            <h1 class="text-3xl font-black uppercase tracking-tighter">Almaz <span class="text-orange-500">Store</span></h1>
+            <div id="categories" class="flex overflow-x-auto gap-2 mt-6 pb-2 no-scrollbar justify-start md:justify-center">
+                <button onclick="filterProducts('all')" class="category-btn active">الكل</button>
+                <button onclick="filterProducts('clothing')" class="category-btn">ملابس</button>
+                <button onclick="filterProducts('shoes')" class="category-btn">أحذية</button>
+                <button onclick="filterProducts('accessories')" class="category-btn">إكسسوارات</button>
+            </div>
         </section>
 
-        <section class="flex flex-wrap justify-center gap-4 mb-12">
-            <button class="category-pill active px-8 py-3 rounded-full font-bold">الكل</button>
-            <button class="category-pill px-8 py-3 rounded-full font-bold">رجالي</button>
-            <button class="category-pill px-8 py-3 rounded-full font-bold">نسائي</button>
-            <button class="category-pill px-8 py-3 rounded-full font-bold">أطفال</button>
-            <button class="category-pill px-8 py-3 rounded-full font-bold">إكسسوارات</button>
-        </section>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div class="product-card rounded-3xl overflow-hidden p-4">
-                <div class="relative group">
-                    <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
-                    <div class="absolute top-4 right-4 bg-black/60 backdrop-blur px-3 py-1 rounded-lg text-sm font-bold">جديد</div>
-                </div>
-                <div class="mt-6 space-y-2">
-                    <h3 class="text-xl font-bold">قميص قطني بريميوم</h3>
-                    <p class="text-gray-500 text-sm italic">خامات تركية عالية الجودة</p>
-                    <div class="flex justify-between items-center pt-4">
-                        <span class="text-2xl font-black text-orange-500">₺450</span>
-                        <button onclick="addToCart('قميص قطني')" class="btn-primary p-3 rounded-xl">
-                            <i data-lucide="plus" class="text-black"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card rounded-3xl overflow-hidden p-4">
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
-                </div>
-                <div class="mt-6 space-y-2">
-                    <h3 class="text-xl font-bold">حذاء رياضي Almaz Edition</h3>
-                    <p class="text-gray-500 text-sm italic">مريح جداً للمشي الطويل</p>
-                    <div class="flex justify-between items-center pt-4">
-                        <span class="text-2xl font-black text-orange-500">₺890</span>
-                        <button onclick="addToCart('حذاء رياضي')" class="btn-primary p-3 rounded-xl">
-                            <i data-lucide="plus" class="text-black"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="product-card rounded-3xl overflow-hidden p-4">
-                <div class="relative">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Product" class="w-full h-80 object-cover rounded-2xl">
-                </div>
-                <div class="mt-6 space-y-2">
-                    <h3 class="text-xl font-bold">ساعة ذكية فاخرة</h3>
-                    <p class="text-gray-500 text-sm italic">إكسسوارات Almaz المتميزة</p>
-                    <div class="flex justify-between items-center pt-4">
-                        <span class="text-2xl font-black text-orange-500">₺1,200</span>
-                        <button onclick="addToCart('ساعة ذكية')" class="btn-primary p-3 rounded-xl">
-                            <i data-lucide="plus" class="text-black"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <section class="mt-24 mb-12 bg-gradient-to-br from-orange-500/10 to-transparent p-12 rounded-[3rem] border border-orange-500/20 text-center">
-            <h2 class="text-3xl font-bold mb-4">هل تحتاج مساعدة؟</h2>
-            <p class="text-gray-400 mb-8">تواصل معنا مباشرة عبر واتساب لطلب خاص أو استفسار</p>
-            <a href="https://wa.me/905394753724" target="_blank" class="inline-flex items-center gap-3 bg-[#25D366] text-black px-10 py-4 rounded-full font-black hover:scale-105 transition shadow-xl shadow-green-500/20">
-                <i data-lucide="phone"></i>
-                تحدث معنا الآن
-            </a>
-        </section>
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10"></div>
     </main>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-[350px] glass-panel z-50 translate-x-full transition-transform duration-500 p-8">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-black text-orange-500">سلتك</h2>
-            <button id="close-cart" class="p-2 hover:bg-white/10 rounded-full"><i data-lucide="x"></i></button>
+    <footer class="bg-[#0c0c0c] border-t border-white/5 p-8 text-center">
+        <div class="flex flex-col items-center gap-4">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://wa.me/905394753724" class="w-24 h-24 p-2 bg-white rounded-xl shadow-lg shadow-orange-500/20">
+            <p class="text-gray-500 text-[10px] uppercase tracking-widest">Scan to chat on WhatsApp</p>
+            <div class="text-xl font-black italic text-orange-500 mt-2 uppercase">ALMAZ</div>
         </div>
-        <div id="cart-content" class="space-y-4">
-            <p class="text-gray-500 text-center py-10">السلة فارغة حالياً..</p>
+    </footer>
+
+    <div id="image-modal" onclick="this.classList.remove('active')">
+        <img id="modal-img" src="" alt="Zoomed Product">
+    </div>
+
+    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[350px] bg-black/95 backdrop-blur-xl z-50 translate-x-full transition-transform duration-300 p-6 flex flex-col border-r border-white/10">
+        <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+            <h2 class="text-lg font-black uppercase text-orange-500">Cart</h2>
+            <button id="close-cart" class="p-2"><i data-lucide="x"></i></button>
         </div>
-        <div class="absolute bottom-8 left-8 right-8">
-            <button class="w-full btn-primary py-4 rounded-2xl font-bold text-black flex items-center justify-center gap-2">
-                إتمام الطلب <i data-lucide="arrow-left-circle" class="w-5"></i>
+        <div id="cart-content" class="flex-grow overflow-y-auto space-y-3 no-scrollbar"></div>
+        <div class="pt-6 border-t border-white/10 mt-auto">
+            <div class="flex justify-between mb-4 font-black">
+                <span>Total:</span>
+                <span id="cart-total" class="text-orange-500">₺0</span>
+            </div>
+            <button onclick="sendOrderToWhatsApp()" class="w-full bg-orange-500 text-black py-4 rounded-xl font-black flex justify-center gap-2 text-sm uppercase">
+                Order via WhatsApp <i data-lucide="send" class="w-4 h-4"></i>
             </button>
         </div>
     </div>
 
-    <footer class="border-t border-white/5 py-12 text-center text-gray-500 text-sm">
-        <p>© 2026 Almaz. تم التصميم بكل ❤️ لخدمتكم</p>
-    </footer>
-
     <script>
-        // تفعيل الأيقونات
+        const productsData = [
+            { id: 1, name: "قميص قطني بريميوم", price: 450, category: "clothing", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600", colors: ['#FFFFFF', '#000000', '#2F4F4F'] },
+            { id: 2, name: "حذاء رياضي Almaz Ed.", price: 890, category: "shoes", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600", colors: ['#FF0000', '#000000'] },
+            { id: 3, name: "ساعة ذكية فاخرة", price: 1200, category: "accessories", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600", colors: ['#000000', '#C0C0C0'] },
+            { id: 4, name: "جاكيت كاجوال", price: 750, category: "clothing", image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=600", colors: ['#8B4513', '#000000'] }
+        ];
+
+        let cart = [];
+        const WHATSAPP_NUMBER = "905394753724";
+
         lucide.createIcons();
 
-        const cartSidebar = document.getElementById('cart-sidebar');
-        const toggleCart = document.getElementById('toggle-cart');
-        const closeCart = document.getElementById('close-cart');
-        const cartContent = document.getElementById('cart-content');
-        const cartCount = document.getElementById('cart-count');
-        
-        let items = 0;
+        // فتح السلة وإغلاقها
+        document.getElementById('toggle-cart').onclick = () => document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+        document.getElementById('close-cart').onclick = () => document.getElementById('cart-sidebar').classList.add('translate-x-full');
 
-        toggleCart.onclick = () => cartSidebar.classList.remove('translate-x-full');
-        closeCart.onclick = () => cartSidebar.classList.add('translate-x-full');
-
-        function addToCart(name) {
-            items++;
-            cartCount.innerText = items;
-            
-            if(items === 1) cartContent.innerHTML = '';
-            
-            const div = document.createElement('div');
-            div.className = "flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/10";
-            div.innerHTML = `
-                <div>
-                    <p class="font-bold">${name}</p>
-                    <p class="text-xs text-orange-500">جاري التجهيز...</p>
-                </div>
-                <i data-lucide="trash-2" class="w-4 text-red-500 cursor-pointer"></i>
-            `;
-            cartContent.appendChild(div);
-            lucide.createIcons();
-            
-            // فتح السلة تلقائياً عند الإضافة
-            cartSidebar.classList.remove('translate-x-full');
+        // تكبير الصورة
+        function openImage(src) {
+            const modal = document.getElementById('image-modal');
+            document.getElementById('modal-img').src = src;
+            modal.classList.add('active');
         }
+
+        // عرض المنتجات
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="product-card p-3 animate-fade-in flex flex-col">
+                        <img src="${p.image}" onclick="openImage('${p.image}')" class="w-full h-64 object-cover rounded-xl mb-3 cursor-pointer hover:opacity-80 transition">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-sm font-bold italic uppercase">${p.name}</h3>
+                            <span class="text-orange-500 font-black">₺${p.price}</span>
+                        </div>
+                        
+                        <div class="flex gap-2 mb-4" id="colors-${p.id}">
+                            ${p.colors.map((c, i) => `
+                                <div onclick="selectColor(${p.id}, '${c}', this)" 
+                                     class="color-dot ${i === 0 ? 'active' : ''}" 
+                                     style="background-color: ${c}">
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-white/5 hover:bg-orange-500 hover:text-black py-2 rounded-lg text-xs font-bold transition border border-white/10">
+                            إضافة للسلة
+                        </button>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        // اختيار اللون
+        window.selectedColors = {}; // لتخزين اللون المختار لكل منتج
+        function selectColor(prodId, color, el) {
+            window.selectedColors[prodId] = color;
+            const parent = document.getElementById(`colors-${prodId}`);
+            parent.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+        }
+
+        // إضافة للسلة مع اللون المختارة
+        window.addToCart = (id) => {
+            const p = productsData.find(prod => prod.id === id);
+            const color = window.selectedColors[id] || p.colors[0];
+            cart.push({ ...p, selectedColor: color, cartId: Date.now() });
+            updateUI();
+            if(window.innerWidth < 768) document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+        };
+
+        window.removeFromCart = (cartId) => {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateUI();
+        };
+
+        function updateUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const content = document.getElementById('cart-content');
+            content.innerHTML = cart.length ? '' : '<p class="text-center text-[10px] opacity-30 py-10">الحقيبة فارغة</p>';
+            let total = 0;
+            
+            cart.forEach(item => {
+                total += item.price;
+                content.innerHTML += `
+                    <div class="flex justify-between items-center bg-white/5 p-3 rounded-lg border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full border border-white/20" style="background-color: ${item.selectedColor}"></div>
+                            <div><p class="text-[10px] font-bold uppercase">${item.name}</p><p class="text-orange-500 text-[10px]">₺${item.price}</p></div>
+                        </div>
+                        <button onclick="removeFromCart(${item.cartId})" class="text-red-500/40 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total').innerText = `₺${total}`;
+            lucide.createIcons();
+        }
+
+        window.filterProducts = (cat) => {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderProducts(cat);
+        };
+
+        window.sendOrderToWhatsApp = () => {
+            if (!cart.length) return;
+            let msg = "🛒 *طلب جديد من Almaz Store*\n\n";
+            cart.forEach((p, i) => {
+                msg += `${i+1}. ${p.name} | اللون: ${p.selectedColor} | (₺${p.price})\n`;
+            });
+            msg += `\n💰 *الإجمالي: ₺${cart.reduce((a, b) => a + b.price, 0)}*`;
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+        };
+
+        document.addEventListener('DOMContentLoaded', () => renderProducts('all'));
     </script>
 </body>
 </html>
