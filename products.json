@@ -119,5 +119,18 @@
     "sizes": [
       "XL"
     ]
+  },
+  {
+    "id": 1774512139246,
+    "name": "حذاء",
+    "price": 2500,
+    "category": "men_shoes",
+    "image": "https://i.ibb.co/FLcrNhYB/images-8.jpg",
+    "colors": [
+      "#000000"
+    ],
+    "sizes": [
+      "S"
+    ]
   }
 ]
