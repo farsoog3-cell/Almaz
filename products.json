@@ -17,5 +17,24 @@
       "XXL",
       "3XL"
     ]
+  },
+  {
+    "id": 1774729509827,
+    "name": "طقم رجال العمال ",
+    "price": 5000,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/ch4H66rz/IMG-20260322-WA0012.jpg"
+    ],
+    "colors": [
+      "#948800"
+    ],
+    "sizes": [
+      "XL",
+      "XXL",
+      "3XL"
+    ]
   }
 ]
