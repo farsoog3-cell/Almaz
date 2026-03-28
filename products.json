@@ -24,10 +24,11 @@
     "name": "طقم رجال العمال ",
     "price": 10000,
     "oldPrice": null,
-    "isNew": false,
+    "isNew": true,
     "category": "men_clothing",
     "image": [
-      "https://i.ibb.co/ch4H66rz/IMG-20260322-WA0012.jpg"
+      "https://i.ibb.co/ch4H66rz/IMG-20260322-WA0012.jpg",
+      "https://i.ibb.co/zVh6h9Pq/IMG-20260322-WA0014.jpg"
     ],
     "colors": [
       "#948800"
