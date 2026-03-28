@@ -1,25 +1,5 @@
 [
   {
-    "id": 1774729387758,
-    "name": "طقم رجالي",
-    "price": 10000,
-    "oldPrice": 5000,
-    "isNew": true,
-    "category": "men_clothing",
-    "image": [
-      "https://i.ibb.co/KxtKKK72/FB-IMG-1774503759967.jpg",
-      "https://i.ibb.co/kVDKt20h/FB-IMG-1774503765907.jpg"
-    ],
-    "colors": [
-      "#b09820"
-    ],
-    "sizes": [
-      "XL",
-      "XXL",
-      "3XL"
-    ]
-  },
-  {
     "id": 1774729509827,
     "name": "طقم رجال العمال ",
     "price": 10000,
