@@ -28,5 +28,22 @@
     "sizes": [
       "XXL"
     ]
+  },
+  {
+    "id": 1774687685075,
+    "name": "حذاء",
+    "price": 500,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "men_shoes",
+    "image": [
+      "https://i.ibb.co/pBvzbr5q/images-10.jpg"
+    ],
+    "colors": [],
+    "sizes": [
+      "37",
+      "41",
+      "43"
+    ]
   }
 ]
