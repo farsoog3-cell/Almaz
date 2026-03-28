@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1774503858557,
+    "name": "رجال أعمال طقم كامل",
+    "price": 5000,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "",
+    "image": [
+      "https://i.ibb.co/PGckt6bs/FB-IMG-1774503759967.jpg",
+      "https://i.ibb.co/XZXkstsB/FB-IMG-1774503765907.jpg",
+      "https://i.ibb.co/XZXkstsB/FB-IMG-1774503765907.jpg"
+    ],
+    "colors": [
+      "#ba7b14"
+    ],
+    "sizes": [
+      "XL",
+      "XXL"
+    ]
+  },
+  {
+    "id": 1774547032310,
+    "name": "رجال اعمال",
+    "price": 100000,
+    "category": "men_clothing",
+    "image": "https://i.ibb.co/DP0BCD6t/IMG-20260322-WA0014.jpg",
+    "colors": [
+      "#fff9d4"
+    ],
+    "sizes": [
+      "XXL"
+    ]
+  },
+  {
+    "id": 1774687685075,
+    "name": "حذاء",
+    "price": 500,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "men_shoes",
+    "image": [
+      "https://i.ibb.co/pBvzbr5q/images-10.jpg"
+    ],
+    "colors": [],
+    "sizes": [
+      "37",
+      "41",
+      "43"
+    ]
+  }
+]
