@@ -17,5 +17,24 @@
       "XXL",
       "3XL"
     ]
+  },
+  {
+    "id": 1774731341846,
+    "name": "رجال اعمال",
+    "price": 5000,
+    "oldPrice": 10000,
+    "isNew": true,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/cKrR6X64/IMG-20260322-WA0013.jpg"
+    ],
+    "colors": [
+      "#ff7f00"
+    ],
+    "sizes": [
+      "XL",
+      "XXL",
+      "3XL"
+    ]
   }
 ]
