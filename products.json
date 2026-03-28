@@ -1,20 +1,19 @@
 [
   {
-    "id": 1,
-    "name": "قميص ألماس كلاسيك",
-    "price": 450,
-    "category": "men_clothing",
-    "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
-    "colors": ["#ffffff", "#000000", "#1e3a8a"],
-    "sizes": ["S", "M", "L", "XL"]
-  },
-  {
     "id": 2,
     "name": "حذاء رياضي الترا",
     "price": 1200,
     "category": "men_shoes",
     "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80",
-    "colors": ["#ff0000", "#000000"],
-    "sizes": ["40", "41", "42", "43"]
+    "colors": [
+      "#ff0000",
+      "#000000"
+    ],
+    "sizes": [
+      "40",
+      "41",
+      "42",
+      "43"
+    ]
   }
 ]
