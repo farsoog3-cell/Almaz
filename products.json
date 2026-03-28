@@ -3,9 +3,12 @@
     "id": 1774503858557,
     "name": "رجال أعمال طقم كامل",
     "price": 5000,
+    "oldPrice": null,
+    "isNew": false,
     "category": "",
     "image": [
       "https://i.ibb.co/PGckt6bs/FB-IMG-1774503759967.jpg",
+      "https://i.ibb.co/XZXkstsB/FB-IMG-1774503765907.jpg",
       "https://i.ibb.co/XZXkstsB/FB-IMG-1774503765907.jpg"
     ],
     "colors": [
