@@ -8,22 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* التعديل الأساسي للألوان - تم تغيير الأسود إلى فضي غامق */
         :root { 
-            --primary: #00BFFF; /* أزرق فاتح */
-            --bg-dark: #1a1c1e; /* فضي غامق جداً للخلفية */
-            --card-bg: #2a2d31; /* فضي رمادي للبطاقات */
+            --primary: #00BFFF; 
+            --bg-dark: #1a1c1e; 
+            --card-bg: #2a2d31; 
             --footer-bg: #151719;
         }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* شاشة الترحيب */
         #splash-screen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
         .splash-logo { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; color: white; text-transform: uppercase; animation: introLogo 2s forwards; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
         @keyframes introLogo { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* الشبكة */
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -33,25 +30,18 @@
 
         .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
 
-        /* التصنيفات */
         .category-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
         .category-scroll::-webkit-scrollbar { display: none; }
         .category-btn { white-space: nowrap; padding: 0.6rem 1.4rem; border-radius: 99px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); color: #ccc; transition: 0.3s; scroll-snap-align: start; cursor: pointer; background: rgba(255,255,255,0.05); }
         .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 800; box-shadow: 0 5px 15px rgba(0,191,255,0.2); }
 
-        /* العارض */
         #image-viewer { display: none; position: fixed; inset: 0; background: rgba(26, 28, 30, 0.98); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(15px); flex-direction: column; }
         #image-viewer.active { display: flex; }
 
-        /* تعديل اتجاه الشريط الإعلاني */
         .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollMarquee 25s linear infinite; }
-        @keyframes scrollMarquee { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100%); } 
-        }
+        @keyframes scrollMarquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* الباركود */
         .qr-box { background: white; padding: 12px; border-radius: 1.5rem; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s; }
         .qr-box img { width: 130px; height: 130px; display: block; }
 
@@ -71,11 +61,14 @@
 </head>
 <body class="pt-10 no-scrollbar overflow-x-hidden">
 
+    <audio id="startup-sound" src="https://assets.mixkit.co/active_storage/sfx/2435/2435-preview.mp3" preload="auto"></audio>
+
     <div id="splash-screen">
         <div class="splash-logo tracking-tighter italic">AL<span>MAZ</span></div>
         <div class="w-40 h-1 bg-white/10 mt-6 rounded-full overflow-hidden">
             <div class="h-full bg-[#00BFFF] w-0" style="animation: loadSplash 2.2s forwards"></div>
         </div>
+        <p class="mt-4 text-[10px] text-gray-500 uppercase tracking-widest">انقر في أي مكان لتفعيل التجربة الكاملة</p>
     </div>
 
     <div class="marquee"><div class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت • جودة ألماس مضمونة ✨</div></div>
@@ -169,10 +162,25 @@
             }
         }
 
+        // وظيفة تشغيل الصوت
+        function playStartupSound() {
+            const sound = document.getElementById('startup-sound');
+            sound.play().catch(error => console.log("الصوت بانتظار تفاعل المستخدم"));
+        }
+
         window.addEventListener('load', () => {
             lucide.createIcons();
             fetchProducts();
+            
+            // محاولة تشغيل الصوت عند الضغط في أي مكان (لتخطي حظر المتصفح)
+            document.body.addEventListener('click', () => {
+                if(document.getElementById('splash-screen').style.visibility !== 'hidden') {
+                    playStartupSound();
+                }
+            }, { once: true });
+
             setTimeout(() => {
+                playStartupSound(); // محاولة تشغيل الصوت تلقائياً
                 document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(() => document.getElementById('splash-screen').style.visibility = 'hidden', 800);
                 document.body.style.overflow = 'auto';
@@ -194,10 +202,8 @@
 
             filtered.forEach(p => {
                 if (!window.tempSelections[p.id]) window.tempSelections[p.id] = { color: p.colors[0], size: p.sizes[0] };
-                
                 const hasDiscount = p.oldPrice && p.oldPrice > p.price;
                 const discountPercent = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
-                
                 const allImgs = Array.isArray(p.image) ? p.image : [p.image];
                 const displayImg = allImgs[0];
 
@@ -213,15 +219,12 @@
                             <span class="text-[#00BFFF] font-black text-sm md:text-xl tracking-tighter">₺${p.price}</span>
                             ${hasDiscount ? `<span class="text-gray-400 line-through text-[10px] md:text-xs">₺${p.oldPrice}</span>` : ''}
                         </div>
-                        
                         <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar pb-1">
                             ${p.colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
-                        
                         <div class="flex flex-wrap gap-1.5 mb-5 no-scrollbar overflow-x-auto">
                             ${p.sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
                         </div>
-                        
                         <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[11px] active:scale-95 transition">أضف للحقيبة</button>
                     </div>`;
             });
