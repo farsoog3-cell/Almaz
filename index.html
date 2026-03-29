@@ -147,7 +147,7 @@
         </div>
         <div id="cart-content" class="flex-grow overflow-y-auto space-y-5 no-scrollbar pr-1"></div>
         <div class="pt-8 mt-6 border-t border-white/10">
-            <div class="flex justify-between mb-5 font-black text-2xl tracking-tight"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">₺0</span></div>
+            <div class="flex justify-between mb-5 font-black text-2xl tracking-tight"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
             <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-5 rounded-xl font-black text-lg shadow-xl shadow-[#00BFFF]/20 active:scale-95 transition">إرسال الطلب عبر واتساب ✅</button>
         </div>
     </div>
@@ -209,8 +209,8 @@
                         </div>
                         <h3 class="font-bold text-xs md:text-sm mb-1.5 truncate text-white/90">${p.name}</h3>
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="text-[#00BFFF] font-black text-sm md:text-xl tracking-tighter">₺${p.price}</span>
-                            ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px] md:text-xs">₺${p.oldPrice}</span>` : ''}
+                            <span class="text-[#00BFFF] font-black text-sm md:text-xl tracking-tighter">$${p.price}</span>
+                            ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px] md:text-xs">$${p.oldPrice}</span>` : ''}
                         </div>
                         
                         <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar pb-1">
@@ -281,12 +281,12 @@
                             <div class="w-3.5 h-3.5 rounded-full border border-white/10" style="background:${item.color}"></div>
                             <span class="text-gray-400 font-medium">${item.size}</span>
                         </div>
-                        <p class="text-[#00BFFF] font-black">₺${item.price}</p>
+                        <p class="text-[#00BFFF] font-black">$${item.price}</p>
                     </div>
                     <button onclick="cart = cart.filter(x => x.cartId !== ${item.cartId}); updateUI();" class="text-red-500 p-2 bg-white/5 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>`;
             });
-            document.getElementById('cart-total').innerText = `₺${total}`;
+            document.getElementById('cart-total').innerText = `$${total}`;
             if(cart.length === 0) content.innerHTML = `<div class="text-center py-20 text-gray-700 italic">حقيبة التسوق فارغة تماماً.</div>`;
             lucide.createIcons();
         }
@@ -295,9 +295,9 @@
             if(cart.length === 0) return alert('أضف منتجات أولاً!');
             let msg = "🚀 *طلب جديد من Almaz Store*\n\n";
             cart.forEach((p, i) => {
-                msg += `📦 *${i+1}. ${p.name}*\n   اللون: ${p.color}\n   المقاس: ${p.size}\n   السعر: ₺${p.price}\n\n`;
+                msg += `📦 *${i+1}. ${p.name}*\n   اللون: ${p.color}\n   المقاس: ${p.size}\n   السعر: $${p.price}\n\n`;
             });
-            msg += `💰 *الإجمالي النهائي: ₺${cart.reduce((a, b) => a + b.price, 0)}*`;
+            msg += `💰 *الإجمالي النهائي: $${cart.reduce((a, b) => a + b.price, 0)}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`, '_blank');
         };
     </script>
