@@ -80,5 +80,26 @@
       "XL",
       "XXL"
     ]
+  },
+  {
+    "id": 1774821913345,
+    "name": "تيشورت",
+    "price": 4,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/fVt44xns/IMG-20260330-WA0001.jpg"
+    ],
+    "colors": [
+      "#ffff00"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ]
   }
 ]
