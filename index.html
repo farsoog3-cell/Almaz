@@ -8,16 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* التعديل الأساسي للألوان */
+        /* التعديل الأساسي للألوان - تم تغيير الأسود إلى فضي غامق */
         :root { 
             --primary: #00BFFF; /* أزرق فاتح */
-            --bg-dark: #050505; 
-            --card-bg: #111111; 
+            --bg-dark: #1a1c1e; /* فضي غامق جداً للخلفية */
+            --card-bg: #2a2d31; /* فضي رمادي للبطاقات */
+            --footer-bg: #151719;
         }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
         /* شاشة الترحيب */
-        #splash-screen { position: fixed; inset: 0; background: #000; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
+        #splash-screen { position: fixed; inset: 0; background: var(--bg-dark); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
         .splash-logo { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; color: white; text-transform: uppercase; animation: introLogo 2s forwards; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
         @keyframes introLogo { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
@@ -27,7 +28,7 @@
         @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
 
-        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid #1a1a1a; transition: 0.4s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .product-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,191,255,0.1); }
 
         .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
@@ -35,14 +36,14 @@
         /* التصنيفات */
         .category-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
         .category-scroll::-webkit-scrollbar { display: none; }
-        .category-btn { white-space: nowrap; padding: 0.6rem 1.4rem; border-radius: 99px; font-size: 0.8rem; border: 1px solid #222; color: #888; transition: 0.3s; scroll-snap-align: start; cursor: pointer; }
+        .category-btn { white-space: nowrap; padding: 0.6rem 1.4rem; border-radius: 99px; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.1); color: #ccc; transition: 0.3s; scroll-snap-align: start; cursor: pointer; background: rgba(255,255,255,0.05); }
         .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 800; box-shadow: 0 5px 15px rgba(0,191,255,0.2); }
 
         /* العارض */
-        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(15px); flex-direction: column; }
+        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(26, 28, 30, 0.98); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(15px); flex-direction: column; }
         #image-viewer.active { display: flex; }
 
-        /* تعديل اتجاه الشريط الإعلاني ليتحرك من اليسار إلى اليمين */
+        /* تعديل اتجاه الشريط الإعلاني */
         .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollMarquee 25s linear infinite; }
         @keyframes scrollMarquee { 
@@ -51,14 +52,14 @@
         }
 
         /* الباركود */
-        .qr-box { background: white; padding: 12px; border-radius: 1.5rem; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
+        .qr-box { background: white; padding: 12px; border-radius: 1.5rem; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s; }
         .qr-box img { width: 130px; height: 130px; display: block; }
 
         .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.2s; position: relative; }
         .option-dot.selected { border-color: white; box-shadow: 0 0 10px var(--primary); }
         .option-dot.selected::after { content:'✓'; color:white; font-size:10px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
 
-        .size-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); color: #888; border-radius: 6px; padding: 4px 10px; font-size: 9px; transition: 0.2s; cursor: pointer; }
+        .size-btn { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #ccc; border-radius: 6px; padding: 4px 10px; font-size: 9px; transition: 0.2s; cursor: pointer; }
         .size-btn.selected { background: white; color: black; font-weight: 800; border-color: white; }
 
         .thumb-nav { display: flex; gap: 8px; margin-top: 20px; overflow-x: auto; max-width: 90%; padding: 5px; }
@@ -79,7 +80,7 @@
 
     <div class="marquee"><div class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت • جودة ألماس مضمونة ✨</div></div>
 
-    <header class="container mx-auto px-4 py-3 sticky top-6 z-40 bg-black/80 backdrop-blur-xl rounded-2xl border border-white/5 flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
+    <header class="container mx-auto px-4 py-3 sticky top-6 z-40 bg-[#2a2d31]/80 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
         <div class="text-2xl font-black uppercase tracking-tighter italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
         <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full border border-white/10 transition active:scale-90 hover:bg-[#00BFFF] group">
             <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5 group-hover:text-black"></i>
@@ -97,11 +98,11 @@
         </div>
 
         <div id="products-grid" class="product-grid mb-24">
-            <p class="col-span-4 text-center text-gray-700 py-20 italic">جاري تحميل تشكيلة Almaz الحديثة...</p>
+            <p class="col-span-4 text-center text-gray-400 py-20 italic">جاري تحميل تشكيلة Almaz الحديثة...</p>
         </div>
     </main>
 
-    <footer class="mt-24 py-20 border-t border-white/5 bg-black text-center px-4 relative">
+    <footer class="mt-24 py-20 border-t border-white/5 bg-[#151719] text-center px-4 relative">
         <div class="absolute inset-0 bg-gradient-to-b from-[#00BFFF]/5 to-transparent pointer-events-none"></div>
         <h3 class="text-[#00BFFF] font-bold text-xs uppercase tracking-[0.4em] mb-16 relative z-10">مسح الرمز للتواصل المباشر</h3>
         
@@ -140,7 +141,7 @@
         <div id="thumb-container" class="thumb-nav no-scrollbar"></div>
     </div>
 
-    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[420px] bg-black/95 backdrop-blur-3xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r border-white/5 shadow-3xl">
+    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[420px] bg-[#1a1c1e]/95 backdrop-blur-3xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r border-white/10 shadow-3xl">
         <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-5">
             <h2 class="text-2xl font-black text-[#00BFFF] uppercase tracking-tighter italic">حقيبة التسوق</h2>
             <button id="close-cart" class="p-2.5 bg-white/5 rounded-full"><i data-lucide="x" class="text-white"></i></button>
@@ -187,7 +188,7 @@
             const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
 
             if(filtered.length === 0) {
-                grid.innerHTML = "<p class='col-span-4 text-center text-gray-700 py-20 italic uppercase tracking-widest opacity-50'>لا توجد منتجات حالياً في هذا القسم</p>";
+                grid.innerHTML = "<p class='col-span-4 text-center text-gray-500 py-20 italic uppercase tracking-widest opacity-50'>لا توجد منتجات حالياً في هذا القسم</p>";
                 return;
             }
 
@@ -210,7 +211,7 @@
                         <h3 class="font-bold text-xs md:text-sm mb-1.5 truncate text-white/90">${p.name}</h3>
                         <div class="flex items-center gap-2 mb-3">
                             <span class="text-[#00BFFF] font-black text-sm md:text-xl tracking-tighter">₺${p.price}</span>
-                            ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px] md:text-xs">₺${p.oldPrice}</span>` : ''}
+                            ${hasDiscount ? `<span class="text-gray-400 line-through text-[10px] md:text-xs">₺${p.oldPrice}</span>` : ''}
                         </div>
                         
                         <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar pb-1">
@@ -273,13 +274,13 @@
             cart.forEach(item => {
                 total += item.price;
                 content.innerHTML += `
-                <div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5 items-center">
+                <div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/10 items-center">
                     <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover">
                     <div class="flex-grow text-[11px] space-y-1">
                         <p class="font-bold text-white text-xs truncate">${item.name}</p>
                         <div class="flex items-center gap-2">
                             <div class="w-3.5 h-3.5 rounded-full border border-white/10" style="background:${item.color}"></div>
-                            <span class="text-gray-400 font-medium">${item.size}</span>
+                            <span class="text-gray-300 font-medium">${item.size}</span>
                         </div>
                         <p class="text-[#00BFFF] font-black">₺${item.price}</p>
                     </div>
@@ -287,7 +288,7 @@
                 </div>`;
             });
             document.getElementById('cart-total').innerText = `₺${total}`;
-            if(cart.length === 0) content.innerHTML = `<div class="text-center py-20 text-gray-700 italic">حقيبة التسوق فارغة تماماً.</div>`;
+            if(cart.length === 0) content.innerHTML = `<div class="text-center py-20 text-gray-500 italic">حقيبة التسوق فارغة تماماً.</div>`;
             lucide.createIcons();
         }
 
