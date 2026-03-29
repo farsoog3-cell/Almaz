@@ -123,5 +123,26 @@
       "XL",
       "XXL"
     ]
+  },
+  {
+    "id": 1774823850707,
+    "name": "تيشروت",
+    "price": 5,
+    "oldPrice": null,
+    "isNew": false,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/ycFZrBz8/IMG-20260330-WA0002.jpg"
+    ],
+    "colors": [
+      "#ebb736"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ]
   }
 ]
