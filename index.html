@@ -8,88 +8,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* التعديل الأساسي للألوان */
+        /* التعديل الأساسي للألوان - الفضي الغامق */
         :root { 
-            --primary: #00BFFF; /* أزرق فاتح برّاق */
-            --bg-dark: #2a2a2a;   /* فضي غامق جداً للخلفية الأساسية */
-            --card-bg: #333333;   /* فضي غامق للكروت (أفتح قليلاً من الخلفية) */
-            --text-main: #e0e0e0; /* لون نص أبيض مائل للفضي */
+            --primary: #00BFFF; 
+            --bg-dark: #2a2a2a; /* فضي غامق */
+            --card-bg: #333333; /* فضي أفتح قليلاً للكروت */
         }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: var(--text-main); scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* شاشة الترحيب */
         #splash-screen { position: fixed; inset: 0; background: #1a1a1a; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
         .splash-logo { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; color: white; text-transform: uppercase; animation: introLogo 2s forwards; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
         @keyframes introLogo { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 
-        /* الشبكة */
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
 
         .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid #444; transition: 0.4s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .product-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,191,255,0.15); }
+        .product-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,191,255,0.1); }
 
         .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
 
-        /* التصنيفات */
         .category-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; }
         .category-scroll::-webkit-scrollbar { display: none; }
-        .category-btn { white-space: nowrap; padding: 0.6rem 1.4rem; border-radius: 99px; font-size: 0.8rem; border: 1px solid #555; background-color: rgba(255,255,255,0.05); color: #bbb; transition: 0.3s; scroll-snap-align: start; cursor: pointer; }
-        .category-btn:hover { border-color: #777; color: white; }
-        .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 800; box-shadow: 0 5px 15px rgba(0,191,255,0.3); }
+        .category-btn { white-space: nowrap; padding: 0.6rem 1.4rem; border-radius: 99px; font-size: 0.8rem; border: 1px solid #555; color: #bbb; transition: 0.3s; scroll-snap-align: start; cursor: pointer; }
+        .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 800; box-shadow: 0 5px 15px rgba(0,191,255,0.2); }
 
-        /* العارض */
-        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(20,20,20,0.95); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(15px); flex-direction: column; }
+        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(15px); flex-direction: column; }
         #image-viewer.active { display: flex; }
 
-        /* الشريط الإعلاني */
-        .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollMarquee 25s linear infinite; }
-        @keyframes scrollMarquee { 
-            0% { transform: translateX(-100%); } 
-            100% { transform: translateX(100%); } 
-        }
+        @keyframes scrollMarquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
 
-        /* الباركود */
-        .qr-box { background: white; padding: 12px; border-radius: 1.5rem; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: 0.3s; border: 1px solid #ddd; }
+        .qr-box { background: white; padding: 12px; border-radius: 1.5rem; display: inline-block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s; }
         .qr-box img { width: 130px; height: 130px; display: block; }
 
-        .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; transition: 0.2s; position: relative; }
-        .option-dot:hover { border-color: rgba(255,255,255,0.7); }
+        .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.2s; position: relative; }
         .option-dot.selected { border-color: white; box-shadow: 0 0 10px var(--primary); }
-        .option-dot.selected::after { content:'✓'; color:white; font-size:10px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight: bold; }
+        .option-dot.selected::after { content:'✓'; color:white; font-size:10px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
 
-        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid #444; color: #ccc; border-radius: 6px; padding: 4px 10px; font-size: 9px; transition: 0.2s; cursor: pointer; }
-        .size-btn:hover { border-color: #666; color: white; }
+        .size-btn { background: rgba(255,255,255,0.03); border: 1px solid #555; color: #888; border-radius: 6px; padding: 4px 10px; font-size: 9px; transition: 0.2s; cursor: pointer; }
         .size-btn.selected { background: white; color: black; font-weight: 800; border-color: white; }
 
-        /* أزرار الكمية */
-        .qty-controls { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px; gap: 10px; border: 1px solid #444; width: fit-content; margin-bottom: 12px; }
-        .qty-btn { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.05); color: #ccc; display: flex; align-items: center; justify-content: center; transition: 0.2s; border: 1px solid transparent; }
-        .qty-btn:hover { background: rgba(255,255,255,0.1); color: white; border-color: #555; }
-        .qty-btn:active { transform: scale(0.9); background: var(--primary); color: black; border-color: var(--primary); }
+        /* أزرار التحكم في العدد */
+        .qty-controls { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px; gap: 10px; border: 1px solid #555; width: fit-content; margin-bottom: 12px; }
+        .qty-btn { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .qty-btn:active { transform: scale(0.9); background: var(--primary); color: black; }
 
         .thumb-nav { display: flex; gap: 8px; margin-top: 20px; overflow-x: auto; max-width: 90%; padding: 5px; }
-        .thumb-nav img { width: 60px; height: 60px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; opacity: 0.6; transition: 0.3s; }
-        .thumb-nav img:hover { opacity: 1; }
-        .thumb-nav img.active { border-color: var(--primary); opacity: 1; box-shadow: 0 0 10px rgba(0,191,255,0.3); }
-        
+        .thumb-nav img { width: 60px; height: 60px; object-fit: cover; border-radius: 12px; cursor: pointer; border: 2px solid transparent; }
+        .thumb-nav img.active { border-color: var(--primary); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-
-        /* تعديلات محددة للألوان الجديدة في الهيدر والفوتر والقائمة الجانبية */
-        header { background-color: rgba(42, 42, 42, 0.85) !important; border-color: rgba(255,255,255,0.08) !important; }
-        header tracking-cart { background-color: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
-        
-        footer { background-color: #1f1f1f !important; border-color: rgba(255,255,255,0.05) !important; }
-        footer .qr-box { border-color: #444 !important; }
-
-        #cart-sidebar { background-color: rgba(35, 35, 35, 0.98) !important; border-color: rgba(255,255,255,0.08) !important; }
-        #cart-sidebar .close-cart { background-color: rgba(255,255,255,0.05) !important; }
-        #cart-content tracking-item { background-color: rgba(255,255,255,0.03) !important; border-color: rgba(255,255,255,0.05) !important; }
-        #cart-sidebar border-t { border-color: rgba(255,255,255,0.1) !important; }
-
     </style>
 </head>
 <body class="pt-10 no-scrollbar overflow-x-hidden">
@@ -103,9 +74,9 @@
 
     <div class="marquee"><div class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت • جودة ألماس مضمونة ✨</div></div>
 
-    <header class="container mx-auto px-4 py-3 sticky top-6 z-40 backdrop-blur-xl rounded-2xl border flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
-        <div class="text-2xl font-black uppercase tracking-tighter italic text-white">AL<span class="text-[#00BFFF]">MAZ</span></div>
-        <button id="toggle-cart" class="tracking-cart relative p-2.5 rounded-full border transition active:scale-90 hover:bg-[#00BFFF] hover:border-[#00BFFF] group">
+    <header class="container mx-auto px-4 py-3 sticky top-6 z-40 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
+        <div class="text-2xl font-black uppercase tracking-tighter italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full border border-white/10 transition active:scale-90 hover:bg-[#00BFFF] group">
             <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5 group-hover:text-black"></i>
             <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-white text-black text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
         </button>
@@ -125,54 +96,37 @@
         </div>
     </main>
 
-    <footer class="mt-24 py-20 border-t text-center px-4 relative">
+    <footer class="mt-24 py-20 border-t border-white/5 bg-black/20 text-center px-4 relative">
         <div class="absolute inset-0 bg-gradient-to-b from-[#00BFFF]/5 to-transparent pointer-events-none"></div>
         <h3 class="text-[#00BFFF] font-bold text-xs uppercase tracking-[0.4em] mb-16 relative z-10">مسح الرمز للتواصل المباشر</h3>
-        
         <div class="flex flex-wrap justify-center gap-8 md:gap-16 max-w-6xl mx-auto relative z-10">
             <div class="flex flex-col items-center">
-                <div class="qr-box border-b-8 hover:scale-105 transition">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://t.me/hehehevve" alt="Telegram QR">
-                </div>
-                <div class="mt-5 flex items-center gap-2.5 text-blue-300 font-bold text-xs uppercase tracking-wide">
-                    <i data-lucide="send" class="w-5 h-5"></i> تلغرام (Almaz)
-                </div>
+                <div class="qr-box border-b-8 border-blue-500 hover:scale-105 transition"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://t.me/hehehevve"></div>
+                <div class="mt-5 text-blue-400 font-bold text-xs uppercase tracking-wide">تلغرام (Almaz)</div>
             </div>
             <div class="flex flex-col items-center">
-                <div class="qr-box border-b-8 hover:scale-105 transition">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/18coFiPjCh/" alt="FB Page QR">
-                </div>
-                <div class="mt-5 flex items-center gap-2.5 text-blue-400 font-bold text-xs uppercase tracking-wide">
-                    <i data-lucide="facebook" class="w-5 h-5"></i> الصفحة الرئيسية
-                </div>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="qr-box border-b-8 hover:scale-105 transition">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/1CDeh3LeQ5/" alt="FB Profile QR">
-                </div>
-                <div class="mt-5 flex items-center gap-2.5 text-blue-500 font-bold text-xs uppercase tracking-wide">
-                    <i data-lucide="user" class="w-5 h-5"></i> الحساب الشخصي
-                </div>
+                <div class="qr-box border-b-8 border-blue-700 hover:scale-105 transition"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/18coFiPjCh/"></div>
+                <div class="mt-5 text-blue-600 font-bold text-xs uppercase tracking-wide">الصفحة الرئيسية</div>
             </div>
         </div>
-        <p class="mt-24 opacity-30 text-[10px] tracking-[0.6em] font-medium text-gray-400">© 2026 ALMAZ STORE - PREMIUM QUALITY COLLECTION</p>
+        <p class="mt-24 opacity-20 text-[10px] tracking-[0.6em] font-medium">© 2026 ALMAZ STORE - PREMIUM QUALITY COLLECTION</p>
     </footer>
 
     <div id="image-viewer">
-        <button onclick="document.getElementById('image-viewer').classList.remove('active')" class="absolute top-10 right-10 text-white z-50 hover:text-[#00BFFF]"><i data-lucide="x" class="w-10 h-10"></i></button>
-        <img id="viewer-img" class="max-w-[90%] max-h-[70vh] rounded-2xl shadow-3xl object-contain border-4 border-white/10">
+        <button onclick="document.getElementById('image-viewer').classList.remove('active')" class="absolute top-10 right-10 text-white z-50"><i data-lucide="x" class="w-10 h-10"></i></button>
+        <img id="viewer-img" class="max-w-[90%] max-h-[70vh] rounded-2xl shadow-3xl object-contain">
         <div id="thumb-container" class="thumb-nav no-scrollbar"></div>
     </div>
 
-    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[420px] backdrop-blur-3xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r shadow-3xl">
+    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[420px] bg-black/90 backdrop-blur-3xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r border-white/5 shadow-3xl">
         <div class="flex justify-between items-center mb-10 border-b border-white/10 pb-5">
             <h2 class="text-2xl font-black text-[#00BFFF] uppercase tracking-tighter italic">حقيبة التسوق</h2>
-            <button id="close-cart" class="close-cart p-2.5 rounded-full text-white hover:bg-white/10"><i data-lucide="x"></i></button>
+            <button id="close-cart" class="p-2.5 bg-white/5 rounded-full"><i data-lucide="x" class="text-white"></i></button>
         </div>
         <div id="cart-content" class="flex-grow overflow-y-auto space-y-5 no-scrollbar pr-1"></div>
-        <div class="border-t pt-8 mt-6">
-            <div class="flex justify-between mb-5 font-black text-2xl tracking-tight text-white"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
-            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-5 rounded-xl font-black text-lg shadow-xl shadow-[#00BFFF]/20 active:scale-95 transition hover:bg-white">إرسال الطلب عبر واتساب ✅</button>
+        <div class="pt-8 mt-6 border-t border-white/10">
+            <div class="flex justify-between mb-5 font-black text-2xl tracking-tight"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
+            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-5 rounded-xl font-black text-lg shadow-xl shadow-[#00BFFF]/20 active:scale-95 transition">إرسال الطلب عبر واتساب ✅</button>
         </div>
     </div>
 
@@ -183,16 +137,12 @@
 
         async function fetchProducts() {
             try {
-                // محاكاة تحميل بيانات المنتجات (استبدلها بـ fetch الحقيقي من ملف .json)
-                productsData = [
-                    { id: 1, name: "طقم ألماس ملكي فاخر", category: "women_clothing", price: 1500, oldPrice: 2000, image: ["https://images.unsplash.com/photo-1601121834654-8f3b131c8156?q=80&w=600", "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=600"], colors: ["#D4AF37", "#E5E4E2"], sizes: ["S", "M", "L"] },
-                    { id: 2, name: "ساعة ألماس رجالية أنيقة", category: "men_clothing", price: 850, image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?q=80&w=600", colors: ["#444", "#eee"], sizes: ["40mm", "44mm"] },
-                    { id: 3, name: "حذاء ألماس نسائي سهرة", category: "women_shoes", price: 420, oldPrice: 480, image: ["https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=600"], colors: ["#cc0000", "#fff", "#000"], sizes: ["37", "38", "39", "40"] },
-                    { id: 4, name: "حذاء ألماس رجالي كلاسيك", category: "men_shoes", price: 550, image: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?q=80&w=600", colors: ["#222", "#666"], sizes: ["41", "42", "43"] },
-                ];
+                const response = await fetch('products.json?v=' + Date.now()); 
+                if (!response.ok) throw new Error();
+                productsData = await response.json();
                 renderProducts('all');
             } catch (e) {
-                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center text-[#00BFFF] py-20 font-bold'>⚠️ فشل في تحميل المنتجات</p>";
+                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center text-[#00BFFF] py-20 font-bold'>⚠️ تأكد من رفع ملف products.json</p>";
             }
         }
 
@@ -214,67 +164,53 @@
             grid.innerHTML = '';
             const filtered = filter === 'all' ? productsData : productsData.filter(p => p.category === filter);
 
-            if(filtered.length === 0) {
-                grid.innerHTML = "<p class='col-span-4 text-center text-gray-500 py-20 italic uppercase tracking-widest opacity-60'>لا توجد منتجات حالياً في هذا القسم</p>";
-                return;
-            }
-
             filtered.forEach(p => {
-                if (!window.tempSelections[p.id]) window.tempSelections[p.id] = { color: p.colors[0], size: p.sizes[0], qty: 1 };
+                if (!window.tempSelections[p.id]) {
+                    window.tempSelections[p.id] = { color: p.colors[0], size: p.sizes[0], qty: 1 };
+                }
                 
                 const hasDiscount = p.oldPrice && p.oldPrice > p.price;
                 const discountPercent = hasDiscount ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0;
-                
                 const allImgs = Array.isArray(p.image) ? p.image : [p.image];
-                const displayImg = allImgs[0];
 
                 grid.innerHTML += `
                     <div class="product-card p-3.5 group">
                         ${hasDiscount ? `<div class="discount-badge">خصم ${discountPercent}%-</div>` : ''}
-                        <div class="relative overflow-hidden rounded-2xl mb-4 h-44 md:h-56 border border-white/5">
-                            <img src="${displayImg}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110 cursor-pointer" 
-                                 onclick='openGallery(${JSON.stringify(allImgs)})'>
+                        <div class="relative overflow-hidden rounded-2xl mb-4 h-44 md:h-56">
+                            <img src="${allImgs[0]}" class="w-full h-full object-cover transition duration-500 group-hover:scale-110 cursor-pointer" onclick='openGallery(${JSON.stringify(allImgs)})'>
                         </div>
-                        <h3 class="font-bold text-xs md:text-sm mb-1.5 truncate text-white/90 group-hover:text-white">${p.name}</h3>
+                        <h3 class="font-bold text-xs md:text-sm mb-1.5 truncate text-white/90">${p.name}</h3>
                         <div class="flex items-center gap-2 mb-3">
                             <span class="text-[#00BFFF] font-black text-sm md:text-xl tracking-tighter">$${p.price}</span>
                             ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px] md:text-xs">$${p.oldPrice}</span>` : ''}
                         </div>
-                        
-                        <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar pb-1">
+                        <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
                             ${p.colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
-                        
-                        <div class="flex flex-wrap gap-1.5 mb-4 no-scrollbar overflow-x-auto">
+                        <div class="flex flex-wrap gap-1.5 mb-4 no-scrollbar">
                             ${p.sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
                         </div>
-
                         <div class="qty-controls">
                             <button onclick="changeQty(${p.id}, -1)" class="qty-btn"><i data-lucide="minus" class="w-3 h-3"></i></button>
-                            <span id="qty-${p.id}" class="text-sm font-bold min-w-[20px] text-center text-white">${window.tempSelections[p.id].qty}</span>
+                            <span id="qty-${p.id}" class="text-sm font-bold min-w-[20px] text-center">${window.tempSelections[p.id].qty}</span>
                             <button onclick="changeQty(${p.id}, 1)" class="qty-btn"><i data-lucide="plus" class="w-3 h-3"></i></button>
                         </div>
-                        
-                        <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[11px] active:scale-95 transition hover:bg-white hover:shadow-lg hover:shadow-[#00BFFF]/10">أضف للحقيبة</button>
+                        <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[11px] active:scale-95 transition">أضف للحقيبة</button>
                     </div>`;
             });
             lucide.createIcons();
         }
 
         window.changeQty = (id, delta) => {
-            let current = window.tempSelections[id].qty;
-            let newVal = Math.max(1, current + delta);
+            let newVal = Math.max(1, window.tempSelections[id].qty + delta);
             window.tempSelections[id].qty = newVal;
-            const qtyEl = document.getElementById(`qty-${id}`);
-            if(qtyEl) qtyEl.innerText = newVal;
+            document.getElementById(`qty-${id}`).innerText = newVal;
         };
 
         window.openGallery = (imgs) => {
             const viewer = document.getElementById('image-viewer');
-            const mainImg = document.getElementById('viewer-img');
-            const thumbBox = document.getElementById('thumb-container');
-            mainImg.src = imgs[0];
-            thumbBox.innerHTML = imgs.map((img, i) => `<img src="${img}" onclick="changeViewerImg('${img}', this)" class="${i===0?'active':''}">`).join('');
+            document.getElementById('viewer-img').src = imgs[0];
+            document.getElementById('thumb-container').innerHTML = imgs.map((img, i) => `<img src="${img}" onclick="changeViewerImg('${img}', this)" class="${i===0?'active':''}">`).join('');
             viewer.classList.add('active');
         };
 
@@ -300,61 +236,37 @@
             const p = productsData.find(x => x.id === id);
             const selection = window.tempSelections[id];
             const img = Array.isArray(p.image) ? p.image[0] : p.image;
-            
-            const existing = cart.find(item => item.id === id && item.color === selection.color && item.size === selection.size);
-            
-            if(existing) {
-                existing.qty += selection.qty;
-            } else {
-                cart.push({ ...p, image: img, color: selection.color, size: selection.size, qty: selection.qty, cartId: Date.now() });
-            }
-
-            window.tempSelections[id].qty = 1;
-            const qtyEl = document.getElementById(`qty-${id}`);
-            if(qtyEl) qtyEl.innerText = 1;
-
+            cart.push({ ...p, image: img, ...selection, cartId: Date.now() });
             updateUI();
-            const icon = document.getElementById('toggle-cart');
-            icon.classList.add('scale-125', 'bg-[#00BFFF]', 'border-[#00BFFF]');
-            setTimeout(() => icon.classList.remove('scale-125', 'bg-[#00BFFF]', 'border-[#00BFFF]'), 300);
         };
 
         function updateUI() {
-            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
-            document.getElementById('cart-count').innerText = totalQty;
+            document.getElementById('cart-count').innerText = cart.length;
             const content = document.getElementById('cart-content');
             content.innerHTML = '';
-            let totalMoney = 0;
-            
+            let total = 0;
             cart.forEach(item => {
-                const subtotal = item.price * item.qty;
-                totalMoney += subtotal;
+                total += (item.price * item.qty);
                 content.innerHTML += `
-                <div class="tracking-item flex gap-4 p-3 rounded-2xl border items-center">
-                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover border border-white/5">
+                <div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5 items-center">
+                    <img src="${item.image}" class="w-16 h-16 rounded-xl object-cover">
                     <div class="flex-grow text-[11px] space-y-1">
                         <p class="font-bold text-white text-xs truncate">${item.name}</p>
-                        <div class="flex items-center gap-2">
-                            <div class="w-3.5 h-3.5 rounded-full border border-white/10" style="background:${item.color}"></div>
-                            <span class="text-gray-400 font-medium">${item.size} × ${item.qty}</span>
-                        </div>
-                        <p class="text-[#00BFFF] font-black">$${subtotal}</p>
+                        <p class="text-gray-400 font-medium">${item.size} × ${item.qty}</p>
+                        <p class="text-[#00BFFF] font-black">$${item.price * item.qty}</p>
                     </div>
-                    <button onclick="cart = cart.filter(x => x.cartId !== ${item.cartId}); updateUI();" class="text-red-500 p-2 hover:bg-white/5 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <button onclick="cart = cart.filter(x => x.cartId !== ${item.cartId}); updateUI();" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>`;
             });
-            document.getElementById('cart-total').innerText = `$${totalMoney}`;
-            if(cart.length === 0) content.innerHTML = `<div class="text-center py-20 text-gray-500 italic text-sm">حقيبة التسوق فارغة تماماً.</div>`;
+            document.getElementById('cart-total').innerText = `$${total}`;
             lucide.createIcons();
         }
 
         window.sendOrderToWhatsApp = () => {
-            if(cart.length === 0) return alert('أضف منتجات أولاً!');
+            if(cart.length === 0) return;
             let msg = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach((p, i) => {
-                msg += `📦 *${i+1}. ${p.name}*\n   اللون: ${p.color}\n   المقاس: ${p.size}\n   الكمية: ${p.qty}\n   السعر: $${p.price * p.qty}\n\n`;
-            });
-            msg += `💰 *الإجمالي النهائي: $${cart.reduce((a, b) => a + (b.price * b.qty), 0)}*`;
+            cart.forEach((p, i) => msg += `📦 *${i+1}. ${p.name}*\n   اللون: ${p.color}\n   المقاس: ${p.size}\n   الكمية: ${p.qty}\n   السعر: $${p.price * p.qty}\n\n`);
+            msg += `💰 *الإجمالي: $${document.getElementById('cart-total').innerText}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`, '_blank');
         };
     </script>
