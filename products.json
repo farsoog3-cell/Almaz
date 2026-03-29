@@ -58,7 +58,7 @@
   {
     "id": 1774821823172,
     "name": "تيشرت",
-    "price": 4,
+    "price": 5,
     "oldPrice": null,
     "isNew": false,
     "category": "men_clothing",
@@ -68,13 +68,7 @@
     "colors": [
       "#7a7a7a"
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ]
+    "sizes": []
   },
   {
     "id": 1774821913345,
