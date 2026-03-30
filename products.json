@@ -4,7 +4,6 @@
     "name": "رجال اعمال",
     "price": 500,
     "oldPrice": 1000,
-    "isNew": true,
     "category": "men_clothing",
     "image": [
       "https://i.ibb.co/kVDKt20h/FB-IMG-1774503765907.jpg",
@@ -17,7 +16,8 @@
       "S",
       "M",
       "L",
-      "XL"
+      "XL",
+      "XXL"
     ]
   },
   {
