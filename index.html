@@ -14,7 +14,32 @@
         /* علامة الخصم */
         .discount-badge { position: absolute; top: 12px; left: 12px; background: #ff3b30; color: white; padding: 4px 10px; border-radius: 10px; font-size: 11px; font-weight: 900; z-index: 20; box-shadow: 0 4px 15px rgba(255,59,48,0.3); }
 
-        /* أزرار الكمية في المنتج */
+        /* تأثير المنبثق لبطاقة المنتج */
+        .product-card { 
+            background: var(--card-bg); 
+            border-radius: 1.5rem; 
+            border: 1px solid var(--border-color); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            overflow: hidden; 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            cursor: pointer;
+        }
+
+        /* عند التمرير أو اللمس */
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+            z-index: 10;
+        }
+
+        /* زووم خفيف للصورة عند الحوم */
+        .product-card img { transition: transform 0.5s ease; }
+        .product-card:hover img { transform: scale(1.05); }
+
+        /* أزرار الكمية */
         .qty-controls { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 4px; margin-bottom: 12px; border: 1px solid var(--border-color); }
         .qty-btn-mini { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--card-bg); border-radius: 8px; transition: 0.2s; color: var(--primary); }
         .qty-btn-mini:active { background: var(--primary); color: black; }
@@ -26,7 +51,6 @@
         .slide-img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
         .slide-content { position: absolute; text-align: center; z-index: 5; padding: 20px; }
         
-        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); transition: 0.4s; overflow: hidden; position: relative; display: flex; flex-direction: column; }
         .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; position: relative; }
         .option-dot.selected::after { content:'✓'; color:white; font-size:10px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
         .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #ccc; border-radius: 6px; padding: 4px 10px; font-size: 9px; }
@@ -94,6 +118,7 @@
                 </div>`).join('');
             let cur = 0; setInterval(() => {
                 const s = document.querySelectorAll('.slide');
+                if(!s.length) return;
                 s[cur].classList.remove('active'); cur = (cur + 1) % s.length; s[cur].classList.add('active');
             }, 5000);
         }
@@ -103,7 +128,9 @@
                 const res = await fetch('products.json?v=' + Date.now());
                 productsData = await res.json();
                 renderProducts(productsData);
-            } catch (e) { console.log("JSON Error"); }
+            } catch (e) { 
+                console.log("JSON Error: تأكد من وجود ملف products.json في نفس المجلد"); 
+            }
         }
 
         function renderProducts(data) {
@@ -119,7 +146,7 @@
                 return `
                 <div class="product-card p-3.5 relative">
                     ${hasDiscount ? `<div class="discount-badge">خصم %${Math.round((p.oldPrice-p.price)/p.oldPrice*100)}-</div>` : ''}
-                    <img src="${imgs[0]}" class="w-full h-44 object-cover rounded-2xl mb-3 cursor-pointer" onclick='openGallery(${JSON.stringify(imgs)})'>
+                    <img src="${imgs[0]}" class="w-full h-44 object-cover rounded-2xl mb-3" onclick='openGallery(${JSON.stringify(imgs)})'>
                     
                     <h3 class="font-bold text-xs truncate mb-1">${p.name}</h3>
                     <div class="flex items-center gap-2 mb-3">
@@ -127,16 +154,16 @@
                         ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px]">$${p.oldPrice}</span>` : ''}
                     </div>
 
-                    <div class="flex gap-1.5 mb-3">${colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}</div>
-                    <div class="flex flex-wrap gap-1 mb-3">${sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}</div>
+                    <div class="flex gap-1.5 mb-3">${colors.map(c => `<div onclick="event.stopPropagation(); selectOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}</div>
+                    <div class="flex flex-wrap gap-1 mb-3">${sizes.map(s => `<button onclick="event.stopPropagation(); selectOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}</div>
 
-                    <div class="qty-controls">
+                    <div class="qty-controls" onclick="event.stopPropagation()">
                         <button onclick="updateTempQty(${p.id}, -1)" class="qty-btn-mini"><i data-lucide="minus" class="w-4 h-4"></i></button>
                         <span id="qty-val-${p.id}" class="font-bold text-sm">${window.tempSelections[p.id].qty}</span>
                         <button onclick="updateTempQty(${p.id}, 1)" class="qty-btn-mini"><i data-lucide="plus" class="w-4 h-4"></i></button>
                     </div>
 
-                    <button onclick="addToCart(${p.id})" class="bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[10px] transition active:scale-95">أضف للحقيبة</button>
+                    <button onclick="event.stopPropagation(); addToCart(${p.id})" class="bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[10px] transition active:scale-95">أضف للحقيبة</button>
                 </div>`;
             }).join('');
             lucide.createIcons();
