@@ -15,38 +15,50 @@
         }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* Splash Screen */
         #splash-screen { position: fixed; inset: 0; background: #1a1a1a; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
-        .splash-logo { font-size: clamp(3rem, 10vw, 5rem); font-weight: 900; color: white; text-transform: uppercase; }
+        .splash-logo { font-size: 3rem; font-weight: 900; color: white; text-transform: uppercase; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 30px var(--primary); }
 
-        /* Ad Slider */
-        .slider-wrapper { position: relative; width: 100%; height: 200px; border-radius: 1.5rem; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.1); }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease-in-out; }
+        /* Slider */
+        .slider-wrapper { position: relative; width: 100%; height: 200px; border-radius: 1.5rem; overflow: hidden; margin-bottom: 20px; border: 1px solid #444; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: 0.8s; }
         .slide.active { opacity: 1; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Search Bar */
-        .search-container { position: relative; margin-bottom: 1.5rem; }
-        .search-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 0.8rem 3rem 0.8rem 1rem; border-radius: 1rem; color: white; transition: 0.3s; font-size: 0.9rem; }
-        .search-input:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.1); }
-        .search-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #888; }
+        /* Search */
+        .search-container { position: relative; margin-bottom: 20px; }
+        .search-input { width: 100%; background: #333; border: 1px solid #444; padding: 12px 45px 12px 15px; border-radius: 15px; color: white; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(0,191,255,0.2); }
 
-        /* Product Cards */
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .product-card { background: var(--card-bg); border-radius: 1.2rem; border: 1px solid #444; transition: 0.3s; display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .product-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
-        .discount-badge { position: absolute; top: 8px; left: 8px; background: #ff3b30; color: white; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 10; }
-        .new-badge { position: absolute; top: 8px; right: 8px; background: var(--primary); color: black; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 900; z-index: 10; }
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid #444; transition: 0.4s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .product-card:hover { transform: translateY(-5px); border-color: var(--primary); }
 
-        /* Marquee */
+        .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
+        .new-badge { position: absolute; top: 10px; right: 10px; background: var(--primary); color: black; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
+
+        .category-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; }
+        .category-btn { white-space: nowrap; padding: 8px 16px; border-radius: 99px; font-size: 0.8rem; border: 1px solid #555; color: #bbb; cursor: pointer; }
+        .category-btn.active { background: var(--primary); color: black; border-color: var(--primary); font-weight: 800; }
+
+        .option-dot { width: 18px; height: 18px; border-radius: 50%; border: 1px solid #555; cursor: pointer; transition: 0.2s; position: relative; }
+        .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
+        .option-dot.selected::after { content:'✓'; color:white; font-size:10px; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+
+        .size-btn { background: #444; border: 1px solid #555; color: #888; border-radius: 6px; padding: 4px 10px; font-size: 10px; cursor: pointer; }
+        .size-btn.selected { background: white; color: black; font-weight: 800; }
+
+        .qty-controls { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 4px; gap: 8px; border: 1px solid #555; width: fit-content; margin-bottom: 10px; }
+        
+        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 200; align-items: center; justify-content: center; flex-direction: column; }
+        #image-viewer.active { display: flex; }
+
         .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollMarquee 25s linear infinite; }
         @keyframes scrollMarquee { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-
-        .option-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
-        .size-tag { font-size: 9px; background: rgba(255,255,255,0.1); padding: 1px 4px; border-radius: 4px; color: #ccc; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body class="pt-10 no-scrollbar">
@@ -61,7 +73,7 @@
     <div class="marquee"><div id="marquee-text" class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت ✨</div></div>
 
     <header class="container mx-auto px-4 py-3 sticky top-6 z-40 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
-        <div class="text-2xl font-black uppercase tracking-tighter italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <div class="text-2xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
         <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full border border-white/10 group">
             <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5"></i>
             <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
@@ -69,62 +81,66 @@
     </header>
 
     <main class="container mx-auto px-4 mt-8">
+        
         <div class="search-container">
-            <i data-lucide="search" class="search-icon w-4 h-4"></i>
-            <input type="text" id="search-input" placeholder="ابحث عن تيشيرت، مقاس، أو سعر..." class="search-input">
+            <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+            <input type="text" id="search-input" placeholder="ابحث عن منتج بالاسم..." class="search-input">
         </div>
 
-        <div id="ad-slider" class="slider-wrapper">
-            <div class="slide active"><img src="https://i.ibb.co/kVDKt20h/FB-IMG-1774503765907.jpg"></div>
+        <div id="ad-slider" class="slider-wrapper"></div>
+
+        <div class="category-scroll mb-6 no-scrollbar">
+            <button onclick="filterProducts('all')" class="category-btn active">الكل</button>
+            <button onclick="filterProducts('men_clothing')" class="category-btn">ملابس رجالي</button>
+            <button onclick="filterProducts('shoes')" class="category-btn">أحذية</button>
         </div>
 
         <div id="products-grid" class="product-grid mb-24"></div>
     </main>
+
+    <div id="image-viewer">
+        <button onclick="document.getElementById('image-viewer').classList.remove('active')" class="absolute top-10 right-10 text-white"><i data-lucide="x" class="w-10 h-10"></i></button>
+        <img id="viewer-img" class="max-w-[90%] max-h-[70vh] rounded-2xl object-contain">
+    </div>
 
     <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[400px] bg-[#1a1a1a] z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r border-white/10">
         <div class="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
             <h2 class="text-xl font-black text-[#00BFFF]">حقيبة الطلبات</h2>
             <button id="close-cart" class="p-2"><i data-lucide="x"></i></button>
         </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4"></div>
+        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
         <div class="pt-6 border-t border-white/10">
             <div class="flex justify-between mb-4 font-bold text-lg"><span>الإجمالي:</span><span id="cart-total">$0</span></div>
-            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black">إرسال الطلب عبر واتساب</button>
+            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black">إرسال الطلب (واتساب) ✅</button>
         </div>
     </div>
 
     <script>
-        // البيانات التي أرسلتها (سيتم تحميلها من ملف خارجي في الواقع)
         let productsData = []; 
         let cart = [];
         let currentSlide = 0;
+        window.tempSelections = {}; 
 
-        async function loadStore() {
+        async function initStore() {
             try {
-                const response = await fetch('products.json');
+                const response = await fetch('products.json?v=' + Date.now());
                 const data = await response.json();
                 
-                // إذا كان الـ JSON هو الذي أرسلته مباشرة (مصفوفة)
                 productsData = Array.isArray(data) ? data : data.products;
                 
-                // تحديث الإعلانات من الصور الموجودة في أول منتجين كمثال
+                // Ads Slider
                 const ads = productsData.slice(0, 3).map(p => p.image[0]);
                 setupSlider(ads);
                 
-                renderProducts(productsData);
+                renderProducts('all');
             } catch (e) {
-                // في حال لم تجد الملف، استخدم البيانات التي أرسلتها أنت هنا يدوياً
-                productsData = [ /* ضع مصفوفة الـ JSON هنا للتجربة المحلية */ ];
-                renderProducts(productsData);
+                console.error("خطأ في تحميل الملف");
             }
         }
 
         function setupSlider(images) {
             const slider = document.getElementById('ad-slider');
-            slider.innerHTML = images.map((img, i) => `
-                <div class="slide ${i === 0 ? 'active' : ''}"><img src="${img}"></div>
-            `).join('');
-            
+            slider.innerHTML = images.map((img, i) => `<div class="slide ${i === 0 ? 'active' : ''}"><img src="${img}"></div>`).join('');
             setInterval(() => {
                 const slides = document.querySelectorAll('.slide');
                 if(slides.length < 2) return;
@@ -134,75 +150,116 @@
             }, 4000);
         }
 
-        function renderProducts(items) {
+        function renderProducts(filter = 'all', manualItems = null) {
             const grid = document.getElementById('products-grid');
-            grid.innerHTML = items.map(p => {
+            grid.innerHTML = '';
+            const items = manualItems || (filter === 'all' ? productsData : productsData.filter(p => p.category === filter));
+
+            items.forEach(p => {
+                if (!window.tempSelections[p.id]) {
+                    window.tempSelections[p.id] = { color: p.colors[0], size: (p.sizes[0] || 'متوفر'), qty: 1 };
+                }
+                
                 const hasDiscount = p.oldPrice && p.oldPrice > p.price;
-                return `
-                <div class="product-card p-2">
-                    ${hasDiscount ? `<div class="discount-badge">خصم</div>` : ''}
-                    ${p.isNew ? `<div class="new-badge">جديد</div>` : ''}
-                    <img src="${p.image[0]}" class="w-full h-40 object-cover rounded-lg mb-2">
-                    <h3 class="text-[11px] font-bold truncate">${p.name}</h3>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="text-[#00BFFF] font-black text-sm">$${p.price}</span>
-                        ${hasDiscount ? `<span class="text-[9px] line-through text-gray-500">$${p.oldPrice}</span>` : ''}
-                    </div>
-                    <div class="flex gap-1 mb-2">
-                        ${p.colors.map(c => `<div class="option-dot" style="background:${c}"></div>`).join('')}
-                    </div>
-                    <div class="flex flex-wrap gap-1 mb-3">
-                        ${p.sizes.map(s => `<span class="size-tag">${s}</span>`).join('')}
-                    </div>
-                    <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-white/5 border border-white/10 py-2 rounded-lg text-[10px] font-bold">إضافة</button>
-                </div>
-            `}).join('');
+                const imgs = Array.isArray(p.image) ? p.image : [p.image];
+
+                grid.innerHTML += `
+                    <div class="product-card p-3">
+                        ${hasDiscount ? `<div class="discount-badge">خصم</div>` : ''}
+                        ${p.isNew ? `<div class="new-badge">جديد</div>` : ''}
+                        <div class="relative h-44 mb-3 overflow-hidden rounded-xl">
+                            <img src="${imgs[0]}" class="w-full h-full object-cover cursor-pointer" onclick='openGallery(${JSON.stringify(imgs)})'>
+                        </div>
+                        <h3 class="text-xs font-bold truncate mb-1">${p.name}</h3>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[#00BFFF] font-black text-sm">$${p.price}</span>
+                            ${hasDiscount ? `<span class="text-[9px] line-through text-gray-500">$${p.oldPrice}</span>` : ''}
+                        </div>
+                        <div class="flex gap-1.5 mb-2 overflow-x-auto no-scrollbar">
+                            ${p.colors.map(c => `<div onclick="selectOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
+                        </div>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            ${p.sizes.map(s => `<button onclick="selectOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
+                        </div>
+                        <div class="qty-controls">
+                            <button onclick="changeQty(${p.id}, -1)" class="p-1"><i data-lucide="minus" class="w-3 h-3"></i></button>
+                            <span id="qty-${p.id}" class="text-xs font-bold">${window.tempSelections[p.id].qty}</span>
+                            <button onclick="changeQty(${p.id}, 1)" class="p-1"><i data-lucide="plus" class="w-3 h-3"></i></button>
+                        </div>
+                        <button onclick="addToCart(${p.id})" class="mt-auto w-full bg-[#00BFFF] text-black py-2.5 rounded-xl font-black text-[10px]">أضف للحقيبة</button>
+                    </div>`;
+            });
+            lucide.createIcons();
         }
 
-        // نظام البحث
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = productsData.filter(p => 
-                p.name.toLowerCase().includes(term) || 
-                p.price.toString().includes(term)
-            );
-            renderProducts(filtered);
-        });
+        window.selectOpt = (id, type, val, el) => {
+            window.tempSelections[id][type] = val;
+            el.parentElement.querySelectorAll('.option-dot, .size-btn').forEach(b => b.classList.remove('selected'));
+            el.classList.add('selected');
+        };
+
+        window.changeQty = (id, delta) => {
+            window.tempSelections[id].qty = Math.max(1, window.tempSelections[id].qty + delta);
+            document.getElementById(`qty-${id}`).innerText = window.tempSelections[id].qty;
+        };
+
+        window.openGallery = (imgs) => {
+            document.getElementById('viewer-img').src = imgs[0];
+            document.getElementById('image-viewer').classList.add('active');
+        };
 
         window.addToCart = (id) => {
             const p = productsData.find(x => x.id === id);
-            cart.push(p);
-            updateCart();
+            const sel = window.tempSelections[id];
+            cart.push({ ...p, ...sel, cartId: Date.now() });
+            updateCartUI();
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         };
 
-        function updateCart() {
+        function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const content = document.getElementById('cart-content');
             let total = 0;
-            content.innerHTML = cart.map((item, index) => {
-                total += item.price;
+            content.innerHTML = cart.map((item, idx) => {
+                total += (item.price * item.qty);
                 return `
-                <div class="flex gap-3 bg-white/5 p-2 rounded-lg items-center">
-                    <img src="${item.image[0]}" class="w-12 h-12 rounded object-cover">
-                    <div class="flex-grow"><p class="text-[10px] font-bold">${item.name}</p><p class="text-[#00BFFF] font-black">$${item.price}</p></div>
-                    <button onclick="cart.splice(${index}, 1); updateCart();" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </div>
-            `}).join('');
+                <div class="flex gap-3 bg-white/5 p-3 rounded-xl">
+                    <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-14 h-14 rounded-lg object-cover">
+                    <div class="flex-grow text-[10px]">
+                        <p class="font-bold">${item.name}</p>
+                        <p class="text-gray-400">اللون: ${item.color} | المقاس: ${item.size}</p>
+                        <p class="text-[#00BFFF] font-black mt-1">$${item.price * item.qty} (${item.qty} قطعة)</p>
+                    </div>
+                    <button onclick="cart.splice(${idx},1); updateCartUI();" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </div>`;
+            }).join('');
             document.getElementById('cart-total').innerText = `$${total}`;
             lucide.createIcons();
         }
 
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = productsData.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(null, filtered);
+        });
+
+        window.filterProducts = (cat) => {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            renderProducts(cat);
+        };
+
         window.sendOrder = () => {
-            let msg = "🚀 طلب جديد:\n";
-            cart.forEach(p => msg += `- ${p.name} ($${p.price})\n`);
-            msg += `\n💰 الإجمالي: ${document.getElementById('cart-total').innerText}`;
+            if(cart.length === 0) return;
+            let msg = "🚀 *طلب جديد من Almaz Store*\n\n";
+            cart.forEach((p, i) => msg += `${i+1}. *${p.name}*\nاللون: ${p.color} | المقاس: ${p.size}\nالكمية: ${p.qty} | السعر: $${p.price * p.qty}\n\n`);
+            msg += `💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`);
         };
 
         window.onload = () => {
             lucide.createIcons();
-            loadStore();
+            initStore();
             setTimeout(() => {
                 document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(() => document.getElementById('splash-screen').remove(), 800);
