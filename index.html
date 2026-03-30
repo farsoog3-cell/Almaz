@@ -28,7 +28,8 @@
         .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); transition: 0.4s; height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         .product-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(0,0,0,0.3); }
 
-        .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; }
+        /* علامه الخصم */
+        .discount-badge { position: absolute; top: 10px; left: 10px; background: #ff3b30; color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; box-shadow: 0 4px 10px rgba(255,59,48,0.3); }
 
         .category-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 15px; -webkit-overflow-scrolling: touch; }
         .category-scroll::-webkit-scrollbar { display: none; }
@@ -40,8 +41,9 @@
         .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #ccc; border-radius: 6px; padding: 4px 10px; font-size: 9px; cursor: pointer; }
         .size-btn.selected { background: white; color: black; font-weight: 800; }
 
-        .qty-controls { display: flex; align-items: center; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 4px; border: 1px solid var(--border-color); margin-bottom: 10px; }
-        .qty-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: bold; border-radius: 8px; transition: 0.2s; }
+        /* التحكم بالكمية */
+        .qty-controls { display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 4px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+        .qty-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 900; border-radius: 8px; transition: 0.2s; font-size: 1.2rem; }
         .qty-btn:active { background: var(--primary); color: black; }
 
         .marquee { background: var(--primary); height: 26px; position: fixed; top: 0; width: 100%; z-index: 50; display: flex; align-items: center; overflow: hidden; font-size: 0.7rem; font-weight: 900; color: black; }
@@ -65,7 +67,7 @@
         </div>
     </div>
 
-    <div class="marquee"><div class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت ✨</div></div>
+    <div class="marquee"><div class="marquee-content font-black">✨ شحن فوري لجميع الولايات • تشكيلة العيد الجديدة وصلت • جودة ألماس مضمونة ✨</div></div>
 
     <header class="container mx-auto px-4 py-3 sticky top-6 z-40 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/5 flex justify-between items-center mt-2 max-w-[95%] shadow-2xl">
         <div class="text-2xl font-black uppercase tracking-tighter italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
@@ -87,9 +89,25 @@
             <button onclick="filterProducts('women_clothing')" class="category-btn">ملابس نسائي</button>
         </div>
 
-        <div id="products-grid" class="product-grid mb-24">
-            </div>
+        <div id="products-grid" class="product-grid mb-24"></div>
     </main>
+
+    <footer class="mt-24 py-20 border-t border-white/5 bg-black/40 text-center px-4">
+        <div class="flex flex-wrap justify-center gap-8 md:gap-16 max-w-6xl mx-auto">
+            <div class="flex flex-col items-center">
+                <div class="bg-white p-3 rounded-2xl border-b-8 border-blue-500">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://t.me/hehehevve" class="w-28 h-28">
+                </div>
+                <div class="mt-4 text-blue-400 font-bold text-xs italic">تلغرام Almaz</div>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="bg-white p-3 rounded-2xl border-b-8 border-blue-700">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.facebook.com/share/18coFiPjCh/" class="w-28 h-28">
+                </div>
+                <div class="mt-4 text-blue-600 font-bold text-xs italic">فيسبوك الصفحة</div>
+            </div>
+        </div>
+    </footer>
 
     <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[420px] bg-zinc-900/98 backdrop-blur-3xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col">
         <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
@@ -99,7 +117,7 @@
         <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
         <div class="pt-6 border-t border-white/10">
             <div class="flex justify-between mb-4 font-black text-xl"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
-            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black">إرسال الطلب عبر واتساب</button>
+            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black">إرسال الطلب عبر واتساب ✅</button>
         </div>
     </div>
 
@@ -120,7 +138,7 @@
                 productsData = await response.json();
                 renderProducts(productsData);
             } catch (e) {
-                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center text-[#00BFFF] py-20'>تأكد من وجود ملف products.json</p>";
+                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center text-[#00BFFF] py-20'>⚠️ تأكد من رفع ملف products.json</p>";
             }
         }
 
@@ -143,36 +161,39 @@
             data.forEach(p => {
                 const colors = p.colors || [];
                 const sizes = p.sizes || [];
-                
-                // Initialize default selections for each product
                 if (!window.tempSelections[p.id]) {
-                    window.tempSelections[p.id] = { 
-                        color: colors[0] || 'default', 
-                        size: sizes[0] || 'N/A',
-                        qty: 1 
-                    };
+                    window.tempSelections[p.id] = { color: colors[0] || 'default', size: sizes[0] || 'N/A', qty: 1 };
                 }
 
+                const hasDiscount = p.oldPrice && p.oldPrice > p.price;
                 const allImgs = Array.isArray(p.image) ? p.image : [p.image];
 
                 grid.innerHTML += `
                     <div class="product-card p-3">
+                        ${hasDiscount ? `<div class="discount-badge">خصم %${Math.round((p.oldPrice-p.price)/p.oldPrice*100)}-</div>` : ''}
+                        
                         <div class="relative overflow-hidden rounded-xl mb-3 h-40 md:h-52">
                             <img src="${allImgs[0]}" class="w-full h-full object-cover cursor-pointer" onclick='openGallery(${JSON.stringify(allImgs)})'>
                         </div>
+                        
                         <h3 class="font-bold text-xs mb-1 truncate">${p.name}</h3>
-                        <div class="text-[#00BFFF] font-black text-lg mb-2">$${p.price}</div>
+                        
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>
+                            ${hasDiscount ? `<span class="text-gray-500 line-through text-[10px]">$${p.oldPrice}</span>` : ''}
+                        </div>
                         
                         <div class="flex gap-1 mb-2 overflow-x-auto no-scrollbar">
                             ${colors.map(c => `<div onclick="updateLocalOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
+                        
                         <div class="flex flex-wrap gap-1 mb-3">
                             ${sizes.map(s => `<button onclick="updateLocalOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
                         </div>
 
                         <div class="qty-controls">
                             <button onclick="changeLocalQty(${p.id}, -1)" class="qty-btn">-</button>
-                            <span id="qty-val-${p.id}" class="flex-grow text-center text-xs font-bold">1</span>
+                            <span id="qty-val-${p.id}" class="flex-grow text-center text-xs font-black">1</span>
                             <button onclick="changeLocalQty(${p.id}, 1)" class="qty-btn">+</button>
                         </div>
 
@@ -182,7 +203,6 @@
             lucide.createIcons();
         }
 
-        // Functions for local controls on product card
         window.updateLocalOpt = (id, type, val, el) => {
             window.tempSelections[id][type] = val;
             el.parentElement.querySelectorAll('.option-dot, .size-btn').forEach(b => b.classList.remove('selected'));
@@ -197,12 +217,9 @@
             document.getElementById(`qty-val-${id}`).innerText = current;
         };
 
-        // Cart Functions
         window.addToCart = (id) => {
             const p = productsData.find(x => x.id === id);
             const selection = window.tempSelections[id];
-            
-            // Add new entry with current quantity and options
             cart.push({ 
                 ...p, 
                 image: Array.isArray(p.image) ? p.image[0] : p.image, 
@@ -211,11 +228,8 @@
                 quantity: selection.qty,
                 cartId: Date.now() 
             });
-            
-            // Reset quantity on card after adding
-            window.tempSelections[id].qty = 1;
+            window.tempSelections[id].qty = 1; 
             document.getElementById(`qty-val-${id}`).innerText = 1;
-            
             updateUI();
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         };
@@ -226,18 +240,17 @@
             const content = document.getElementById('cart-content');
             content.innerHTML = '';
             let total = 0;
-
             cart.forEach(item => {
                 total += (item.price * item.quantity);
                 content.innerHTML += `
                 <div class="flex gap-3 bg-white/5 p-3 rounded-xl items-center border border-white/5">
                     <img src="${item.image}" class="w-14 h-14 rounded-lg object-cover">
                     <div class="flex-grow">
-                        <p class="font-bold text-xs">${item.name}</p>
-                        <p class="text-[10px] text-gray-400">${item.color} | ${item.size} | العدد: ${item.quantity}</p>
+                        <p class="font-bold text-[10px]">${item.name}</p>
+                        <p class="text-[9px] text-gray-400">العدد: ${item.quantity} | ${item.color} | ${item.size}</p>
                         <p class="text-[#00BFFF] font-black text-xs">$${item.price * item.quantity}</p>
                     </div>
-                    <button onclick="cart = cart.filter(x => x.cartId !== ${item.cartId}); updateUI();" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <button onclick="cart = cart.filter(x => x.cartId !== ${item.cartId}); updateUI();" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>`;
             });
             document.getElementById('cart-total').innerText = `$${total}`;
@@ -252,7 +265,6 @@
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`, '_blank');
         };
 
-        // Additional helpers
         window.handleSearch = () => {
             const term = document.getElementById('search-input').value.toLowerCase();
             const filtered = productsData.filter(p => p.name.toLowerCase().includes(term));
