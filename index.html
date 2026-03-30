@@ -21,13 +21,15 @@
         .search-bar:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(0,191,255,0.15); }
         .search-icon { position: absolute; right: 35px; top: 50%; transform: translateY(-50%); color: var(--primary); }
 
-        /* تعديلات اللوحة الإعلانية Slider */
-        .slider-container { width: 100%; max-width: 1200px; margin: 0 auto 30px; position: relative; overflow: hidden; border-radius: 24px; aspect-ratio: 16/7; border: 1px solid var(--border-color); }
-        .slider-track { display: flex; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
-        .slide { min-width: 100%; height: 100%; position: relative; }
+        /* إضافة اللوحة الإعلانية فقط */
+        .slider-container { width: 95%; max-width: 1200px; margin: 10px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/7; border: 1px solid var(--border-color); }
+        .slider-track { display: flex; transition: transform 0.6s ease-in-out; height: 100%; }
+        .slide { min-width: 100%; height: 100%; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
-        .slide-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
-        
+        .slider-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; }
+        .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
+        .dot.active { background: var(--primary); width: 20px; border-radius: 10px; }
+
         .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
         @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -87,27 +89,13 @@
         <input type="text" id="search-input" class="search-bar" placeholder="ابحث عن منتج..." oninput="handleSearch()">
     </div>
 
-    <section class="px-4 mb-6">
-        <div class="slider-container">
-            <div id="slider-track" class="slider-track">
-                <div class="slide">
-                    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80" alt="عرض 1">
-                    <div class="slide-overlay">
-                        <h2 class="text-2xl font-black text-white mb-1">تشكيلة الصيف الجديدة 🏝️</h2>
-                        <p class="text-xs text-blue-400 font-bold">خصم يصل إلى 40% لفترة محدودة</p>
-                    </div>
-                </div>
-                <div class="slide">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80" alt="عرض 2">
-                    <div class="slide-overlay">
-                        <h2 class="text-2xl font-black text-white mb-1">ساعات ألماس فاخرة ⌚</h2>
-                        <p class="text-xs text-blue-400 font-bold">الأناقة التي تستحقها</p>
-                    </div>
-                </div>
-            </div>
-            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" id="slider-dots"></div>
+    <div class="slider-container">
+        <div class="slider-track" id="slider-track">
+            <div class="slide"><img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&q=80"></div>
+            <div class="slide"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200&q=80"></div>
         </div>
-    </section>
+        <div class="slider-dots" id="slider-dots"></div>
+    </div>
 
     <main class="container mx-auto px-4 mt-4">
         <div class="category-scroll mb-8">
@@ -161,27 +149,23 @@
 
         // منطق السلايدر التلقائي
         let currentSlide = 0;
-        function initSlider() {
+        function setupSlider() {
             const track = document.getElementById('slider-track');
             const slides = document.querySelectorAll('.slide');
-            const dotsContainer = document.getElementById('slider-dots');
+            const dotsCont = document.getElementById('slider-dots');
             
-            // إنشاء النقاط
             slides.forEach((_, i) => {
                 const dot = document.createElement('div');
-                dot.className = `h-1.5 rounded-full transition-all duration-300 ${i === 0 ? 'w-8 bg-[#00BFFF]' : 'w-2 bg-white/30'}`;
-                dotsContainer.appendChild(dot);
+                dot.classList.add('dot');
+                if(i === 0) dot.classList.add('active');
+                dotsCont.appendChild(dot);
             });
 
             setInterval(() => {
                 currentSlide = (currentSlide + 1) % slides.length;
-                track.style.transform = `translateX(${currentSlide * 100}%)`; // الاتجاه RTL
-                
-                // تحديث النقاط
-                Array.from(dotsContainer.children).forEach((dot, i) => {
-                    dot.className = `h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-8 bg-[#00BFFF]' : 'w-2 bg-white/30'}`;
-                });
-            }, 5000);
+                track.style.transform = `translateX(${currentSlide * 100}%)`;
+                document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+            }, 4000);
         }
 
         async function fetchProducts() {
@@ -190,21 +174,20 @@
                 productsData = await response.json();
                 renderProducts(productsData);
             } catch (e) {
-                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center text-[#00BFFF] py-20'>⚠️ تأكد من رفع ملف products.json</p>";
+                document.getElementById('products-grid').innerHTML = "<p class='col-span-4 text-center py-20'>⚠️ تأكد من رفع ملف products.json</p>";
             }
         }
 
         window.addEventListener('load', () => {
             lucide.createIcons();
             fetchProducts();
-            initSlider(); // تشغيل السلايدر
+            setupSlider();
             setTimeout(() => {
                 document.getElementById('splash-screen').style.opacity = '0';
                 setTimeout(() => document.getElementById('splash-screen').style.visibility = 'hidden', 800);
             }, 2500);
         });
 
-        // بقية الدوال البرمجية (Render, AddToCart, WhatsApp...) هي نفسها تماماً لضمان عمل المتجر
         document.getElementById('toggle-cart').onclick = () => document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         document.getElementById('close-cart').onclick = () => document.getElementById('cart-sidebar').classList.add('translate-x-full');
 
@@ -241,7 +224,7 @@
                             <span id="qty-val-${p.id}" class="flex-grow text-center text-xs font-black">1</span>
                             <button onclick="changeLocalQty(${p.id}, 1)" class="qty-btn">+</button>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-2.5 rounded-lg font-black text-[10px] active:scale-95 transition">إضافة للحقيبة</button>
+                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-2.5 rounded-lg font-black text-[10px]">إضافة للحقيبة</button>
                     </div>`;
             });
             lucide.createIcons();
@@ -265,8 +248,6 @@
             const p = productsData.find(x => x.id === id);
             const selection = window.tempSelections[id];
             cart.push({ ...p, image: Array.isArray(p.image) ? p.image[0] : p.image, color: selection.color, size: selection.size, quantity: selection.qty, cartId: Date.now() });
-            window.tempSelections[id].qty = 1; 
-            document.getElementById(`qty-val-${id}`).innerText = 1;
             updateUI();
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         };
@@ -297,7 +278,7 @@
         window.sendOrderToWhatsApp = () => {
             if(cart.length === 0) return alert('الحقيبة فارغة!');
             let msg = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach((p, i) => msg += `📦 *${i+1}. ${p.name}*\n   العدد: ${p.quantity}\n   الخيار: ${p.color} - ${p.size}\n   السعر: $${p.price * p.quantity}\n\n`);
+            cart.forEach((p, i) => msg += `📦 *${i+1}. ${p.name}*\n   العدد: ${p.quantity} | ${p.color} - ${p.size}\n   السعر: $${p.price * p.quantity}\n\n`);
             msg += `💰 *الإجمالي: $${document.getElementById('cart-total').innerText.replace('$','')}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`, '_blank');
         };
@@ -321,7 +302,6 @@
             mainImg.src = imgs[0];
             thumbBox.innerHTML = imgs.map((img, i) => `<img src="${img}" onclick="changeViewerImg('${img}', this)" class="${i===0?'active':''}">`).join('');
             document.getElementById('image-viewer').classList.add('active');
-            lucide.createIcons();
         };
 
         window.changeViewerImg = (src, el) => {
