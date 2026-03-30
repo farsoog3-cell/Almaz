@@ -8,43 +8,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root { --primary: #00BFFF; --bg-dark: #1a1c1e; --card-bg: #26292d; --border-color: rgba(255,255,255,0.1); --discount: #ff4757; }
+        :root { --primary: #00BFFF; --bg-dark: #1a1c1e; --card-bg: #26292d; --border-color: rgba(255,255,255,0.1); --discount-red: #ff4757; }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
+        /* شاشة التحميل */
         #splash-screen { position: fixed; inset: 0; background: #111; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
-        .splash-logo { font-size: 3rem; font-weight: 900; color: white; animation: intro 2s forwards; }
+        .splash-logo { font-size: 3rem; font-weight: 900; color: white; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
-        .slider-container { width: 95%; max-width: 1200px; margin: 10px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/8; border: 1px solid var(--border-color); background: #000; }
-        .slider-track { display: flex; height: 100%; width: 100%; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .slide { min-width: 100%; height: 100%; position: relative; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
-
+        /* كرت المنتج وعلامة الخصم */
         .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 10px; transition: 0.4s; position: relative; }
         .product-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+        
+        .discount-tag { position: absolute; top: 12px; left: 12px; background: var(--discount-red); color: white; font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 8px; z-index: 10; box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3); }
 
-        /* ستايل علامة الخصم */
-        .discount-badge { position: absolute; top: 10px; left: 10px; background: var(--discount); color: white; padding: 4px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3); }
-
+        /* خيارات الألوان والمقاسات */
         .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
         .option-dot.selected { border-color: white; box-shadow: 0 0 10px var(--primary); }
-        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px; font-size: 11px; }
+        
+        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 8px; font-size: 11px; transition: 0.2s; }
         .size-btn.selected { background: white; color: black; font-weight: 900; }
 
         .marquee { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; overflow: hidden; font-size: 0.75rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
         @keyframes scrollText { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
 
-        #image-viewer { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 200; align-items: center; justify-content: center; flex-direction: column; }
+        #cart-sidebar { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
     </style>
 </head>
 <body class="pt-12">
 
     <div id="splash-screen">
-        <div class="splash-logo italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <div class="splash-logo italic">AL<span>MAZ</span></div>
     </div>
 
-    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ أهلاً بكم في متجر المظ - عروض خاصة وحصرية ✨</div></div>
+    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ عروض حصرية لفترة محدودة - Almaz Store ✨</div></div>
 
     <header class="mx-auto px-4 py-3 sticky top-8 z-40 bg-zinc-800/80 backdrop-blur-lg rounded-2xl border border-white/5 flex justify-between items-center max-w-[94%] shadow-xl">
         <div class="text-xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
@@ -57,48 +55,49 @@
     <div class="max-w-[600px] mx-auto px-5 mt-6">
         <div class="relative">
             <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#00BFFF] w-5 h-5"></i>
-            <input type="text" id="search-input" class="w-full bg-zinc-800 border border-white/10 p-4 pr-12 rounded-2xl text-sm" placeholder="ابحث عن طلبك..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="w-full bg-zinc-800 border border-white/10 p-4 pr-12 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50" placeholder="ابحث عن منتج..." oninput="handleSearch()">
         </div>
     </div>
 
-    <main class="px-4 mt-6">
-        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-24"></div>
+    <main class="px-4 mt-8">
+        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-24">
+            </div>
     </main>
 
-    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[400px] bg-zinc-900/98 backdrop-blur-2xl z-50 translate-x-full transition-transform duration-500 p-6 flex flex-col border-r border-white/10 text-right">
+    <div id="cart-sidebar" class="fixed top-0 left-0 h-full w-full md:w-[400px] bg-zinc-900/98 backdrop-blur-2xl z-50 translate-x-full p-6 flex flex-col border-r border-white/10">
         <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
             <h2 class="text-xl font-black text-[#00BFFF]">سلة المشتريات</h2>
             <button id="close-cart" class="p-2 bg-white/5 rounded-full"><i data-lucide="x"></i></button>
         </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4"></div>
+        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
         <div class="pt-6 border-t border-white/10">
             <div class="flex justify-between mb-4 font-black text-xl"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
-            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black">إرسال الطلب عبر واتساب ✅</button>
+            <button onclick="sendOrderToWhatsApp()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-black shadow-lg shadow-[#00BFFF]/20 active:scale-95 transition-transform">إرسال الطلب عبر واتساب ✅</button>
         </div>
     </div>
 
     <script>
-        // بيانات تجريبية (يجب أن تكون في ملف products.json)
+        // بيانات المنتجات (يمكنك استبدالها بـ fetch من ملف خارجي)
         let productsData = [
             {
                 id: 1,
-                name: "حذاء نايك اير جوردن",
-                price: 85,
-                oldPrice: 120, // السعر القديم لتفعيل علامة الخصم
-                category: "men_shoes",
+                name: "نايك اير جوردن - كلاسيك",
+                price: 75,
+                oldPrice: 110, 
+                category: "shoes",
                 image: ["https://images.unsplash.com/photo-1542291026-7eec264c27ff"],
-                colors: ["#ff0000", "#000000"],
-                sizes: ["40", "41", "42"]
+                colors: ["#ff4757", "#2f3542", "#ffffff"],
+                sizes: ["40", "41", "42", "43"]
             },
             {
                 id: 2,
-                name: "تيشيرت قطني فاخر",
+                name: "تيشيرت المظ بريميوم",
                 price: 25,
-                oldPrice: null, // لا يوجد خصم
-                category: "men_clothing",
+                oldPrice: null, 
+                category: "clothing",
                 image: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"],
-                colors: ["#ffffff", "#cccccc"],
-                sizes: ["S", "M", "L"]
+                colors: ["#ffffff", "#000000"],
+                sizes: ["S", "M", "L", "XL"]
             }
         ];
 
@@ -111,34 +110,38 @@
             
             data.forEach(p => {
                 if (!window.tempSelections[p.id]) {
-                    window.tempSelections[p.id] = { color: p.colors?.[0] || 'default', size: p.sizes?.[0] || 'N/A', qty: 1 };
+                    window.tempSelections[p.id] = { color: p.colors?.[0] || 'N/A', size: p.sizes?.[0] || 'N/A' };
                 }
 
-                // حساب نسبة الخصم
-                let discountTag = "";
-                if(p.oldPrice && p.oldPrice > p.price) {
-                    let perc = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
-                    discountTag = `<div class="discount-badge">خصم ${perc}%-</div>`;
+                // حساب علامة الخصم
+                let discountHTML = "";
+                if (p.oldPrice && p.oldPrice > p.price) {
+                    const percent = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
+                    discountHTML = `<div class="discount-tag">خصم ${percent}%-</div>`;
                 }
 
                 grid.innerHTML += `
                     <div class="product-card">
-                        ${discountTag}
-                        <div class="relative h-40 overflow-hidden rounded-xl mb-3">
+                        ${discountHTML}
+                        <div class="relative h-44 overflow-hidden rounded-xl mb-3">
                             <img src="${p.image[0]}" class="w-full h-full object-cover">
                         </div>
                         <h3 class="font-bold text-[11px] mb-1 truncate">${p.name}</h3>
                         
-                        <div class="flex items-center gap-2 mb-2">
+                        <div class="flex items-center gap-2 mb-3">
                             <span class="text-[#00BFFF] font-black text-sm">$${p.price}</span>
-                            ${p.oldPrice ? `<span class="text-gray-500 line-through text-[10px] font-bold">$${p.oldPrice}</span>` : ''}
+                            ${p.oldPrice ? `<span class="text-gray-500 line-through text-[10px]">$${p.oldPrice}</span>` : ''}
                         </div>
                         
-                        <div class="flex gap-1 mb-3">
+                        <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
                             ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
+                        
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            ${(p.sizes || []).map(s => `<button onclick="updateOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
+                        </div>
 
-                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-2.5 rounded-lg font-black text-[10px] uppercase">إضافة للسلة</button>
+                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-3 rounded-xl font-black text-[11px] uppercase active:scale-95 transition-transform">إضافة للحقيبة</button>
                     </div>`;
             });
             lucide.createIcons();
@@ -146,7 +149,7 @@
 
         window.updateOpt = (id, type, val, el) => {
             window.tempSelections[id][type] = val;
-            el.parentElement.querySelectorAll('.option-dot').forEach(b => b.classList.remove('selected'));
+            el.parentElement.querySelectorAll('.option-dot, .size-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
         };
 
@@ -165,13 +168,14 @@
             cart.forEach(item => {
                 total += item.price;
                 cont.innerHTML += `
-                <div class="flex gap-3 bg-white/5 p-3 rounded-xl items-center border border-white/5">
-                    <img src="${item.image[0]}" class="w-12 h-12 rounded-lg object-cover">
-                    <div class="flex-grow text-right">
-                        <p class="text-[10px] font-bold">${item.name}</p>
-                        <p class="text-[#00BFFF] font-black text-xs">$${item.price}</p>
+                <div class="flex gap-4 bg-white/5 p-4 rounded-2xl items-center border border-white/5">
+                    <img src="${item.image[0]}" class="w-16 h-16 rounded-xl object-cover">
+                    <div class="flex-grow">
+                        <p class="text-[11px] font-bold">${item.name}</p>
+                        <p class="text-[10px] text-gray-400">مقاس: ${item.size}</p>
+                        <p class="text-[#00BFFF] font-black text-sm">$${item.price}</p>
                     </div>
-                    <button onclick="removeFromCart(${item.cartId})" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                    <button onclick="removeFromCart(${item.cartId})" class="text-red-400 p-2"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
                 </div>`;
             });
             document.getElementById('cart-total').innerText = `$${total}`;
@@ -180,23 +184,32 @@
 
         window.removeFromCart = (cid) => { cart = cart.filter(x => x.cartId !== cid); updateCartUI(); };
 
+        window.handleSearch = () => {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const filtered = productsData.filter(p => p.name.toLowerCase().includes(term));
+            renderProducts(filtered);
+        };
+
         window.sendOrderToWhatsApp = () => {
-            let msg = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach(p => msg += `• ${p.name} (لون: ${p.color}) - $${p.price}\n`);
-            msg += `\n💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
+            if(!cart.length) return alert("السلة فارغة!");
+            let msg = "🚀 *طلب جديد من متجر Almaz*\n\n";
+            cart.forEach((p, i) => msg += `📦 *${i+1}. ${p.name}*\n   المقاس: ${p.size} | السعر: $${p.price}\n\n`);
+            msg += `💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`);
         };
 
+        // تشغيل المهام عند التحميل
         window.addEventListener('load', () => {
             renderProducts(productsData);
             setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800);
-            }, 1500);
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 800);
+            }, 2000);
         });
 
         document.getElementById('toggle-cart').onclick = () => document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         document.getElementById('close-cart').onclick = () => document.getElementById('cart-sidebar').classList.add('translate-x-full');
     </script>
 </body>
-</html>
+    </html>
