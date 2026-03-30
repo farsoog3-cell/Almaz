@@ -23,8 +23,8 @@
   {
     "id": 1774731341846,
     "name": "رجال اعمال",
-    "price": 5000,
-    "oldPrice": 10000,
+    "price": 500,
+    "oldPrice": 1000,
     "isNew": true,
     "category": "men_clothing",
     "image": [
@@ -35,9 +35,10 @@
       "#ff7f00"
     ],
     "sizes": [
-      "XL",
-      "XXL",
-      "3XL"
+      "S",
+      "M",
+      "L",
+      "XL"
     ]
   },
   {
