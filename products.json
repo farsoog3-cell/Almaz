@@ -210,17 +210,12 @@
     "oldPrice": null,
     "category": "men_clothing",
     "image": [
-      "https://i.ibb.co/gFSLwmdY/IMG-20260402-WA0041.jpg"
+      "https://i.ibb.co/gFSLwmdY/IMG-20260402-WA0041.jpg",
+      "https://i.ibb.co/F4z6TZK9/IMG-20260402-WA0043.jpg"
     ],
     "colors": [
       "#000000"
     ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ]
+    "sizes": []
   }
 ]
