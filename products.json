@@ -202,5 +202,25 @@
       "#ffffff"
     ],
     "sizes": []
+  },
+  {
+    "id": 1775264532033,
+    "name": "تيشرت",
+    "price": 40,
+    "oldPrice": null,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/gFSLwmdY/IMG-20260402-WA0041.jpg"
+    ],
+    "colors": [
+      "#000000"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ]
   }
 ]
