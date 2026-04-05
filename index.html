@@ -21,19 +21,8 @@
         .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
         @keyframes scrollText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        /* كرت المنتج - ترتيب مرن */
-        .product-card { 
-            background: var(--card-bg); 
-            border-radius: 1.5rem; 
-            border: 1px solid var(--border-color); 
-            padding: 12px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            height: 100%; /* لتوحيد الارتفاع */
-            transition: 0.4s;
-        }
-        
+        /* كرت المنتج */
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: 0.4s; }
         .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
         .old-price { text-decoration: line-through; color: var(--accent-red); font-size: 11px; margin-left: 8px; opacity: 0.8; }
         
@@ -43,15 +32,13 @@
         .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-size: 10px; transition: 0.2s; cursor: pointer; }
         .size-btn.selected { background: var(--primary); color: black; font-weight: 900; border-color: var(--primary); }
 
-        /* أزرار الكمية */
-        .qty-btn { background: rgba(255,255,255,0.1); width: 28px; height: 28px; display: flex; items-center; justify-content: center; border-radius: 8px; font-weight: bold; transition: 0.2s; }
-        .qty-btn:active { background: var(--primary); color: black; }
+        .qty-btn { background: rgba(255,255,255,0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; transition: 0.2s; }
 
-        /* السلايدر الرئيسي */
-        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #222; }
-        .slider-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
-        .slide { min-width: 100%; height: 100%; }
-        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        /* السلايدر الرئيسي - دعم الفيديو */
+        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #000; }
+        .slider-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; width: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
+        .slide img, .slide video { width: 100%; height: 100%; object-fit: cover; }
 
         .category-btn { white-space: nowrap; padding: 10px 24px; border-radius: 99px; font-size: 0.85rem; background: var(--card-bg); border: 1px solid var(--border-color); color: #aaa; transition: 0.3s; cursor: pointer; }
         .category-btn.active { background: var(--primary); color: black; font-weight: 900; }
@@ -61,13 +48,12 @@
         /* مودال الصور */
         #image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         #modal-main-img { max-height: 70vh; max-width: 100%; border-radius: 12px; object-fit: contain; }
-        .thumb-active { border: 2px solid var(--primary); opacity: 1 !important; }
     </style>
 </head>
 <body class="pt-12">
 
     <div id="splash-screen">
-        <div class="splash-logo italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <div class="splash-logo italic">AL<span>MAZ</span></div>
     </div>
 
     <div class="marquee"><div id="marquee-text" class="marquee-content">✨ أهلاً بكم في متجر الماس - جودة وفخامة لا تضاهى ✨</div></div>
@@ -103,7 +89,7 @@
         <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2 mb-28"></div>
     </main>
 
-    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[100] translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col">
+    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[100] translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col shadow-2xl">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-xl font-black">سلة المشتريات</h2>
             <button id="close-cart"><i data-lucide="x"></i></button>
@@ -149,6 +135,7 @@
             } catch (e) {}
         }
 
+        // --- وظيفة السلايدر المطورة لدعم الفيديو ---
         async function loadSlides() {
             try {
                 const res = await fetch('slides.json?v=' + Date.now());
@@ -156,14 +143,27 @@
                 if (slides?.length) {
                     const track = document.getElementById('slider-track');
                     document.getElementById('slider-section').classList.remove('hidden');
-                    track.innerHTML = slides.map(s => `<div class="slide"><img src="${s.image}"></div>`).join('');
+                    
+                    track.innerHTML = slides.map(s => {
+                        // التحقق هل الرابط فيديو أو تم حفظه كفيديو
+                        const isVideo = s.type === 'video' || s.image.match(/\.(mp4|webm|ogg)$/i);
+                        return `
+                        <div class="slide">
+                            ${isVideo ? 
+                                `<video src="${s.image}" class="w-full h-full object-cover" autoplay muted loop playsinline></video>` : 
+                                `<img src="${s.image}" class="w-full h-full object-cover" loading="lazy">`
+                            }
+                        </div>`;
+                    }).join('');
+
                     let cur = 0;
                     setInterval(() => {
                         cur = (cur + 1) % slides.length;
+                        // التحريك لليمين (لأن الاتجاه RTL)
                         track.style.transform = `translateX(${cur * 100}%)`;
-                    }, 4000);
+                    }, 5000);
                 }
-            } catch (e) {}
+            } catch (e) { console.error("Slider Load Error", e); }
         }
 
         async function loadProducts() {
@@ -177,28 +177,25 @@
         function renderProducts(data) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = data.map(p => {
-                // الحالة الافتراضية للمنتج إذا لم تكن موجودة
                 if (!window.tempSelections[p.id]) {
                     window.tempSelections[p.id] = { color: p.colors?.[0] || '', size: p.sizes?.[0] || '', qty: 1 };
                 }
                 const sel = window.tempSelections[p.id];
-                
-                let discountHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="discount-tag">خصم ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}%</div>` : "";
-                let priceHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="flex items-center gap-1"><span class="text-[#00BFFF] font-black text-lg">$${p.price}</span><span class="old-price">$${p.oldPrice}</span></div>` : `<span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>`;
-                
+                const discountHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="discount-tag">خصم ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}%</div>` : "";
                 const mainImg = Array.isArray(p.image) ? p.image[0] : p.image;
 
                 return `
                 <div class="product-card">
                     <div class="relative mb-3">
                         ${discountHTML}
-                        <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover rounded-xl shadow-md cursor-zoom-in">
+                        <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover rounded-xl shadow-md cursor-zoom-in" loading="lazy">
                     </div>
-                    
                     <div class="flex flex-col gap-1 flex-grow">
                         <h3 class="text-xs font-bold text-gray-200 line-clamp-1">${p.name}</h3>
-                        <div class="mb-2">${priceHTML}</div>
-                        
+                        <div class="mb-2">
+                             <span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>
+                             ${p.oldPrice ? `<span class="old-price">$${p.oldPrice}</span>` : ''}
+                        </div>
                         <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
                             ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${sel.color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
@@ -206,11 +203,9 @@
                             ${(p.sizes || []).map(s => `<button onclick="updateOpt(${p.id},'size','${s}',this)" class="size-btn ${sel.size===s?'selected':''}">${s}</button>`).join('')}
                         </div>
                     </div>
-
                     <div class="mt-auto">
                         <div class="flex items-center justify-between bg-black/20 p-2 rounded-xl mb-2">
-                            <span class="text-[10px] text-gray-400">الكمية:</span>
-                            <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-3 mx-auto">
                                 <button onclick="changeQty(${p.id}, -1)" class="qty-btn">-</button>
                                 <span id="qty-${p.id}" class="font-bold text-sm">${sel.qty}</span>
                                 <button onclick="changeQty(${p.id}, 1)" class="qty-btn">+</button>
@@ -223,13 +218,10 @@
             lucide.createIcons();
         }
 
-        // تغيير الكمية قبل الإضافة للسلة
         window.changeQty = (id, delta) => {
-            if (!window.tempSelections[id]) return;
-            let newQty = window.tempSelections[id].qty + delta;
-            if (newQty < 1) newQty = 1;
-            window.tempSelections[id].qty = newQty;
-            document.getElementById(`qty-${id}`).innerText = newQty;
+            let s = window.tempSelections[id];
+            s.qty = Math.max(1, s.qty + delta);
+            document.getElementById(`qty-${id}`).innerText = s.qty;
         };
 
         window.updateOpt = (id, type, val, el) => {
@@ -240,14 +232,10 @@
 
         window.addToCart = (id) => {
             const p = productsData.find(x => x.id === id);
-            const sel = window.tempSelections[id];
-            // إضافة المنتج مع الكمية المختارة
+            const sel = {...window.tempSelections[id]};
             cart.push({ ...p, ...sel, cartId: Date.now() });
             updateCartUI();
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
-            // إعادة تصفير الكمية في البطاقة بعد الإضافة (اختياري)
-            window.tempSelections[id].qty = 1;
-            document.getElementById(`qty-${id}`).innerText = 1;
         };
 
         function updateCartUI() {
@@ -256,13 +244,12 @@
             document.getElementById('cart-content').innerHTML = cart.map(item => {
                 total += (item.price * item.qty);
                 return `<div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5 items-center">
-                    <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-16 h-16 object-cover rounded-xl">
+                    <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-14 h-14 object-cover rounded-xl">
                     <div class="flex-grow">
-                        <h4 class="text-xs font-bold truncate w-32">${item.name}</h4>
-                        <p class="text-[10px] text-gray-500">${item.qty} × ${item.size} | ${item.color}</p>
-                        <p class="text-[#00BFFF] font-black">$${item.price * item.qty}</p>
+                        <h4 class="text-[11px] font-bold truncate w-32">${item.name}</h4>
+                        <p class="text-[10px] text-gray-500">${item.qty} × ${item.size} | <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:${item.color}"></span></p>
                     </div>
-                    <button onclick="removeItem(${item.cartId})" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                    <button onclick="removeItem(${item.cartId})" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>`;
             }).join('');
             document.getElementById('cart-total').innerText = `$${total}`;
@@ -279,7 +266,6 @@
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(text)}`);
         };
 
-        // مودال الصور
         window.openImageModal = (id) => {
             const p = productsData.find(x => x.id === id);
             currentModalImages = Array.isArray(p.image) ? p.image : [p.image];
@@ -293,16 +279,13 @@
             document.getElementById('modal-next').classList.toggle('hidden', currentModalImages.length <= 1);
             document.getElementById('modal-prev').classList.toggle('hidden', currentModalImages.length <= 1);
             document.getElementById('modal-thumbs').innerHTML = currentModalImages.map((img, idx) => `
-                <img src="${img}" onclick="setModalIndex(${idx})" class="w-16 h-16 object-cover rounded-md opacity-50 cursor-pointer ${idx === currentModalIndex ? 'thumb-active' : ''}">
+                <img src="${img}" onclick="setModalIndex(${idx})" class="w-12 h-12 object-cover rounded-md opacity-40 cursor-pointer ${idx === currentModalIndex ? 'opacity-100 border border-[#00BFFF]' : ''}">
             `).join('');
             lucide.createIcons();
         }
 
         window.setModalIndex = (idx) => { currentModalIndex = idx; updateModalUI(); };
         window.closeImageModal = () => document.getElementById('image-modal').style.display = 'none';
-
-        document.getElementById('modal-next').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex + 1) % currentModalImages.length; updateModalUI(); };
-        document.getElementById('modal-prev').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length; updateModalUI(); };
 
         window.handleSearch = () => {
             const q = document.getElementById('search-input').value.toLowerCase();
