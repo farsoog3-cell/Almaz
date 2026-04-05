@@ -8,7 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root { --primary: #00BFFF; --bg-dark: #1a1c1e; --card-bg: #26292d; --border-color: rgba(255,255,255,0.1); --accent-red: #ff4d4d; }
+        :root { 
+            --primary: #00BFFF; 
+            --bg-dark: #1a1c1e; 
+            --card-bg: #26292d; 
+            --border-color: rgba(255,255,255,0.1); 
+            --accent-red: #ff4d4d; 
+        }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
         /* شاشة التحميل */
@@ -16,52 +22,43 @@
         .splash-logo { font-size: 3rem; font-weight: 900; color: white; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
-        /* شريط الإعلانات */
+        /* شريط الإعلانات - من اليسار إلى اليمين */
         .marquee { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; overflow: hidden; font-size: 0.75rem; font-weight: 900; color: black; }
-        .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
-        @keyframes scrollText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
-
-        /* كرت المنتج - ترتيب مرن */
-        .product-card { 
-            background: var(--card-bg); 
-            border-radius: 1.5rem; 
-            border: 1px solid var(--border-color); 
-            padding: 12px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            height: 100%; /* لتوحيد الارتفاع */
-            transition: 0.4s;
+        .marquee-content { white-space: nowrap; animation: scrollTextLeftToRight 25s linear infinite; display: inline-block; }
+        @keyframes scrollTextLeftToRight { 
+            from { transform: translateX(-100%); } 
+            to { transform: translateX(100%); } 
         }
-        
-        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
-        .old-price { text-decoration: line-through; color: var(--accent-red); font-size: 11px; margin-left: 8px; opacity: 0.8; }
-        
-        .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
-        .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
-        
-        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-size: 10px; transition: 0.2s; cursor: pointer; }
-        .size-btn.selected { background: var(--primary); color: black; font-weight: 900; border-color: var(--primary); }
 
-        /* أزرار الكمية */
-        .qty-btn { background: rgba(255,255,255,0.1); width: 28px; height: 28px; display: flex; items-center; justify-content: center; border-radius: 8px; font-weight: bold; transition: 0.2s; }
-        .qty-btn:active { background: var(--primary); color: black; }
-
-        /* السلايدر الرئيسي */
-        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #222; }
-        .slider-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
-        .slide { min-width: 100%; height: 100%; }
+        /* حاوية السلايدر - نظام الانتقالات */
+        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #111; }
+        .slider-track { position: relative; width: 100%; height: 100%; }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); visibility: hidden; }
+        .slide.active { opacity: 1; visibility: visible; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        .category-btn { white-space: nowrap; padding: 10px 24px; border-radius: 99px; font-size: 0.85rem; background: var(--card-bg); border: 1px solid var(--border-color); color: #aaa; transition: 0.3s; cursor: pointer; }
-        .category-btn.active { background: var(--primary); color: black; font-weight: 900; }
+        /* تأثيرات السلايدر (يتم تفعيلها عبر JS) */
+        .effect-fade .slide { transform: scale(1); } /* تلاشي */
+        .effect-zoom .slide { transform: scale(1.2); } /* تكبير */
+        .effect-zoom .slide.active { transform: scale(1); }
+        .effect-slide .slide { transform: translateX(100%); } /* انزلاق ناعم */
+        .effect-slide .slide.active { transform: translateX(0); }
+
+        /* كرت المنتج */
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; height: 100%; position: relative; }
+        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
+        .old-price { text-decoration: line-through; color: var(--accent-red); font-size: 11px; margin-left: 8px; opacity: 0.8; }
+        .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; }
+        .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
+        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-size: 10px; cursor: pointer; }
+        .size-btn.selected { background: var(--primary); color: black; font-weight: 900; }
+        .qty-btn { background: rgba(255,255,255,0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
         /* مودال الصور */
         #image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         #modal-main-img { max-height: 70vh; max-width: 100%; border-radius: 12px; object-fit: contain; }
-        .thumb-active { border: 2px solid var(--primary); opacity: 1 !important; }
     </style>
 </head>
 <body class="pt-12">
@@ -70,7 +67,7 @@
         <div class="splash-logo italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
     </div>
 
-    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ أهلاً بكم في متجر الماس - جودة وفخامة لا تضاهى ✨</div></div>
+    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ عروض حصرية لفترة محدودة - متجر الماس ✨</div></div>
 
     <header class="mx-auto px-4 py-3 sticky top-8 z-50 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center max-w-[94%] shadow-2xl">
         <div class="text-xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
@@ -83,13 +80,12 @@
     <div class="px-5 mt-6">
         <div class="relative">
             <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
-            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50 transition-all" placeholder="ابحث عن منتج..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50" placeholder="ابحث عن منتج..." oninput="handleSearch()">
         </div>
     </div>
 
     <section id="slider-section" class="hidden">
-        <div class="slider-container">
-            <div id="slider-track" class="slider-track"></div>
+        <div id="slider-container" class="slider-container effect-slide"> <div id="slider-track" class="slider-track"></div>
         </div>
     </section>
 
@@ -128,7 +124,12 @@
     <script>
         let productsData = [], cart = [];
         let currentModalImages = [], currentModalIndex = 0;
+        let sliderIndex = 0;
         window.tempSelections = {};
+
+        // --- إعدادات السلايدر (يمكنك تغيير التأثير هنا) ---
+        // الخيارات: 'effect-fade' , 'effect-zoom' , 'effect-slide'
+        const SLIDER_EFFECT = 'effect-slide'; 
 
         async function init() {
             try {
@@ -155,13 +156,22 @@
                 const slides = await res.json();
                 if (slides?.length) {
                     const track = document.getElementById('slider-track');
+                    const container = document.getElementById('slider-container');
+                    container.className = `slider-container ${SLIDER_EFFECT}`; // تطبيق التأثير المختار
+                    
                     document.getElementById('slider-section').classList.remove('hidden');
-                    track.innerHTML = slides.map(s => `<div class="slide"><img src="${s.image}"></div>`).join('');
-                    let cur = 0;
+                    track.innerHTML = slides.map((s, idx) => `
+                        <div class="slide ${idx === 0 ? 'active' : ''}">
+                            <img src="${s.image}" alt="Slide">
+                        </div>
+                    `).join('');
+
                     setInterval(() => {
-                        cur = (cur + 1) % slides.length;
-                        track.style.transform = `translateX(${cur * 100}%)`;
-                    }, 4000);
+                        const allSlides = document.querySelectorAll('.slide');
+                        allSlides[sliderIndex].classList.remove('active');
+                        sliderIndex = (sliderIndex + 1) % allSlides.length;
+                        allSlides[sliderIndex].classList.add('active');
+                    }, 5000);
                 }
             } catch (e) {}
         }
@@ -177,28 +187,22 @@
         function renderProducts(data) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = data.map(p => {
-                // الحالة الافتراضية للمنتج إذا لم تكن موجودة
                 if (!window.tempSelections[p.id]) {
                     window.tempSelections[p.id] = { color: p.colors?.[0] || '', size: p.sizes?.[0] || '', qty: 1 };
                 }
                 const sel = window.tempSelections[p.id];
-                
-                let discountHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="discount-tag">خصم ${Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100)}%</div>` : "";
-                let priceHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="flex items-center gap-1"><span class="text-[#00BFFF] font-black text-lg">$${p.price}</span><span class="old-price">$${p.oldPrice}</span></div>` : `<span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>`;
-                
                 const mainImg = Array.isArray(p.image) ? p.image[0] : p.image;
+                let priceHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="flex items-center gap-1"><span class="text-[#00BFFF] font-black text-lg">$${p.price}</span><span class="old-price">$${p.oldPrice}</span></div>` : `<span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>`;
 
                 return `
                 <div class="product-card">
                     <div class="relative mb-3">
-                        ${discountHTML}
+                        ${p.oldPrice ? `<div class="discount-tag">خصم</div>` : ''}
                         <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover rounded-xl shadow-md cursor-zoom-in">
                     </div>
-                    
                     <div class="flex flex-col gap-1 flex-grow">
                         <h3 class="text-xs font-bold text-gray-200 line-clamp-1">${p.name}</h3>
                         <div class="mb-2">${priceHTML}</div>
-                        
                         <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
                             ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${sel.color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
@@ -206,7 +210,6 @@
                             ${(p.sizes || []).map(s => `<button onclick="updateOpt(${p.id},'size','${s}',this)" class="size-btn ${sel.size===s?'selected':''}">${s}</button>`).join('')}
                         </div>
                     </div>
-
                     <div class="mt-auto">
                         <div class="flex items-center justify-between bg-black/20 p-2 rounded-xl mb-2">
                             <span class="text-[10px] text-gray-400">الكمية:</span>
@@ -223,10 +226,8 @@
             lucide.createIcons();
         }
 
-        // تغيير الكمية قبل الإضافة للسلة
         window.changeQty = (id, delta) => {
-            if (!window.tempSelections[id]) return;
-            let newQty = window.tempSelections[id].qty + delta;
+            let newQty = (window.tempSelections[id].qty || 1) + delta;
             if (newQty < 1) newQty = 1;
             window.tempSelections[id].qty = newQty;
             document.getElementById(`qty-${id}`).innerText = newQty;
@@ -240,14 +241,9 @@
 
         window.addToCart = (id) => {
             const p = productsData.find(x => x.id === id);
-            const sel = window.tempSelections[id];
-            // إضافة المنتج مع الكمية المختارة
-            cart.push({ ...p, ...sel, cartId: Date.now() });
+            cart.push({ ...p, ...window.tempSelections[id], cartId: Date.now() });
             updateCartUI();
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
-            // إعادة تصفير الكمية في البطاقة بعد الإضافة (اختياري)
-            window.tempSelections[id].qty = 1;
-            document.getElementById(`qty-${id}`).innerText = 1;
         };
 
         function updateCartUI() {
@@ -259,7 +255,7 @@
                     <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-16 h-16 object-cover rounded-xl">
                     <div class="flex-grow">
                         <h4 class="text-xs font-bold truncate w-32">${item.name}</h4>
-                        <p class="text-[10px] text-gray-500">${item.qty} × ${item.size} | ${item.color}</p>
+                        <p class="text-[10px] text-gray-500">${item.qty} × ${item.size}</p>
                         <p class="text-[#00BFFF] font-black">$${item.price * item.qty}</p>
                     </div>
                     <button onclick="removeItem(${item.cartId})" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
@@ -274,12 +270,11 @@
         window.sendOrder = () => {
             if(!cart.length) return;
             let text = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach((it, i) => text += `${i+1}. ${it.name}\n   الكمية: ${it.qty} | المقاس: ${it.size} | اللون: ${it.color}\n   السعر: $${it.price * it.qty}\n\n`);
-            text += `💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
+            cart.forEach((it, i) => text += `${i+1}. ${it.name} [الكمية: ${it.qty}]\n`);
+            text += `\n💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
             window.open(`https://wa.me/905394753724?text=${encodeURIComponent(text)}`);
         };
 
-        // مودال الصور
         window.openImageModal = (id) => {
             const p = productsData.find(x => x.id === id);
             currentModalImages = Array.isArray(p.image) ? p.image : [p.image];
@@ -293,14 +288,13 @@
             document.getElementById('modal-next').classList.toggle('hidden', currentModalImages.length <= 1);
             document.getElementById('modal-prev').classList.toggle('hidden', currentModalImages.length <= 1);
             document.getElementById('modal-thumbs').innerHTML = currentModalImages.map((img, idx) => `
-                <img src="${img}" onclick="setModalIndex(${idx})" class="w-16 h-16 object-cover rounded-md opacity-50 cursor-pointer ${idx === currentModalIndex ? 'thumb-active' : ''}">
+                <img src="${img}" onclick="setModalIndex(${idx})" class="w-16 h-16 object-cover rounded-md opacity-50 cursor-pointer ${idx === currentModalIndex ? 'border-2 border-[#00BFFF] opacity-100' : ''}">
             `).join('');
             lucide.createIcons();
         }
 
         window.setModalIndex = (idx) => { currentModalIndex = idx; updateModalUI(); };
         window.closeImageModal = () => document.getElementById('image-modal').style.display = 'none';
-
         document.getElementById('modal-next').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex + 1) % currentModalImages.length; updateModalUI(); };
         document.getElementById('modal-prev').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length; updateModalUI(); };
 
