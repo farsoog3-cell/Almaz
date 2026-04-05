@@ -3,316 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Almaz Store | المتجر المتكامل</title>
+    <title>Almaz Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root { 
-            --primary: #00BFFF; 
-            --bg-dark: #1a1c1e; 
-            --card-bg: #26292d; 
-            --border-color: rgba(255,255,255,0.1); 
-            --accent-red: #ff4d4d; 
-        }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
-        
-        /* شاشة التحميل */
-        #splash-screen { position: fixed; inset: 0; background: #111; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
-        .splash-logo { font-size: 3rem; font-weight: 900; color: white; }
-        .splash-logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        :root { --primary: #00BFFF; --bg-dark: #1a1c1e; --card-bg: #26292d; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg-dark); color: white; margin: 0; overflow-x: hidden; }
 
-        /* شريط الإعلانات - من اليسار إلى اليمين */
-        .marquee { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; overflow: hidden; font-size: 0.75rem; font-weight: 900; color: black; }
-        .marquee-content { white-space: nowrap; animation: scrollTextLeftToRight 25s linear infinite; display: inline-block; }
-        @keyframes scrollTextLeftToRight { 
+        /* شريط الإعلان من اليسار لليمن */
+        .marquee { background: var(--primary); height: 30px; position: fixed; top: 0; width: 100%; z-index: 1000; display: flex; align-items: center; overflow: hidden; }
+        .marquee-content { white-space: nowrap; animation: scrollLeftToRight 20s linear infinite; color: black; font-weight: 900; font-size: 13px; }
+        @keyframes scrollLeftToRight { 
             from { transform: translateX(-100%); } 
             to { transform: translateX(100%); } 
         }
 
-        /* حاوية السلايدر - نظام الانتقالات */
-        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #111; }
-        .slider-track { position: relative; width: 100%; height: 100%; }
-        .slide { position: absolute; inset: 0; opacity: 0; transition: all 1s cubic-bezier(0.4, 0, 0.2, 1); visibility: hidden; }
-        .slide.active { opacity: 1; visibility: visible; }
+        /* السلايدر بنظام التلاشي (Fade) - الأكثر استقراراً */
+        .slider-container { width: 92%; margin: 20px auto; position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden; background: #000; border: 1px solid rgba(255,255,255,0.1); }
+        .slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.2s ease-in-out; }
+        .slide.active { opacity: 1; z-index: 10; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* تأثيرات السلايدر (يتم تفعيلها عبر JS) */
-        .effect-fade .slide { transform: scale(1); } /* تلاشي */
-        .effect-zoom .slide { transform: scale(1.2); } /* تكبير */
-        .effect-zoom .slide.active { transform: scale(1); }
-        .effect-slide .slide { transform: translateX(100%); } /* انزلاق ناعم */
-        .effect-slide .slide.active { transform: translateX(0); }
+        /* الكروت وتنسيقها */
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; }
+        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        .product-card { background: var(--card-bg); border-radius: 20px; padding: 10px; display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.05); height: 100%; }
+        .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; cursor: zoom-in; }
+        
+        .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+        .option-dot.selected { border-color: white; box-shadow: 0 0 5px var(--primary); }
+        
+        .size-btn { background: rgba(255,255,255,0.05); padding: 5px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        .size-btn.selected { background: var(--primary); color: black; font-weight: bold; }
 
-        /* كرت المنتج */
-        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; height: 100%; position: relative; }
-        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
-        .old-price { text-decoration: line-through; color: var(--accent-red); font-size: 11px; margin-left: 8px; opacity: 0.8; }
-        .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; flex-shrink: 0; }
-        .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
-        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-size: 10px; cursor: pointer; }
-        .size-btn.selected { background: var(--primary); color: black; font-weight: 900; }
-        .qty-btn { background: rgba(255,255,255,0.1); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; font-weight: bold; }
+        .qty-control { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.2); border-radius: 10px; padding: 5px 10px; margin-top: 10px; }
+        .qty-btn { width: 25px; height: 25px; background: rgba(255,255,255,0.1); border-radius: 5px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* المودال */
+        #image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 5000; display: none; align-items: center; justify-content: center; }
         
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* مودال الصور */
-        #image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
-        #modal-main-img { max-height: 70vh; max-width: 100%; border-radius: 12px; object-fit: contain; }
+        .hidden { display: none !important; }
+        .category-btn.active { background: var(--primary); color: black; font-weight: bold; }
     </style>
 </head>
-<body class="pt-12">
+<body class="pt-10">
 
-    <div id="splash-screen">
-        <div class="splash-logo italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+    <div class="marquee">
+        <div id="marquee-text" class="marquee-content">✨ أهلاً بكم في متجر المظ - عروض حصرية وتوصيل سريع ✨</div>
     </div>
 
-    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ عروض حصرية لفترة محدودة - متجر الماس ✨</div></div>
-
-    <header class="mx-auto px-4 py-3 sticky top-8 z-50 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center max-w-[94%] shadow-2xl">
-        <div class="text-xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
-        <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full">
-            <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5"></i>
+    <header class="flex justify-between items-center px-5 py-4 sticky top-10 bg-[#1a1c1e]/80 backdrop-blur-md z-[500]">
+        <div class="text-2xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <button onclick="toggleCart()" class="relative p-2 bg-white/5 rounded-full">
+            <i data-lucide="shopping-cart" class="text-[#00BFFF]"></i>
             <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
     </header>
 
-    <div class="px-5 mt-6">
-        <div class="relative">
-            <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
-            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50" placeholder="ابحث عن منتج..." oninput="handleSearch()">
-        </div>
-    </div>
-
-    <section id="slider-section" class="hidden">
-        <div id="slider-container" class="slider-container effect-slide"> <div id="slider-track" class="slider-track"></div>
-        </div>
+    <section id="slider-section" class="slider-container">
+        <div id="slider-track"></div>
     </section>
 
-    <main class="px-4">
-        <div class="category-scroll flex gap-2 overflow-x-auto no-scrollbar py-6">
-            <button onclick="filterProducts('all', event)" class="category-btn active">الكل</button>
-            <button onclick="filterProducts('men_shoes', event)" class="category-btn">أحذية رجالي</button>
-            <button onclick="filterProducts('women_shoes', event)" class="category-btn">أحذية نسائي</button>
-            <button onclick="filterProducts('men_clothing', event)" class="category-btn">ملابس رجالي</button>
-        </div>
-        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2 mb-28"></div>
-    </main>
-
-    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[100] translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-black">سلة المشتريات</h2>
-            <button id="close-cart"><i data-lucide="x"></i></button>
-        </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
-        <div class="pt-6 border-t border-white/10 mt-4">
-            <div class="flex justify-between text-xl font-black mb-4"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
-            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-2xl font-black active:scale-95 transition-transform">تأكيد عبر واتساب</button>
+    <div class="px-5 mb-5">
+        <input type="text" id="search-input" oninput="handleSearch()" placeholder="ابحث عن منتج..." class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl outline-none focus:border-[#00BFFF]">
+        <div class="flex gap-2 overflow-x-auto py-4 no-scrollbar">
+            <button onclick="filterProducts('all', event)" class="category-btn active px-6 py-2 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">الكل</button>
+            <button onclick="filterProducts('men_shoes', event)" class="category-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">أحذية رجالي</button>
+            <button onclick="filterProducts('women_shoes', event)" class="category-btn px-6 py-2 rounded-full bg-white/5 border border-white/10 whitespace-nowrap">أحذية نسائي</button>
         </div>
     </div>
 
-    <div id="image-modal">
-        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white bg-white/10 p-2 rounded-full z-[210]"><i data-lucide="x"></i></button>
-        <div class="relative flex items-center justify-center w-full">
-            <button id="modal-prev" class="absolute left-2 p-3 bg-white/10 rounded-full text-white z-[210] hidden"><i data-lucide="chevron-left"></i></button>
-            <img id="modal-main-img" src="">
-            <button id="modal-next" class="absolute right-2 p-3 bg-white/10 rounded-full text-white z-[210] hidden"><i data-lucide="chevron-right"></i></button>
+    <div id="products-grid" class="product-grid"></div>
+
+    <div id="image-modal" onclick="closeImageModal()">
+        <button class="absolute top-5 right-5 text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <img id="modal-img" class="max-w-[90%] max-h-[80vh] rounded-lg shadow-2xl">
+    </div>
+
+    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[2000] translate-x-full transition-transform border-r border-white/10 p-6 flex flex-col">
+        <div class="flex justify-between items-center mb-5">
+            <h2 class="text-xl font-bold">سلة التسوق</h2>
+            <button onclick="toggleCart()"><i data-lucide="x"></i></button>
         </div>
-        <div id="modal-thumbs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar max-w-full px-4"></div>
+        <div id="cart-items" class="flex-grow overflow-y-auto space-y-4"></div>
+        <div class="pt-5 border-t border-white/10">
+            <div class="flex justify-between text-xl font-bold mb-4"><span>الإجمالي:</span><span id="cart-total">$0</span></div>
+            <button onclick="sendWhatsApp()" class="w-full bg-[#00BFFF] text-black py-4 rounded-xl font-bold">طلب عبر واتساب</button>
+        </div>
     </div>
 
     <script>
-        let productsData = [], cart = [];
-        let currentModalImages = [], currentModalIndex = 0;
-        let sliderIndex = 0;
-        window.tempSelections = {};
+        let products = [], cart = [], slides = [];
+        window.selections = {};
 
-        // --- إعدادات السلايدر (يمكنك تغيير التأثير هنا) ---
-        // الخيارات: 'effect-fade' , 'effect-zoom' , 'effect-slide'
-        const SLIDER_EFFECT = 'effect-slide'; 
-
-        async function init() {
+        async function start() {
             try {
-                await Promise.all([loadSettings(), loadSlides(), loadProducts()]);
-            } finally {
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.opacity = '0';
-                    setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800);
-                }, 1000);
-            }
+                const [pRes, sRes] = await Promise.all([
+                    fetch('products.json?v='+Date.now()),
+                    fetch('slides.json?v='+Date.now())
+                ]);
+                products = await pRes.json();
+                slides = await sRes.json();
+                
+                renderSlides();
+                renderProducts(products);
+                lucide.createIcons();
+            } catch(e) { console.error("Data error", e); }
         }
 
-        async function loadSettings() {
-            try {
-                const res = await fetch('settings.json?v=' + Date.now());
-                const data = await res.json();
-                if(data.marquee) document.getElementById('marquee-text').innerText = data.marquee;
-            } catch (e) {}
-        }
-
-        async function loadSlides() {
-            try {
-                const res = await fetch('slides.json?v=' + Date.now());
-                const slides = await res.json();
-                if (slides?.length) {
-                    const track = document.getElementById('slider-track');
-                    const container = document.getElementById('slider-container');
-                    container.className = `slider-container ${SLIDER_EFFECT}`; // تطبيق التأثير المختار
-                    
-                    document.getElementById('slider-section').classList.remove('hidden');
-                    track.innerHTML = slides.map((s, idx) => `
-                        <div class="slide ${idx === 0 ? 'active' : ''}">
-                            <img src="${s.image}" alt="Slide">
-                        </div>
-                    `).join('');
-
-                    setInterval(() => {
-                        const allSlides = document.querySelectorAll('.slide');
-                        allSlides[sliderIndex].classList.remove('active');
-                        sliderIndex = (sliderIndex + 1) % allSlides.length;
-                        allSlides[sliderIndex].classList.add('active');
-                    }, 5000);
-                }
-            } catch (e) {}
-        }
-
-        async function loadProducts() {
-            try {
-                const res = await fetch('products.json?v=' + Date.now());
-                productsData = await res.json();
-                renderProducts(productsData);
-            } catch (e) {}
+        function renderSlides() {
+            const track = document.getElementById('slider-track');
+            track.innerHTML = slides.map((s, i) => `
+                <div class="slide ${i === 0 ? 'active' : ''}"><img src="${s.image}"></div>
+            `).join('');
+            
+            let cur = 0;
+            setInterval(() => {
+                const items = document.querySelectorAll('.slide');
+                if(!items.length) return;
+                items[cur].classList.remove('active');
+                cur = (cur + 1) % items.length;
+                items[cur].classList.add('active');
+            }, 4000);
         }
 
         function renderProducts(data) {
             const grid = document.getElementById('products-grid');
             grid.innerHTML = data.map(p => {
-                if (!window.tempSelections[p.id]) {
-                    window.tempSelections[p.id] = { color: p.colors?.[0] || '', size: p.sizes?.[0] || '', qty: 1 };
-                }
-                const sel = window.tempSelections[p.id];
-                const mainImg = Array.isArray(p.image) ? p.image[0] : p.image;
-                let priceHTML = (p.oldPrice && p.oldPrice > p.price) ? `<div class="flex items-center gap-1"><span class="text-[#00BFFF] font-black text-lg">$${p.price}</span><span class="old-price">$${p.oldPrice}</span></div>` : `<span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>`;
-
+                if(!window.selections[p.id]) window.selections[p.id] = { color: p.colors?.[0]||'', size: p.sizes?.[0]||'', qty: 1 };
+                const s = window.selections[p.id];
+                
                 return `
                 <div class="product-card">
-                    <div class="relative mb-3">
-                        ${p.oldPrice ? `<div class="discount-tag">خصم</div>` : ''}
-                        <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover rounded-xl shadow-md cursor-zoom-in">
+                    <img src="${Array.isArray(p.image)?p.image[0]:p.image}" onclick="openImg('${Array.isArray(p.image)?p.image[0]:p.image}')" class="product-img">
+                    <h3 class="text-xs font-bold mt-3 line-clamp-1">${p.name}</h3>
+                    <div class="text-[#00BFFF] font-black text-lg mt-1">$${p.price}</div>
+                    
+                    <div class="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
+                        ${(p.colors||[]).map(c => `<div onclick="updateSel(${p.id},'color','${c}',this)" class="option-dot ${s.color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                     </div>
-                    <div class="flex flex-col gap-1 flex-grow">
-                        <h3 class="text-xs font-bold text-gray-200 line-clamp-1">${p.name}</h3>
-                        <div class="mb-2">${priceHTML}</div>
-                        <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
-                            ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${sel.color===c?'selected':''}" style="background:${c}"></div>`).join('')}
-                        </div>
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            ${(p.sizes || []).map(s => `<button onclick="updateOpt(${p.id},'size','${s}',this)" class="size-btn ${sel.size===s?'selected':''}">${s}</button>`).join('')}
-                        </div>
+                    
+                    <div class="flex flex-wrap gap-1 mt-3">
+                        ${(p.sizes||[]).map(sz => `<button onclick="updateSel(${p.id},'size','${sz}',this)" class="size-btn ${s.size===sz?'selected':''}">${sz}</button>`).join('')}
                     </div>
-                    <div class="mt-auto">
-                        <div class="flex items-center justify-between bg-black/20 p-2 rounded-xl mb-2">
-                            <span class="text-[10px] text-gray-400">الكمية:</span>
-                            <div class="flex items-center gap-3">
-                                <button onclick="changeQty(${p.id}, -1)" class="qty-btn">-</button>
-                                <span id="qty-${p.id}" class="font-bold text-sm">${sel.qty}</span>
-                                <button onclick="changeQty(${p.id}, 1)" class="qty-btn">+</button>
-                            </div>
-                        </div>
-                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-3 rounded-xl text-[11px] font-black active:scale-95 transition-all">إضافة للسلة</button>
+
+                    <div class="qty-control">
+                        <button onclick="changeQty(${p.id},-1)" class="qty-btn">-</button>
+                        <span id="qty-${p.id}" class="text-sm font-bold">${s.qty}</span>
+                        <button onclick="changeQty(${p.id},1)" class="qty-btn">+</button>
                     </div>
+
+                    <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-3 rounded-xl mt-3 text-xs font-bold">إضافة للسلة</button>
                 </div>`;
             }).join('');
-            lucide.createIcons();
         }
 
-        window.changeQty = (id, delta) => {
-            let newQty = (window.tempSelections[id].qty || 1) + delta;
-            if (newQty < 1) newQty = 1;
-            window.tempSelections[id].qty = newQty;
-            document.getElementById(`qty-${id}`).innerText = newQty;
-        };
-
-        window.updateOpt = (id, type, val, el) => {
-            window.tempSelections[id][type] = val;
-            el.parentElement.querySelectorAll(el.tagName === 'DIV' ? '.option-dot' : '.size-btn').forEach(b => b.classList.remove('selected'));
+        window.updateSel = (id, key, val, el) => {
+            window.selections[id][key] = val;
+            el.parentElement.querySelectorAll('.selected').forEach(x => x.classList.remove('selected'));
             el.classList.add('selected');
         };
 
+        window.changeQty = (id, d) => {
+            window.selections[id].qty = Math.max(1, window.selections[id].qty + d);
+            document.getElementById(`qty-${id}`).innerText = window.selections[id].qty;
+        };
+
         window.addToCart = (id) => {
-            const p = productsData.find(x => x.id === id);
-            cart.push({ ...p, ...window.tempSelections[id], cartId: Date.now() });
+            const p = products.find(x => x.id === id);
+            cart.push({...p, ...window.selections[id], cartId: Date.now()});
             updateCartUI();
-            document.getElementById('cart-sidebar').classList.remove('translate-x-full');
+            toggleCart(true);
         };
 
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             let total = 0;
-            document.getElementById('cart-content').innerHTML = cart.map(item => {
+            document.getElementById('cart-items').innerHTML = cart.map(item => {
                 total += (item.price * item.qty);
-                return `<div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5 items-center">
-                    <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-16 h-16 object-cover rounded-xl">
-                    <div class="flex-grow">
-                        <h4 class="text-xs font-bold truncate w-32">${item.name}</h4>
-                        <p class="text-[10px] text-gray-500">${item.qty} × ${item.size}</p>
-                        <p class="text-[#00BFFF] font-black">$${item.price * item.qty}</p>
+                return `<div class="flex gap-3 bg-white/5 p-3 rounded-xl items-center">
+                    <img src="${Array.isArray(item.image)?item.image[0]:item.image}" class="w-12 h-12 rounded-lg object-cover">
+                    <div class="flex-grow text-[11px]">
+                        <div class="font-bold">${item.name}</div>
+                        <div class="text-gray-400">الكمية: ${item.qty} | المقاس: ${item.size}</div>
                     </div>
-                    <button onclick="removeItem(${item.cartId})" class="text-red-500 p-2"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+                    <button onclick="remove(${item.cartId})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
                 </div>`;
             }).join('');
             document.getElementById('cart-total').innerText = `$${total}`;
             lucide.createIcons();
         }
 
-        window.removeItem = (cid) => { cart = cart.filter(x => x.cartId !== cid); updateCartUI(); };
+        window.remove = (cid) => { cart = cart.filter(x => x.cartId !== cid); updateCartUI(); };
 
-        window.sendOrder = () => {
-            if(!cart.length) return;
-            let text = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach((it, i) => text += `${i+1}. ${it.name} [الكمية: ${it.qty}]\n`);
-            text += `\n💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
-            window.open(`https://wa.me/905394753724?text=${encodeURIComponent(text)}`);
+        window.toggleCart = (show) => {
+            const side = document.getElementById('cart-sidebar');
+            if(show === true) side.classList.remove('translate-x-full');
+            else if(show === false) side.classList.add('translate-x-full');
+            else side.classList.toggle('translate-x-full');
         };
 
-        window.openImageModal = (id) => {
-            const p = productsData.find(x => x.id === id);
-            currentModalImages = Array.isArray(p.image) ? p.image : [p.image];
-            currentModalIndex = 0;
+        window.openImg = (src) => {
+            document.getElementById('modal-img').src = src;
             document.getElementById('image-modal').style.display = 'flex';
-            updateModalUI();
         };
 
-        function updateModalUI() {
-            document.getElementById('modal-main-img').src = currentModalImages[currentModalIndex];
-            document.getElementById('modal-next').classList.toggle('hidden', currentModalImages.length <= 1);
-            document.getElementById('modal-prev').classList.toggle('hidden', currentModalImages.length <= 1);
-            document.getElementById('modal-thumbs').innerHTML = currentModalImages.map((img, idx) => `
-                <img src="${img}" onclick="setModalIndex(${idx})" class="w-16 h-16 object-cover rounded-md opacity-50 cursor-pointer ${idx === currentModalIndex ? 'border-2 border-[#00BFFF] opacity-100' : ''}">
-            `).join('');
-            lucide.createIcons();
-        }
-
-        window.setModalIndex = (idx) => { currentModalIndex = idx; updateModalUI(); };
         window.closeImageModal = () => document.getElementById('image-modal').style.display = 'none';
-        document.getElementById('modal-next').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex + 1) % currentModalImages.length; updateModalUI(); };
-        document.getElementById('modal-prev').onclick = (e) => { e.stopPropagation(); currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length; updateModalUI(); };
 
         window.handleSearch = () => {
             const q = document.getElementById('search-input').value.toLowerCase();
-            renderProducts(productsData.filter(p => p.name.toLowerCase().includes(q)));
+            renderProducts(products.filter(p => p.name.toLowerCase().includes(q)));
         };
 
         window.filterProducts = (cat, e) => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             e.currentTarget.classList.add('active');
-            renderProducts(cat === 'all' ? productsData : productsData.filter(p => p.category === cat));
+            renderProducts(cat === 'all' ? products : products.filter(p => p.category === cat));
         };
 
-        document.getElementById('toggle-cart').onclick = () => document.getElementById('cart-sidebar').classList.remove('translate-x-full');
-        document.getElementById('close-cart').onclick = () => document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        window.sendWhatsApp = () => {
+            if(!cart.length) return;
+            let msg = "🚀 *طلب جديد من متجر الماس*\n\n";
+            cart.forEach((it, i) => msg += `${i+1}. ${it.name}\nالكمية: ${it.qty} | المقاس: ${it.size}\n\n`);
+            msg += `💰 الإجمالي: ${document.getElementById('cart-total').innerText}`;
+            window.open(`https://wa.me/905394753724?text=${encodeURIComponent(msg)}`);
+        };
 
-        init();
+        start();
     </script>
 </body>
 </html>
