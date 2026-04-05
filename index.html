@@ -11,50 +11,49 @@
         :root { --primary: #00BFFF; --bg-dark: #1a1c1e; --card-bg: #26292d; --border-color: rgba(255,255,255,0.1); --accent-red: #ff4d4d; }
         body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-dark); color: white; scroll-behavior: smooth; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         
-        /* شاشة التحميل */
         #splash-screen { position: fixed; inset: 0; background: #111; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.8s; }
         .splash-logo { font-size: 3rem; font-weight: 900; color: white; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
-        /* الشريط العلوي */
         .marquee { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; overflow: hidden; font-size: 0.75rem; font-weight: 900; color: black; }
         .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
         @keyframes scrollText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        /* كرت المنتج والخصومات */
-        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 10px; transition: 0.4s; position: relative; }
-        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 10; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
+        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 12px; transition: 0.4s; position: relative; z-index: 10; }
+        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
         .old-price { text-decoration: line-through; color: var(--accent-red); font-size: 11px; margin-left: 8px; opacity: 0.8; }
         
-        /* خيارات المنتج */
-        .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; }
+        .option-dot { width: 24px; height: 24px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; position: relative; z-index: 30; }
         .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
-        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 8px; font-size: 10px; transition: 0.2s; }
+        
+        .size-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-size: 11px; transition: 0.2s; cursor: pointer; position: relative; z-index: 30; }
         .size-btn.selected { background: var(--primary); color: black; font-weight: 900; border-color: var(--primary); }
 
-        /* السلايدر */
-        .slider-container { width: 95%; max-width: 1200px; margin: 10px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/8; border: 1px solid var(--border-color); }
-        .slider-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .slide { min-width: 100%; position: relative; }
+        .slider-container { width: 95%; max-width: 1200px; margin: 15px auto 25px; position: relative; overflow: hidden; border-radius: 20px; aspect-ratio: 16/9; border: 1px solid var(--border-color); background: #222; }
+        .slider-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); height: 100%; }
+        .slide { min-width: 100%; height: 100%; position: relative; }
         .slide img { width: 100%; height: 100%; object-fit: cover; }
 
-        .category-btn { white-space: nowrap; padding: 10px 20px; border-radius: 99px; font-size: 0.8rem; background: var(--card-bg); border: 1px solid var(--border-color); color: #aaa; transition: 0.3s; }
+        .category-btn { white-space: nowrap; padding: 10px 24px; border-radius: 99px; font-size: 0.85rem; background: var(--card-bg); border: 1px solid var(--border-color); color: #aaa; transition: 0.3s; cursor: pointer; }
         .category-btn.active { background: var(--primary); color: black; font-weight: 900; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .add-to-cart-btn { cursor: pointer; position: relative; z-index: 30; transition: transform 0.1s; }
+        .add-to-cart-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="pt-12">
 
     <div id="splash-screen">
         <div class="splash-logo italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
+        <p class="text-gray-500 text-sm mt-4">جاري التحميل...</p>
     </div>
 
-    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ جارِ جلب آخر التحديثات... ✨</div></div>
+    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ أهلاً بكم في متجر المظ - أحدث الصيحات العالمية بين يديك ✨</div></div>
 
-    <header class="mx-auto px-4 py-3 sticky top-8 z-40 bg-zinc-800/80 backdrop-blur-lg rounded-2xl border border-white/5 flex justify-between items-center max-w-[94%] shadow-xl">
+    <header class="mx-auto px-4 py-3 sticky top-8 z-50 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center max-w-[94%] shadow-2xl">
         <div class="text-xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
-        <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full">
+        <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
             <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5"></i>
             <span id="cart-count" class="absolute -top-1 -right-1 bg-white text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
         </button>
@@ -63,7 +62,7 @@
     <div class="px-5 mt-6">
         <div class="relative">
             <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
-            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50" placeholder="ابحث عن منتج..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50 transition-all" placeholder="ابحث عن منتجك المفضل..." oninput="handleSearch()">
         </div>
     </div>
 
@@ -74,25 +73,28 @@
     </section>
 
     <main class="px-4">
-        <div class="category-scroll flex gap-2 overflow-x-auto no-scrollbar py-4">
-            <button onclick="filterProducts('all')" class="category-btn active">الكل</button>
-            <button onclick="filterProducts('men_shoes')" class="category-btn">أحذية رجالي</button>
-            <button onclick="filterProducts('women_shoes')" class="category-btn">أحذية نسائي</button>
-            <button onclick="filterProducts('men_clothing')" class="category-btn">ملابس رجالي</button>
+        <div class="category-scroll flex gap-2 overflow-x-auto no-scrollbar py-6">
+            <button onclick="filterProducts('all', event)" class="category-btn active">الكل</button>
+            <button onclick="filterProducts('men_shoes', event)" class="category-btn">أحذية رجالي</button>
+            <button onclick="filterProducts('women_shoes', event)" class="category-btn">أحذية نسائي</button>
+            <button onclick="filterProducts('men_clothing', event)" class="category-btn">ملابس رجالي</button>
         </div>
 
-        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-4 mb-24"></div>
+        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2 mb-28"></div>
     </main>
 
-    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-50 translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col">
+    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[100] translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-xl font-black">سلة المشتريات</h2>
-            <button id="close-cart"><i data-lucide="x"></i></button>
+            <button id="close-cart" class="p-2 hover:bg-white/5 rounded-full"><i data-lucide="x"></i></button>
         </div>
         <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
         <div class="pt-6 border-t border-white/10 mt-4">
-            <div class="flex justify-between text-xl font-black mb-4"><span>الإجمالي:</span><span id="cart-total">$0</span></div>
-            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-2xl font-black">تأكيد الطلب عبر واتساب</button>
+            <div class="flex justify-between text-xl font-black mb-4">
+                <span>الإجمالي:</span>
+                <span id="cart-total" class="text-[#00BFFF]">$0</span>
+            </div>
+            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-2xl font-black shadow-lg shadow-[#00BFFF]/20 active:scale-95 transition-all">تأكيد الطلب عبر واتساب</button>
         </div>
     </div>
 
@@ -100,20 +102,25 @@
         let productsData = [], cart = [];
         window.tempSelections = {};
 
+        // تشغيل المتجر
         async function init() {
-            await loadSettings();
-            await loadSlides();
-            await loadProducts();
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-            }, 1000);
+            try {
+                await Promise.all([loadSettings(), loadSlides(), loadProducts()]);
+            } catch (e) {
+                console.error("Initialization error:", e);
+            } finally {
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.opacity = '0';
+                    setTimeout(() => document.getElementById('splash-screen').style.display = 'none', 800);
+                }, 1000);
+            }
         }
 
         async function loadSettings() {
             try {
                 const res = await fetch('settings.json?v=' + Date.now());
                 const data = await res.json();
-                document.getElementById('marquee-text').innerText = data.marquee;
+                if(data.marquee) document.getElementById('marquee-text').innerText = data.marquee;
             } catch (e) {}
         }
 
@@ -121,17 +128,19 @@
             try {
                 const res = await fetch('slides.json?v=' + Date.now());
                 const slides = await res.json();
-                if (slides.length) {
+                if (slides && slides.length > 0) {
                     const track = document.getElementById('slider-track');
                     document.getElementById('slider-section').classList.remove('hidden');
-                    track.innerHTML = slides.map(s => `<div class="slide"><img src="${s.image}"></div>`).join('');
+                    track.innerHTML = slides.map(s => `<div class="slide"><img src="${s.image}" loading="lazy"></div>`).join('');
+                    
                     let cur = 0;
                     setInterval(() => {
                         cur = (cur + 1) % slides.length;
+                        // التعديل هنا لضمان الحركة الصحيحة في RTL
                         track.style.transform = `translateX(${cur * 100}%)`;
                     }, 4000);
                 }
-            } catch (e) {}
+            } catch (e) { console.error("Slider error:", e); }
         }
 
         async function loadProducts() {
@@ -139,25 +148,29 @@
                 const res = await fetch('products.json?v=' + Date.now());
                 productsData = await res.json();
                 renderProducts(productsData);
-            } catch (e) {}
+            } catch (e) { console.error("Products error:", e); }
         }
 
         function renderProducts(data) {
             const grid = document.getElementById('products-grid');
+            if(!data.length) {
+                grid.innerHTML = '<p class="col-span-full text-center py-10 text-gray-500">لا توجد منتجات مطابقة للبحث</p>';
+                return;
+            }
+
             grid.innerHTML = data.map(p => {
                 if (!window.tempSelections[p.id]) {
                     window.tempSelections[p.id] = { color: p.colors?.[0] || '', size: p.sizes?.[0] || '', qty: 1 };
                 }
                 
-                // معالجة السعر والخصم
                 let discountHTML = "";
-                let priceHTML = `<span class="text-[#00BFFF] font-black">$${p.price}</span>`;
+                let priceHTML = `<span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>`;
                 
                 if (p.oldPrice && p.oldPrice > p.price) {
                     const pct = Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100);
                     discountHTML = `<div class="discount-tag">خصم ${pct}%</div>`;
                     priceHTML = `
-                        <div class="flex items-center">
+                        <div class="flex items-center gap-2">
                             <span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>
                             <span class="old-price">$${p.oldPrice}</span>
                         </div>
@@ -169,19 +182,26 @@
                 return `
                 <div class="product-card">
                     ${discountHTML}
-                    <img src="${mainImg}" class="w-full aspect-square object-cover rounded-xl mb-3 shadow-lg">
-                    <h3 class="text-[11px] font-medium text-gray-400 mb-1">${p.name}</h3>
+                    <img src="${mainImg}" class="w-full aspect-square object-cover rounded-xl mb-3 shadow-md">
+                    <h3 class="text-xs font-bold text-gray-200 mb-1 truncate">${p.name}</h3>
                     <div class="mb-3">${priceHTML}</div>
                     
-                    <div class="flex gap-1.5 mb-3 overflow-x-auto no-scrollbar">
-                        ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${window.tempSelections[p.id].color===c?'selected':''}" style="background:${c}"></div>`).join('')}
+                    <div class="flex gap-2 mb-3 overflow-x-auto no-scrollbar py-1">
+                        ${(p.colors || []).map(c => `
+                            <div onclick="updateOpt(${p.id}, 'color', '${c}', this)" 
+                                 class="option-dot ${window.tempSelections[p.id].color === c ? 'selected' : ''}" 
+                                 style="background:${c}"></div>
+                        `).join('')}
                     </div>
                     
-                    <div class="flex flex-wrap gap-1 mb-4">
-                        ${(p.sizes || []).map(s => `<button onclick="updateOpt(${p.id},'size','${s}',this)" class="size-btn ${window.tempSelections[p.id].size===s?'selected':''}">${s}</button>`).join('')}
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        ${(p.sizes || []).map(s => `
+                            <button onclick="updateOpt(${p.id}, 'size', '${s}', this)" 
+                                    class="size-btn ${window.tempSelections[p.id].size === s ? 'selected' : ''}">${s}</button>
+                        `).join('')}
                     </div>
 
-                    <button onclick="addToCart(${p.id})" class="w-full bg-white/5 border border-white/10 text-white py-3 rounded-xl text-[10px] font-bold hover:bg-[#00BFFF] hover:text-black transition-all">إضافة للسلة</button>
+                    <button onclick="addToCart(${p.id})" class="add-to-cart-btn w-full bg-white/5 border border-white/10 text-white py-3 rounded-xl text-[11px] font-black hover:bg-[#00BFFF] hover:text-black transition-all">إضافة للسلة</button>
                 </div>`;
             }).join('');
             lucide.createIcons();
@@ -189,62 +209,101 @@
 
         window.updateOpt = (id, type, val, el) => {
             window.tempSelections[id][type] = val;
-            el.parentElement.querySelectorAll(el.tagName).forEach(b => b.classList.remove('selected'));
+            const parent = el.parentElement;
+            parent.querySelectorAll(el.tagName === 'DIV' ? '.option-dot' : '.size-btn').forEach(b => b.classList.remove('selected'));
             el.classList.add('selected');
         };
 
         window.addToCart = (id) => {
             const p = productsData.find(x => x.id === id);
-            const sel = window.tempSelections[id];
+            const sel = {...window.tempSelections[id]};
             cart.push({ ...p, ...sel, cartId: Date.now() });
             updateCartUI();
+            // إظهار السلة تلقائياً عند الإضافة
             document.getElementById('cart-sidebar').classList.remove('translate-x-full');
         };
 
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             let total = 0;
-            document.getElementById('cart-content').innerHTML = cart.map(item => {
-                total += item.price;
-                return `
-                <div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5">
-                    <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-16 h-16 object-cover rounded-xl">
-                    <div class="flex-grow">
-                        <h4 class="text-xs font-bold">${item.name}</h4>
-                        <p class="text-[10px] text-gray-500">المقاس: ${item.size}</p>
-                        <p class="text-[#00BFFF] font-black">$${item.price}</p>
-                    </div>
-                    <button onclick="removeItem(${item.cartId})" class="text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                </div>`;
-            }).join('');
+            const content = document.getElementById('cart-content');
+            
+            if(cart.length === 0) {
+                content.innerHTML = '<div class="text-center py-20 text-gray-500">السلة فارغة حالياً</div>';
+            } else {
+                content.innerHTML = cart.map(item => {
+                    total += item.price;
+                    return `
+                    <div class="flex gap-4 bg-white/5 p-3 rounded-2xl border border-white/5 items-center">
+                        <img src="${Array.isArray(item.image) ? item.image[0] : item.image}" class="w-16 h-16 object-cover rounded-xl">
+                        <div class="flex-grow">
+                            <h4 class="text-xs font-bold truncate w-32">${item.name}</h4>
+                            <p class="text-[10px] text-gray-500">المقاس: ${item.size} | اللون: ${item.color}</p>
+                            <p class="text-[#00BFFF] font-black">$${item.price}</p>
+                        </div>
+                        <button onclick="removeItem(${item.cartId})" class="text-red-500 p-2 hover:bg-red-500/10 rounded-full transition-colors">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+                    </div>`;
+                }).join('');
+            }
             document.getElementById('cart-total').innerText = `$${total}`;
             lucide.createIcons();
         }
 
-        window.removeItem = (cid) => { cart = cart.filter(x => x.cartId !== cid); updateCartUI(); };
+        window.removeItem = (cid) => {
+            cart = cart.filter(x => x.cartId !== cid);
+            updateCartUI();
+        };
 
         window.sendOrder = () => {
-            if(!cart.length) return;
-            let text = "🚀 *طلب جديد من Almaz Store*\n\n";
-            cart.forEach((it, i) => text += `${i+1}. ${it.name} | مقاس: ${it.size} | سعر: $${it.price}\n`);
-            text += `\n💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
-            window.open(`https://wa.me/905394753724?text=${encodeURIComponent(text)}`);
+            if(!cart.length) return alert("السلة فارغة!");
+            let text = "🚀 *طلب جديد من متجر Almaz*\n";
+            text += "--------------------------\n";
+            cart.forEach((it, i) => {
+                text += `📦 *${i+1}. ${it.name}*\n`;
+                text += `   المقاس: ${it.size} | السعر: $${it.price}\n`;
+            });
+            text += "--------------------------\n";
+            text += `💰 *الإجمالي: ${document.getElementById('cart-total').innerText}*`;
+            
+            // رقم الواتساب الخاص بك
+            const whatsappNumber = "905394753724"; 
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(text)}`);
         };
 
         window.handleSearch = () => {
             const q = document.getElementById('search-input').value.toLowerCase();
-            renderProducts(productsData.filter(p => p.name.toLowerCase().includes(q)));
+            const filtered = productsData.filter(p => p.name.toLowerCase().includes(q));
+            renderProducts(filtered);
         };
 
-        window.filterProducts = (cat) => {
+        window.filterProducts = (cat, e) => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts(cat === 'all' ? productsData : productsData.filter(p => p.category === cat));
+            e.currentTarget.classList.add('active');
+            const filtered = cat === 'all' ? productsData : productsData.filter(p => p.category === cat);
+            renderProducts(filtered);
         };
 
-        document.getElementById('toggle-cart').onclick = () => document.getElementById('cart-sidebar').classList.remove('translate-x-full');
-        document.getElementById('close-cart').onclick = () => document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        // أحداث السلة
+        document.getElementById('toggle-cart').onclick = (e) => {
+            e.stopPropagation();
+            document.getElementById('cart-sidebar').classList.toggle('translate-x-full');
+        };
+        
+        document.getElementById('close-cart').onclick = () => {
+            document.getElementById('cart-sidebar').classList.add('translate-x-full');
+        };
 
+        // إغلاق السلة عند النقر في الخارج
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('cart-sidebar');
+            if (!sidebar.contains(e.target) && !document.getElementById('toggle-cart').contains(e.target)) {
+                sidebar.classList.add('translate-x-full');
+            }
+        });
+
+        // تشغيل التطبيق
         init();
     </script>
 </body>
