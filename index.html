@@ -46,6 +46,12 @@
         #image-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; display: none; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
         #modal-main-img { max-height: 70vh; max-width: 100%; border-radius: 12px; object-fit: contain; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* مؤشر الزوار المباشر */
+        .visitor-badge { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 1rem; padding: 8px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; width: fit-content; margin: 10px auto; }
+        .pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; position: relative; }
+        .pulse-dot::after { content: ''; position: absolute; inset: 0; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
     </style>
 </head>
 <body class="pt-12">
@@ -73,6 +79,11 @@
             <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
             <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50 transition-all" placeholder="ابحث عن منتج..." oninput="handleSearch()">
         </div>
+    </div>
+
+    <div class="visitor-badge">
+        <span class="pulse-dot"></span>
+        <span class="text-[12px] font-medium text-gray-400">يتصفح المتجر الآن: <span id="live-visitors" class="text-white font-bold">14</span> زائر</span>
     </div>
 
     <section id="slider-section" class="hidden">
@@ -115,6 +126,7 @@
 
         async function init() {
             try {
+                startLiveVisitors(); // تشغيل عداد الزوار
                 await Promise.all([loadSettings(), loadSlides(), loadProducts()]);
             } finally {
                 setTimeout(() => {
@@ -124,26 +136,31 @@
             }
         }
 
+        // دالة عداد الزوار المباشر
+        function startLiveVisitors() {
+            const el = document.getElementById('live-visitors');
+            let count = Math.floor(Math.random() * (45 - 12 + 1)) + 12; // يبدأ برقم عشوائي بين 12 و 45
+            el.innerText = count;
+
+            setInterval(() => {
+                const change = Math.floor(Math.random() * 3) - 1; // يغير الرقم بمقدار (-1, 0, 1)
+                count += change;
+                if(count < 8) count = 10; // حد أدنى للواقعية
+                if(count > 60) count = 55; // حد أقصى للواقعية
+                el.innerText = count;
+            }, 4000); // تحديث كل 4 ثواني
+        }
+
         async function loadSettings() {
             try {
                 const res = await fetch('settings.json?v=' + Date.now());
                 const data = await res.json();
-                
-                // تحديث النص الإعلاني
                 if(data.marquee) document.getElementById('marquee-text').innerText = data.marquee;
-                
-                // تهيئة الموسيقى
                 if(data.music) {
                     bgMusic = new Audio(data.music);
                     bgMusic.loop = true;
                     document.getElementById('music-control').classList.add('visible');
-                    
-                    // المتصفحات تمنع الصوت التلقائي، لذا يعمل عند أول لمسة للشاشة
-                    const startMusic = () => {
-                        bgMusic.play();
-                        updateMusicIcon(true);
-                        document.removeEventListener('click', startMusic);
-                    };
+                    const startMusic = () => { bgMusic.play(); updateMusicIcon(true); document.removeEventListener('click', startMusic); };
                     document.addEventListener('click', startMusic);
                 }
             } catch (e) {}
@@ -151,13 +168,7 @@
 
         function toggleMusic() {
             if(!bgMusic) return;
-            if(bgMusic.paused) {
-                bgMusic.play();
-                updateMusicIcon(true);
-            } else {
-                bgMusic.pause();
-                updateMusicIcon(false);
-            }
+            if(bgMusic.paused) { bgMusic.play(); updateMusicIcon(true); } else { bgMusic.pause(); updateMusicIcon(false); }
         }
 
         function updateMusicIcon(isPlaying) {
