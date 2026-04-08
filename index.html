@@ -21,43 +21,47 @@
         .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
         @keyframes scrollText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
 
-        /* مؤشر الزوار المباشر الحديث */
-        .live-status {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(0, 191, 255, 0.05);
-            border: 1px solid rgba(0, 191, 255, 0.2);
-            padding: 6px 14px;
-            border-radius: 50px;
-            gap: 8px;
-            margin-bottom: 15px;
+        /* عداد الزوار الحديث - تحديث */
+        .live-status-container { display: flex; justify-content: center; margin-bottom: 20px; }
+        .live-status { 
+            display: inline-flex; 
+            align-items: center; 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            padding: 6px 16px; 
+            border-radius: 50px; 
+            gap: 10px; 
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .pulse-icon {
-            width: 8px;
-            height: 8px;
-            background: #22c55e;
-            border-radius: 50%;
-            position: relative;
+        .pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; position: relative; box-shadow: 0 0 8px #22c55e; }
+        .pulse-dot::after { content: ''; position: absolute; inset: -4px; border: 2px solid #22c55e; border-radius: 50%; animation: ripple 1.5s infinite; }
+        @keyframes ripple { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+
+        /* ملصق الخصم الحديث - تحديث */
+        .discount-tag { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background: linear-gradient(45deg, #ff4d4d, #ff8e53); 
+            color: white; 
+            padding: 4px 12px; 
+            border-radius: 12px 4px 12px 4px; 
+            font-size: 11px; 
+            font-weight: 900; 
+            z-index: 30; 
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: floatTag 3s ease-in-out infinite;
         }
-        .pulse-icon::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border: 2px solid #22c55e;
-            border-radius: 50%;
-            animation: ripple 1.5s infinite;
-        }
-        @keyframes ripple {
-            0% { transform: scale(0.5); opacity: 1; }
-            100% { transform: scale(2.5); opacity: 0; }
-        }
+        @keyframes floatTag { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
         /* التحكم في الصوت */
         #music-control { position: fixed; bottom: 100px; left: 20px; z-index: 90; background: var(--primary); color: black; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--primary); cursor: pointer; transition: 0.3s; opacity: 0; }
         #music-control.visible { opacity: 1; }
 
-        .product-card { background: var(--card-bg); border-radius: 1.5rem; border: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: 0.4s; }
-        .discount-tag { position: absolute; top: 15px; right: 15px; background: var(--accent-red); color: white; padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 900; z-index: 20; box-shadow: 0 4px 10px rgba(255,77,77,0.3); }
+        .product-card { background: var(--card-bg); border-radius: 1.8rem; border: 1px solid var(--border-color); padding: 12px; display: flex; flex-direction: column; justify-content: space-between; height: 100%; transition: 0.3s; }
+        .product-card:active { transform: scale(0.97); }
         
         .option-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
         .option-dot.selected { border-color: white; box-shadow: 0 0 8px var(--primary); }
@@ -99,14 +103,18 @@
     </header>
 
     <div class="px-5 mt-6">
-        <div class="live-status">
-            <span class="pulse-icon"></span>
-            <span class="text-[11px] font-bold text-gray-200">يتصفح المتجر الآن: <span id="visitor-count" class="text-[#00BFFF]">12</span> شخص</span>
+        <div class="live-status-container">
+            <div class="live-status">
+                <span class="pulse-dot"></span>
+                <span class="text-[12px] font-medium text-gray-300">
+                    يتواجد الآن <span id="visitor-count" class="text-[#00BFFF] font-black mx-1">12</span> عميل في المتجر
+                </span>
+            </div>
         </div>
 
-        <div class="relative">
+        <div class="relative max-w-xl mx-auto">
             <i data-lucide="search" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
-            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/5 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF]/50 transition-all text-right" placeholder="ابحث عن منتج..." oninput="handleSearch()">
+            <input type="text" id="search-input" class="w-full bg-zinc-900 border border-white/10 p-4 pr-11 rounded-2xl text-sm outline-none focus:border-[#00BFFF] transition-all text-right shadow-inner" placeholder="ابحث عن منتجك المفضل..." oninput="handleSearch()">
         </div>
     </div>
 
@@ -150,7 +158,7 @@
 
         async function init() {
             try {
-                updateVisitors(); // تشغيل العداد
+                updateVisitors();
                 await Promise.all([loadSettings(), loadSlides(), loadProducts()]);
             } finally {
                 setTimeout(() => {
@@ -160,14 +168,12 @@
             }
         }
 
-        // دالة تحديث الزوار (محاكاة واقعية ذكية)
         function updateVisitors() {
             const countEl = document.getElementById('visitor-count');
             let count = Math.floor(Math.random() * (35 - 12 + 1)) + 12; 
             countEl.innerText = count;
-
             setInterval(() => {
-                let change = Math.floor(Math.random() * 3) - 1; // -1 أو 0 أو 1
+                let change = Math.floor(Math.random() * 3) - 1;
                 count += change;
                 if(count < 10) count = 11;
                 if(count > 50) count = 48;
@@ -242,14 +248,17 @@
                 const mainImg = Array.isArray(p.image) ? p.image[0] : p.image;
                 return `
                 <div class="product-card">
-                    <div class="relative mb-3">
+                    <div class="relative mb-3 overflow-hidden rounded-xl">
                         ${p.oldPrice > p.price ? `<div class="discount-tag">خصم %${Math.round((p.oldPrice-p.price)/p.oldPrice*100)}</div>` : ''}
-                        <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover rounded-xl shadow-md cursor-zoom-in">
+                        <img src="${mainImg}" onclick="openImageModal(${p.id})" class="w-full aspect-square object-cover shadow-md cursor-zoom-in">
                     </div>
                     <div class="flex-grow">
-                        <h3 class="text-[11px] font-bold text-gray-200 line-clamp-1">${p.name}</h3>
-                        <div class="mb-2"><span class="text-[#00BFFF] font-black text-lg">$${p.price}</span></div>
-                        <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+                        <h3 class="text-[12px] font-bold text-gray-200 line-clamp-1 mb-1">${p.name}</h3>
+                        <div class="mb-2 flex items-center gap-2">
+                            <span class="text-[#00BFFF] font-black text-lg">$${p.price}</span>
+                            ${p.oldPrice > p.price ? `<span class="text-gray-500 line-through text-[11px]">$${p.oldPrice}</span>` : ''}
+                        </div>
+                        <div class="flex gap-2 overflow-x-auto no-scrollbar py-1 mb-1">
                             ${(p.colors || []).map(c => `<div onclick="updateOpt(${p.id},'color','${c}',this)" class="option-dot ${sel.color===c?'selected':''}" style="background:${c}"></div>`).join('')}
                         </div>
                         <div class="flex flex-wrap gap-1 mb-3">
@@ -257,12 +266,12 @@
                         </div>
                     </div>
                     <div class="mt-auto">
-                        <div class="flex items-center justify-between bg-black/20 p-2 rounded-xl mb-2">
-                            <button onclick="changeQty(${p.id}, -1)" class="qty-btn font-bold px-2">-</button>
+                        <div class="flex items-center justify-between bg-black/30 p-2 rounded-xl mb-2">
+                            <button onclick="changeQty(${p.id}, -1)" class="qty-btn font-bold px-3 text-[#00BFFF]">-</button>
                             <span id="qty-${p.id}" class="font-bold text-sm">${sel.qty}</span>
-                            <button onclick="changeQty(${p.id}, 1)" class="qty-btn font-bold px-2">+</button>
+                            <button onclick="changeQty(${p.id}, 1)" class="qty-btn font-bold px-3 text-[#00BFFF]">+</button>
                         </div>
-                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-3 rounded-xl text-[11px] font-black">إضافة للسلة</button>
+                        <button onclick="addToCart(${p.id})" class="w-full bg-[#00BFFF] text-black py-3 rounded-xl text-[12px] font-black shadow-lg">إضافة للسلة</button>
                     </div>
                 </div>`;
             }).join('');
