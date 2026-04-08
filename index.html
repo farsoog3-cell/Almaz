@@ -15,11 +15,33 @@
         .splash-logo { font-size: 3rem; font-weight: 900; color: white; }
         .splash-logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
-        .marquee { background: var(--primary); height: 28px; position: fixed; top: 0; width: 100%; z-index: 100; display: flex; align-items: center; overflow: hidden; font-size: 0.75rem; font-weight: 900; color: black; }
-        .marquee-content { white-space: nowrap; animation: scrollText 25s linear infinite; display: inline-block; }
-        @keyframes scrollText { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+        /* تحديث شريط الإعلانات - حركة من اليسار لليمين وتصميم أجمل */
+        .marquee { 
+            background: linear-gradient(90deg, #00BFFF, #0080ff); 
+            height: 32px; 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            z-index: 100; 
+            display: flex; 
+            align-items: center; 
+            overflow: hidden; 
+            font-size: 0.8rem; 
+            font-weight: 800; 
+            color: black;
+            box-shadow: 0 2px 10px rgba(0, 191, 255, 0.3);
+        }
+        .marquee-content { 
+            white-space: nowrap; 
+            display: inline-block;
+            animation: scrollLeftToRight 20s linear infinite; 
+        }
+        /* أنيميشن من اليسار إلى اليمين */
+        @keyframes scrollLeftToRight { 
+            from { transform: translateX(-100%); } 
+            to { transform: translateX(100%); } 
+        }
 
-        /* عداد الزوار المطور بأيقونات ولون المتجر */
         .live-status-container { display: flex; justify-content: center; margin-bottom: 20px; }
         .live-status { 
             display: inline-flex; 
@@ -35,7 +57,6 @@
         .pulse-dot::after { content: ''; position: absolute; inset: -4px; border: 2px solid var(--primary); border-radius: 50%; animation: ripple 1.5s infinite; }
         @keyframes ripple { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
 
-        /* ملصق الخصم في زاوية الإطار */
         .discount-badge {
             position: absolute;
             top: 0;
@@ -46,7 +67,7 @@
             font-size: 10px;
             font-weight: 900;
             z-index: 40;
-            border-radius: 0 12px 0 12px; /* يلتصق بزاوية الإطار المقوس */
+            border-radius: 0 12px 0 12px;
             box-shadow: -2px 2px 10px rgba(0,0,0,0.3);
         }
 
@@ -80,13 +101,15 @@
         <div class="splash-logo italic">AL<span>MAZ</span></div>
     </div>
 
-    <div class="marquee"><div id="marquee-text" class="marquee-content">✨ جارِ تحميل أحدث العروض... ✨</div></div>
+    <div class="marquee">
+        <div id="marquee-text" class="marquee-content">✨ أهلاً بكم في Almaz Store - شحن سريع لجميع الولايات ✨ خصومات حصرية تصل إلى 50% بمناسبة الافتتاح ✨</div>
+    </div>
 
     <div id="music-control" onclick="toggleMusic()">
         <i data-lucide="music" id="music-icon" class="w-5 h-5"></i>
     </div>
 
-    <header class="mx-auto px-4 py-3 sticky top-8 z-50 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center max-w-[94%] shadow-2xl">
+    <header class="mx-auto px-4 py-3 sticky top-10 z-50 bg-zinc-800/90 backdrop-blur-xl rounded-2xl border border-white/10 flex justify-between items-center max-w-[94%] shadow-2xl">
         <div class="text-xl font-black italic">AL<span class="text-[#00BFFF]">MAZ</span></div>
         <button id="toggle-cart" class="relative p-2.5 bg-white/5 rounded-full">
             <i data-lucide="shopping-cart" class="text-[#00BFFF] w-5 h-5"></i>
@@ -94,7 +117,7 @@
         </button>
     </header>
 
-    <div class="px-5 mt-6">
+    <div class="px-5 mt-8">
         <div class="live-status-container">
             <div class="live-status">
                 <span class="pulse-dot"></span>
@@ -126,25 +149,8 @@
         <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-2 mb-28"></div>
     </main>
 
-    <div id="cart-sidebar" class="fixed inset-y-0 left-0 w-full md:w-96 bg-zinc-900 z-[100] translate-x-full transition-transform duration-500 border-r border-white/10 p-6 flex flex-col shadow-2xl text-right">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-black">سلة المشتريات</h2>
-            <button id="close-cart"><i data-lucide="x"></i></button>
-        </div>
-        <div id="cart-content" class="flex-grow overflow-y-auto space-y-4 no-scrollbar"></div>
-        <div class="pt-6 border-t border-white/10 mt-4">
-            <div class="flex justify-between text-xl font-black mb-4"><span>الإجمالي:</span><span id="cart-total" class="text-[#00BFFF]">$0</span></div>
-            <button onclick="sendOrder()" class="w-full bg-[#00BFFF] text-black py-4 rounded-2xl font-black active:scale-95 transition-transform">تأكيد عبر واتساب</button>
-        </div>
-    </div>
-
-    <div id="image-modal">
-        <button onclick="closeImageModal()" class="absolute top-6 right-6 text-white bg-white/10 p-2 rounded-full z-[210]"><i data-lucide="x"></i></button>
-        <img id="modal-main-img" src="">
-        <div id="modal-thumbs" class="flex gap-2 mt-6 overflow-x-auto no-scrollbar max-w-full px-4"></div>
-    </div>
-
     <script>
+        // الكود البرمجي السابق يوضع هنا بالكامل
         let productsData = [], cart = [], bgMusic = null;
         window.tempSelections = {};
 
