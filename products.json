@@ -229,5 +229,24 @@
       "XL",
       "XXL"
     ]
+  },
+  {
+    "id": 1775692232819,
+    "name": "تيشرت الصيف",
+    "price": 6,
+    "oldPrice": 8,
+    "isNew": false,
+    "category": "men_clothing",
+    "image": [
+      "https://i.ibb.co/gLKk44tG/IMG-20260409-WA0005.jpg"
+    ],
+    "colors": [],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ]
   }
 ]
