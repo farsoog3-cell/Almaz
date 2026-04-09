@@ -191,8 +191,8 @@
   {
     "id": 1775692232819,
     "name": "تيشرت الصيف",
-    "price": 6,
-    "oldPrice": 8,
+    "price": 5,
+    "oldPrice": null,
     "isNew": false,
     "category": "men_clothing",
     "image": [
