@@ -42,28 +42,6 @@
     ]
   },
   {
-    "id": 1774821720733,
-    "name": "تيشرت ",
-    "price": 5,
-    "oldPrice": null,
-    "isNew": false,
-    "category": "men_clothing",
-    "image": [
-      "https://i.ibb.co/rKXLBF8b/IMG-20260330-WA0004.jpg"
-    ],
-    "colors": [
-      "#ffffff",
-      "#c98d3e"
-    ],
-    "sizes": [
-      "S",
-      "M",
-      "L",
-      "XL",
-      "XXL"
-    ]
-  },
-  {
     "id": 1774821823172,
     "name": "تيشرت",
     "price": 5,
